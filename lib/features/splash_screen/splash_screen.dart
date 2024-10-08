@@ -1,6 +1,8 @@
+import 'package:chat_app/core/constants/app_strings.dart';
 import 'package:chat_app/core/constants/asset_images.dart';
 import 'package:chat_app/core/themes/color_app.dart';
 import 'package:chat_app/features/home/presentaion/view/home_view.dart';
+import 'package:chat_app/features/splash_screen/widgets/splash_body.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -23,15 +25,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Container(
-            color: ColorApp.splashBackgroundColor,
-            child: Image.asset(
-              AssetImages.splashImage,
-              height: 150,
-              width: 150,
-            )),
-      ),
+      body: SplashBody(),
     );
   }
 }
