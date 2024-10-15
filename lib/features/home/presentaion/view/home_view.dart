@@ -10,12 +10,11 @@ class HomeView extends StatelessWidget {
         color: Colors.white,
         child: const Center(
           child: Text(
-            'LOGIN PAGE',
+            'Home PAGE',
             style: TextStyle(color: Colors.black),
           ),
         ),
       ),
     );
-    ;
   }
 }

@@ -9,36 +9,36 @@ class SplashBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-                color: ColorApp.splashBackgroundColor,
-                child: Image.asset(
-                  AssetImages.splashImage,
-                  height: 200,
-                  width: 200,
-                )),
-            const Text(
-              AppStrings.appName,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 25,
-              ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+              color: ColorApp.appBackgroundColor,
+              child: Image.asset(
+                AssetImages.splashImage,
+                height: 200,
+                width: 200,
+              )),
+          const Text(
+            AppStrings.appName,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 25,
             ),
-            const SizedBox(
-              height: 90,
+          ),
+          const SizedBox(
+            height: 90,
+          ),
+          const Text(
+            AppStrings.splashTitle,
+            style: TextStyle(
+              fontWeight: FontWeight.w900,
+              color: ColorApp.primaryColor,
+              fontSize: 17,
             ),
-            const Text(
-              AppStrings.splashTitle,
-              style: TextStyle(
-                fontWeight: FontWeight.w900,
-                color: ColorApp.primaryColor,
-                fontSize: 17,
-              ),
-            ),
-          ],
-        ),
-      );
+          ),
+        ],
+      ),
+    );
   }
 }
