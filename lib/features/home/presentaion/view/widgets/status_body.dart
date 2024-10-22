@@ -14,6 +14,7 @@ class StatusBody extends StatelessWidget {
       child: SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const UserStatusItem(),
             const SizedBox(
@@ -23,6 +24,9 @@ class StatusBody extends StatelessWidget {
               'Recent updates',
               style: Styles.textStyle10.copyWith(color: Colors.grey),
             ),
+            const SizedBox(
+              height: 10,
+            ),
             const RecentUpdates(),
             const SizedBox(
               height: 20,
@@ -30,6 +34,9 @@ class StatusBody extends StatelessWidget {
             Text(
               'Viewed updates',
               style: Styles.textStyle10.copyWith(color: Colors.grey),
+            ),
+            const SizedBox(
+              height: 10,
             ),
             const ViewedUpdates()
           ],

@@ -1,15 +1,14 @@
 import 'package:chat_app/core/shared_widgets/icon_item.dart';
-import 'package:chat_app/core/themes/color_app.dart';
 import 'package:flutter/material.dart';
 
-class AddStatusIcon extends StatelessWidget {
-  const AddStatusIcon({super.key});
+class ModifyProfileIcon extends StatelessWidget {
+  const ModifyProfileIcon({super.key});
 
   @override
   Widget build(BuildContext context) {
     return const IconItem(
-      icon: Icons.add_circle_outlined,
-      size: 25,
+      icon: Icons.edit,
+      size: 40,
     );
   }
 }

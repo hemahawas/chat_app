@@ -1,8 +1,6 @@
+import 'package:chat_app/features/home/presentaion/view/widgets/home_appbar.dart';
 import 'package:chat_app/features/home/presentaion/view/widgets/home_body.dart';
 import 'package:chat_app/features/home/presentaion/view/widgets/home_bottom_navigation_bar.dart';
-
-import 'package:chat_app/features/home/presentaion/view/widgets/home_appbar.dart';
-
 import 'package:chat_app/features/home/presentaion/view/widgets/home_floating_action_button.dart';
 
 import 'package:flutter/material.dart';
@@ -19,7 +17,7 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const PreferredSize(
+      appBar: PreferredSize(
           preferredSize: Size.fromHeight(80.0), child: HomeAppbar()),
       body: HomeBody(
         currentIndex: currentIndex,
@@ -32,7 +30,8 @@ class _HomeViewState extends State<HomeView> {
           })
         },
       ),
-      floatingActionButton: const HomeFloatingActionButton(),
+      floatingActionButton:
+          currentIndex == 0 ? const HomeFloatingActionButton() : null,
     );
   }
 }

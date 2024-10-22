@@ -1,4 +1,6 @@
+import 'package:chat_app/core/themes/color_app.dart';
 import 'package:chat_app/core/themes/styles.dart';
+import 'package:chat_app/features/home/presentaion/view/profile_view.dart';
 import 'package:flutter/material.dart';
 
 class HomeAppbar extends StatelessWidget {
@@ -31,14 +33,25 @@ class HomeAppbar extends StatelessWidget {
               )),
         ),
         Padding(
-          padding: const EdgeInsets.only(top: 15.0),
-          child: IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.more_vert,
-                size: 35.0,
-              )),
-        )
+            padding: const EdgeInsets.only(top: 15.0),
+            child: PopupMenuButton<String>(
+                offset: const Offset(0, kToolbarHeight),
+                iconSize: 35,
+                color: ColorApp.appBackgroundColor,
+                itemBuilder: (context) => [
+                      const PopupMenuItem(
+                        child: Text('New group'),
+                      ),
+                      PopupMenuItem(
+                        child: const Text('Profile'),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const ProfileView()));
+                        },
+                      ),
+                    ]))
       ],
     );
   }
