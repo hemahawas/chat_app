@@ -1,9 +1,5 @@
-import 'package:chat_app/core/constants/asset_images.dart';
-import 'package:chat_app/core/shared_widgets/default_text_button.dart';
-import 'package:chat_app/core/themes/color_app.dart';
 import 'package:chat_app/core/themes/styles.dart';
-import 'package:chat_app/features/home/presentaion/view/widgets/image_field.dart';
-import 'package:chat_app/features/home/presentaion/view/widgets/modify_profile_icon.dart';
+
 import 'package:chat_app/features/home/presentaion/view/widgets/profile_appbar.dart';
 import 'package:chat_app/features/home/presentaion/view/widgets/profile_button.dart';
 import 'package:chat_app/features/home/presentaion/view/widgets/profile_image_and_modify.dart';

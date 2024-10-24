@@ -1,4 +1,3 @@
-import 'package:chat_app/core/shared_widgets/default_text_button.dart';
 import 'package:chat_app/features/auth/presentation/view/widgets/email_field.dart';
 import 'package:chat_app/features/auth/presentation/view/widgets/login_button.dart';
 import 'package:chat_app/features/auth/presentation/view/widgets/login_title.dart';

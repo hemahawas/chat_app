@@ -1,4 +1,3 @@
-import 'package:chat_app/core/themes/color_app.dart';
 import 'package:chat_app/core/themes/styles.dart';
 import 'package:chat_app/features/auth/presentation/view/register_view.dart';
 import 'package:flutter/material.dart';

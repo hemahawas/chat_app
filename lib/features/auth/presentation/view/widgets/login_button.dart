@@ -1,7 +1,6 @@
 import 'package:chat_app/core/shared_widgets/default_text_button.dart';
 import 'package:chat_app/core/shared_widgets/show_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class LoginButton extends StatelessWidget {
   final TextEditingController emailController;

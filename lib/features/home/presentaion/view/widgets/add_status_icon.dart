@@ -1,5 +1,4 @@
 import 'package:chat_app/core/shared_widgets/icon_item.dart';
-import 'package:chat_app/core/themes/color_app.dart';
 import 'package:flutter/material.dart';
 
 class AddStatusIcon extends StatelessWidget {

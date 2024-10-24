@@ -1,8 +1,4 @@
-
-import 'package:chat_app/features/home/presentaion/view/home_view.dart';
-
 import 'package:chat_app/core/themes/color_app.dart';
-import 'package:chat_app/features/auth/presentation/view/login_view.dart';
 import 'package:chat_app/features/splash_screen/splash_screen.dart';
 
 import 'package:flutter/material.dart';
@@ -25,7 +21,7 @@ class MyApp extends StatelessWidget {
         textTheme: GoogleFonts.interTextTheme(),
         useMaterial3: true,
       ),
-      home: const HomeView(),
+      home: const SplashScreen(),
     );
   }
 }
