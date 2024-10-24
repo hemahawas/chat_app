@@ -1,21 +1,24 @@
 import 'package:chat_app/core/themes/color_app.dart';
 import 'package:flutter/material.dart';
 
-Widget defaultFormField({
-  required TextEditingController controller,
-  required TextInputType type,
-  Function? onSubmit,
-  Function? onChange,
-  GestureTapCallback? onTap,
-  bool isPassword = false,
-  required Function validate,
-  required String label,
-  String? hint,
-  required IconData prefix,
-  IconData? suffix,
-  VoidCallback? suffixPressed,
-  bool isClickable = true,
-}) =>
+
+Widget defaultFormField(
+        {required TextEditingController controller,
+        required TextInputType type,
+        Function? onSubmit,
+        Function? onChange,
+        GestureTapCallback? onTap,
+        bool isPassword = false,
+        required Function validate,
+        Function(PointerDownEvent)? onTapOutside,
+        required String label,
+        String? hint,
+        IconData? prefix,
+        IconData? suffix,
+        VoidCallback? suffixPressed,
+        bool isClickable = true,
+        InputDecoration? decoration}) =>
+
     TextFormField(
       controller: controller,
       keyboardType: type,
@@ -29,13 +32,9 @@ Widget defaultFormField({
           return;
         }
       },
-      onTap: () {
-        if (onTap != null) {
-          onTap();
-        } else {
-          return;
-        }
-      },
+
+      onTap: onTap,
+
       onChanged: (value) {
         if (onChange != null) {
           onChange(value);
@@ -46,25 +45,28 @@ Widget defaultFormField({
       validator: (value) {
         return validate(value);
       },
-      decoration: InputDecoration(
-          labelText: label,
-          hintText: hint,
-          floatingLabelStyle: const TextStyle(color: ColorApp.primaryColor),
-          prefixIcon: Icon(
-            prefix,
-          ),
-          suffixIcon: suffix != null
-              ? IconButton(
-                  onPressed: suffixPressed,
-                  icon: Icon(
-                    suffix,
-                  ),
-                )
-              : null,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(30.0),
-          ),
-          focusedBorder: const OutlineInputBorder(
-              borderSide:
-                  BorderSide(width: 2.0, color: ColorApp.primaryColor))),
+
+      onTapOutside: onTapOutside,
+      decoration: decoration ??
+          InputDecoration(
+              labelText: label,
+              hintText: hint,
+              floatingLabelStyle: const TextStyle(color: ColorApp.primaryColor),
+              prefixIcon: Icon(
+                prefix,
+              ),
+              suffixIcon: suffix != null
+                  ? IconButton(
+                      onPressed: suffixPressed,
+                      icon: Icon(
+                        suffix,
+                      ),
+                    )
+                  : null,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30.0),
+              ),
+              focusedBorder: const OutlineInputBorder(
+                  borderSide:
+                      BorderSide(width: 2.0, color: ColorApp.primaryColor))),
     );
