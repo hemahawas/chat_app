@@ -1,6 +1,7 @@
 import 'package:chat_app/core/themes/color_app.dart';
 import 'package:flutter/material.dart';
 
+
 Widget defaultFormField(
         {required TextEditingController controller,
         required TextInputType type,
@@ -17,6 +18,7 @@ Widget defaultFormField(
         VoidCallback? suffixPressed,
         bool isClickable = true,
         InputDecoration? decoration}) =>
+
     TextFormField(
       controller: controller,
       keyboardType: type,
@@ -30,7 +32,9 @@ Widget defaultFormField(
           return;
         }
       },
+
       onTap: onTap,
+
       onChanged: (value) {
         if (onChange != null) {
           onChange(value);
@@ -41,6 +45,7 @@ Widget defaultFormField(
       validator: (value) {
         return validate(value);
       },
+
       onTapOutside: onTapOutside,
       decoration: decoration ??
           InputDecoration(

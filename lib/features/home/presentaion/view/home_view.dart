@@ -17,6 +17,7 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       appBar: PreferredSize(
           preferredSize: Size.fromHeight(80.0), child: HomeAppbar()),
       body: HomeBody(
@@ -29,6 +30,7 @@ class _HomeViewState extends State<HomeView> {
             currentIndex = index;
           })
         },
+
       ),
       floatingActionButton:
           currentIndex == 0 ? const HomeFloatingActionButton() : null,
