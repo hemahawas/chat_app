@@ -1,3 +1,4 @@
+
 import 'package:chat_app/features/home/presentaion/view/widgets/calls_body.dart';
 import 'package:chat_app/features/home/presentaion/view/widgets/chat_body.dart';
 import 'package:chat_app/features/home/presentaion/view/widgets/status_body.dart';
@@ -17,3 +18,4 @@ class HomeBody extends StatelessWidget {
     return homeBodies[currentIndex];
   }
 }
+

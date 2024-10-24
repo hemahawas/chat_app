@@ -1,4 +1,10 @@
+
 import 'package:chat_app/features/home/presentaion/view/home_view.dart';
+
+import 'package:chat_app/core/themes/color_app.dart';
+import 'package:chat_app/features/auth/presentation/view/login_view.dart';
+import 'package:chat_app/features/splash_screen/splash_screen.dart';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -14,7 +20,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
+        colorScheme: ColorScheme.fromSeed(seedColor: ColorApp.primaryColor),
+        scaffoldBackgroundColor: ColorApp.appBackgroundColor,
         textTheme: GoogleFonts.interTextTheme(),
         useMaterial3: true,
       ),
