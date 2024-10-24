@@ -7,16 +7,13 @@ class SeparatingLine extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 1,
-      child: Flex(direction: Axis.vertical, children: [
-        Expanded(
-          child: OverflowBox(
-            maxWidth: MediaQuery.sizeOf(context).width,
-            child: Container(
-              color: Colors.grey,
-            ),
-          ),
+      child: OverflowBox(
+        maxHeight: 1,
+        maxWidth: MediaQuery.sizeOf(context).width,
+        child: Container(
+          color: Colors.grey,
         ),
-      ]),
+      ),
     );
   }
 }
