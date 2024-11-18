@@ -4,6 +4,7 @@ import 'package:chat_app/features/home/presentaion/view/widgets/home_bottom_navi
 import 'package:chat_app/features/home/presentaion/view/widgets/home_floating_action_button.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -17,8 +18,8 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const PreferredSize(
-          preferredSize: Size.fromHeight(80.0), child: HomeAppbar()),
+      appBar: PreferredSize(
+          preferredSize: Size.fromHeight(80.0.h), child: const HomeAppbar()),
       body: HomeBody(
         currentIndex: currentIndex,
       ),

@@ -1,7 +1,9 @@
 import 'package:chat_app/core/constants/app_strings.dart';
 import 'package:chat_app/core/constants/asset_images.dart';
+import 'package:chat_app/core/shared_widgets/responsive_sizedbox.dart';
 import 'package:chat_app/core/themes/color_app.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SplashBody extends StatelessWidget {
   const SplashBody({super.key});
@@ -16,25 +18,26 @@ class SplashBody extends StatelessWidget {
               color: ColorApp.appBackgroundColor,
               child: Image.asset(
                 AssetImages.splashImage,
-                height: 200,
-                width: 200,
+                height: 200.h,
+                width: 200.w,
               )),
-          const Text(
+          Text(
             AppStrings.appName,
             style: TextStyle(
               fontWeight: FontWeight.bold,
-              fontSize: 25,
+              fontSize: 25.sp,
             ),
           ),
-          const SizedBox(
-            height: 90,
+          ResponsiveSizedBox(
+            sizedBoxContext: context,
+            hasHeight: true,
           ),
-          const Text(
+          Text(
             AppStrings.splashTitle,
             style: TextStyle(
               fontWeight: FontWeight.w900,
               color: ColorApp.primaryColor,
-              fontSize: 17,
+              fontSize: 17.sp,
             ),
           ),
         ],

@@ -2,6 +2,7 @@ import 'package:chat_app/core/themes/color_app.dart';
 import 'package:chat_app/core/themes/styles.dart';
 import 'package:chat_app/features/home/presentaion/view/profile_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HomeAppbar extends StatelessWidget {
   const HomeAppbar({super.key});
@@ -10,33 +11,33 @@ class HomeAppbar extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppBar(
       title: Padding(
-        padding: const EdgeInsets.only(top: 20.0, left: 20.0),
+        padding: EdgeInsets.only(top: 20.0.h, left: 20.0.w),
         child: Text(
           'WhatsUp',
           style: Styles.textStyle24,
         ),
       ),
       bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(4.0),
+          preferredSize: Size.fromHeight(4.0.h),
           child: Container(
             color: Colors.grey.shade500,
-            height: 1.0,
+            height: 1.0.h,
           )),
       actions: [
         Padding(
-          padding: const EdgeInsets.only(top: 15.0),
+          padding: EdgeInsets.only(top: 10.0.h),
           child: IconButton(
               onPressed: () {},
-              icon: const Icon(
+              icon: Icon(
                 Icons.search,
-                size: 35.0,
+                size: 35.0.sp,
               )),
         ),
         Padding(
-            padding: const EdgeInsets.only(top: 15.0),
+            padding: EdgeInsets.only(top: 10.0.h),
             child: PopupMenuButton<String>(
                 offset: const Offset(0, kToolbarHeight),
-                iconSize: 35,
+                iconSize: 35.sp,
                 color: ColorApp.appBackgroundColor,
                 itemBuilder: (context) => [
                       const PopupMenuItem(

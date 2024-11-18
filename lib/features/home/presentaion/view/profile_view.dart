@@ -1,3 +1,4 @@
+import 'package:chat_app/core/shared_widgets/responsive_sizedbox.dart';
 import 'package:chat_app/core/themes/styles.dart';
 
 import 'package:chat_app/features/home/presentaion/view/widgets/profile_appbar.dart';
@@ -7,6 +8,7 @@ import 'package:chat_app/features/home/presentaion/view/widgets/profile_name_fie
 import 'package:chat_app/features/home/presentaion/view/widgets/profile_phone_field.dart';
 import 'package:chat_app/features/home/presentaion/view/widgets/separating_line.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
@@ -16,25 +18,28 @@ class ProfileView extends StatelessWidget {
     TextEditingController nameController = TextEditingController();
     TextEditingController phoneController = TextEditingController();
     return Scaffold(
-      appBar: const PreferredSize(
-          preferredSize: Size.fromHeight(80.0), child: ProfileAppbar()),
+      appBar: PreferredSize(
+          preferredSize: Size.fromHeight(80.0.h), child: const ProfileAppbar()),
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: EdgeInsets.all(20.0.sp),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(
-              height: 50,
+            ResponsiveSizedBox(
+              sizedBoxContext: context,
+              hasHeight: true,
             ),
             const Center(
               child: ProfileImageAndModify(),
             ),
-            const SizedBox(
-              height: 25,
+            ResponsiveSizedBox(
+              sizedBoxContext: context,
+              hasHeight: true,
             ),
             const SeparatingLine(),
-            const SizedBox(
-              height: 30,
+            ResponsiveSizedBox(
+              sizedBoxContext: context,
+              hasHeight: true,
             ),
             Text(
               'Name',
@@ -43,8 +48,9 @@ class ProfileView extends StatelessWidget {
               ),
             ),
             ProfileNameField(nameController: nameController),
-            const SizedBox(
-              height: 20,
+            ResponsiveSizedBox(
+              sizedBoxContext: context,
+              hasHeight: true,
             ),
             Text(
               'Phone',
@@ -53,8 +59,9 @@ class ProfileView extends StatelessWidget {
               ),
             ),
             ProfilePhoneField(phoneController: phoneController),
-            const SizedBox(
-              height: 30,
+            ResponsiveSizedBox(
+              sizedBoxContext: context,
+              hasHeight: true,
             ),
             const ProfileButton(),
           ],

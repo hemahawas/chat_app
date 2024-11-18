@@ -1,5 +1,6 @@
 import 'package:chat_app/core/themes/color_app.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 abstract class Styles {
   static TextStyle textStyle24 = const TextStyle(
@@ -7,9 +8,9 @@ abstract class Styles {
     fontWeight: FontWeight.w600,
   );
 
-  static TextStyle textStyle10 = const TextStyle(
+  static TextStyle textStyle10 = TextStyle(
     color: ColorApp.primaryColor,
-    fontSize: 15,
+    fontSize: 15.sp,
     fontWeight: FontWeight.w600,
   );
 }

@@ -1,3 +1,4 @@
+import 'package:chat_app/core/shared_widgets/responsive_sizedbox.dart';
 import 'package:chat_app/features/auth/presentation/view/widgets/email_field.dart';
 import 'package:chat_app/features/auth/presentation/view/widgets/logo_widget.dart';
 import 'package:chat_app/features/auth/presentation/view/widgets/name_field.dart';
@@ -8,6 +9,7 @@ import 'package:chat_app/features/auth/presentation/view/widgets/register_button
 import 'package:chat_app/features/auth/presentation/view/widgets/register_title.dart';
 import 'package:chat_app/features/home/presentaion/view/home_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class RegisterBody extends StatefulWidget {
   const RegisterBody({super.key});
@@ -31,30 +33,35 @@ class _RegisterBodyState extends State<RegisterBody> {
       key: key,
       child: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          padding: EdgeInsets.symmetric(horizontal: 20.0.w),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const LogoWidget(),
-              const SizedBox(
-                height: 20.0,
+              ResponsiveSizedBox(
+                sizedBoxContext: context,
+                hasHeight: true,
               ),
-              RegisterTitle(),
-              const SizedBox(
-                height: 20.0,
+              const RegisterTitle(),
+              ResponsiveSizedBox(
+                sizedBoxContext: context,
+                hasHeight: true,
               ),
               NameField(nameController: nameController),
-              const SizedBox(
-                height: 20.0,
+              ResponsiveSizedBox(
+                sizedBoxContext: context,
+                hasHeight: true,
               ),
               EmailField(emailController: emailController),
-              const SizedBox(
-                height: 20.0,
+              ResponsiveSizedBox(
+                sizedBoxContext: context,
+                hasHeight: true,
               ),
               PhoneField(phoneController: phoneController),
-              const SizedBox(
-                height: 20.0,
+              ResponsiveSizedBox(
+                sizedBoxContext: context,
+                hasHeight: true,
               ),
               PasswordField(
                   passwordController: passwordController,
@@ -62,22 +69,26 @@ class _RegisterBodyState extends State<RegisterBody> {
                     isPasswordVisible = !isPasswordVisible;
                   },
                   isPasswordVisible: isPasswordVisible),
-              const SizedBox(
-                height: 20.0,
+              ResponsiveSizedBox(
+                sizedBoxContext: context,
+                hasHeight: true,
               ),
               RegisterButton(
                   emailController: emailController,
                   passwordController: passwordController,
                   onSuccess: () {
                     if (key.currentState!.validate()) {
-                      Navigator.pushReplacement(context,
-                          MaterialPageRoute(builder: (context) => HomeView()));
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const HomeView()));
                     }
                   }),
-              const SizedBox(
-                height: 20.0,
+              ResponsiveSizedBox(
+                sizedBoxContext: context,
+                hasHeight: true,
               ),
-              NavigatingToLoginView(),
+              const NavigatingToLoginView(),
             ],
           ),
         ),

@@ -1,3 +1,4 @@
+import 'package:chat_app/core/shared_widgets/responsive_sizedbox.dart';
 import 'package:chat_app/features/auth/presentation/view/widgets/email_field.dart';
 import 'package:chat_app/features/auth/presentation/view/widgets/login_button.dart';
 import 'package:chat_app/features/auth/presentation/view/widgets/login_title.dart';
@@ -6,6 +7,7 @@ import 'package:chat_app/features/auth/presentation/view/widgets/navigating_to_r
 import 'package:chat_app/features/auth/presentation/view/widgets/password_field.dart';
 import 'package:chat_app/features/home/presentaion/view/home_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LoginBody extends StatefulWidget {
   const LoginBody({super.key});
@@ -29,20 +31,23 @@ class _LoginBodyState extends State<LoginBody> {
       key: formKey,
       child: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: EdgeInsets.all(20.0.w),
           child: Column(
             children: [
               const LogoWidget(),
-              const SizedBox(
-                height: 20.0,
+              ResponsiveSizedBox(
+                sizedBoxContext: context,
+                hasHeight: true,
               ),
               const LoginTitle(),
-              const SizedBox(
-                height: 20.0,
+              ResponsiveSizedBox(
+                sizedBoxContext: context,
+                hasHeight: true,
               ),
               EmailField(emailController: emailController),
-              const SizedBox(
-                height: 20.0,
+              ResponsiveSizedBox(
+                sizedBoxContext: context,
+                hasHeight: true,
               ),
               PasswordField(
                   passwordController: passwordController,
@@ -52,8 +57,9 @@ class _LoginBodyState extends State<LoginBody> {
                     });
                   },
                   isPasswordVisible: isPasswordVisible),
-              const SizedBox(
-                height: 20.0,
+              ResponsiveSizedBox(
+                sizedBoxContext: context,
+                hasHeight: true,
               ),
               LoginButton(
                 emailController: emailController,
@@ -67,8 +73,9 @@ class _LoginBodyState extends State<LoginBody> {
                   });
                 },
               ),
-              const SizedBox(
-                height: 20.0,
+              ResponsiveSizedBox(
+                sizedBoxContext: context,
+                hasHeight: true,
               ),
               NvigatingToRegisterView(),
             ],
