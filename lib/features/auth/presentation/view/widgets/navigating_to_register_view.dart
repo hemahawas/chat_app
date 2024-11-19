@@ -1,5 +1,5 @@
+import 'package:chat_app/core/config/routes.dart';
 import 'package:chat_app/core/themes/styles.dart';
-import 'package:chat_app/features/auth/presentation/view/register_view.dart';
 import 'package:flutter/material.dart';
 
 class NvigatingToRegisterView extends StatelessWidget {
@@ -16,8 +16,7 @@ class NvigatingToRegisterView extends StatelessWidget {
         ),
         TextButton(
           onPressed: () {
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => RegisterView()));
+            Navigator.pushReplacementNamed(context, Routes.registerRoute);
           },
           child: Text(
             'Register here',

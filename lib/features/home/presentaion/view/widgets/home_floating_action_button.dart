@@ -9,7 +9,7 @@ class HomeFloatingActionButton extends StatelessWidget {
     return FloatingActionButton(
       backgroundColor: ColorApp.primaryColor,
       onPressed: () {},
-      child: Icon(
+      child: const Icon(
         Icons.message,
         color: ColorApp.appBackgroundColor,
       ),

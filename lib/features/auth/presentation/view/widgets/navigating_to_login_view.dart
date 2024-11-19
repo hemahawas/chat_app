@@ -1,5 +1,5 @@
+import 'package:chat_app/core/config/routes.dart';
 import 'package:chat_app/core/themes/styles.dart';
-import 'package:chat_app/features/auth/presentation/view/login_view.dart';
 import 'package:flutter/material.dart';
 
 class NavigatingToLoginView extends StatelessWidget {
@@ -16,8 +16,7 @@ class NavigatingToLoginView extends StatelessWidget {
         ),
         TextButton(
           onPressed: () {
-            Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (context) => LoginView()));
+            Navigator.pushReplacementNamed(context, Routes.loginRoute);
           },
           child: Text(
             'Login here',

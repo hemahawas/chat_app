@@ -18,7 +18,8 @@ class CallItem extends StatelessWidget {
         ),
         ResponsiveSizedBox(
           sizedBoxContext: context,
-          hasHeight: true,
+          hasWidth: true,
+          widthFraction: 20,
         ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -31,6 +32,7 @@ class CallItem extends StatelessWidget {
             ResponsiveSizedBox(
               sizedBoxContext: context,
               hasHeight: true,
+              heightFraction: 70,
             ),
             Text(
               'Today, 10:30 PM',

@@ -23,6 +23,7 @@ class UserStatusItem extends StatelessWidget {
         ResponsiveSizedBox(
           sizedBoxContext: context,
           hasWidth: true,
+          widthFraction: 20,
         ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -35,6 +36,7 @@ class UserStatusItem extends StatelessWidget {
             ResponsiveSizedBox(
               sizedBoxContext: context,
               hasHeight: true,
+              heightFraction: 70,
             ),
             Text(
               'Tap to add status update',

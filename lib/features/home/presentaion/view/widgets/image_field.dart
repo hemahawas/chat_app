@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ImageField extends StatelessWidget {
   final String image;
@@ -12,15 +13,19 @@ class ImageField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 60,
-      height: 60,
-      clipBehavior: Clip.antiAliasWithSaveLayer,
+      width: 60.h,
+      height: 60.w,
+      clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(30),
-        border: Border.all(color: borderColor, width: 3),
+        borderRadius: BorderRadius.circular(30.h),
+        border: Border.all(color: borderColor, width: 3.w),
       ),
-      child: CircleAvatar(
-        backgroundImage: AssetImage(image),
+      child: ClipOval(
+        clipBehavior: Clip.antiAlias,
+        child: Image.asset(
+          image,
+          fit: BoxFit.cover,
+        ),
       ),
     );
   }

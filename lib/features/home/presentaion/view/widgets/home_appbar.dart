@@ -1,6 +1,8 @@
+import 'package:chat_app/core/config/routes.dart';
 import 'package:chat_app/core/themes/color_app.dart';
 import 'package:chat_app/core/themes/styles.dart';
 import 'package:chat_app/features/home/presentaion/view/profile_view.dart';
+import 'package:chat_app/features/home/presentaion/view/settings_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -50,6 +52,12 @@ class HomeAppbar extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => const ProfileView()));
+                        },
+                      ),
+                      PopupMenuItem(
+                        child: const Text('Settings'),
+                        onTap: () {
+                          Navigator.pushNamed(context, Routes.settingsRoute);
                         },
                       ),
                     ]))

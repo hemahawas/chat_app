@@ -20,6 +20,7 @@ class RecentStatusItem extends StatelessWidget {
         ResponsiveSizedBox(
           sizedBoxContext: context,
           hasWidth: true,
+          widthFraction: 20,
         ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -32,6 +33,7 @@ class RecentStatusItem extends StatelessWidget {
             ResponsiveSizedBox(
               sizedBoxContext: context,
               hasHeight: true,
+              heightFraction: 70,
             ),
             Text(
               'Today, 12:00 PM',

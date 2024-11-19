@@ -1,8 +1,10 @@
 import 'package:chat_app/core/constants/asset_images.dart';
+import 'package:chat_app/core/shared_widgets/responsive_sizedbox.dart';
 import 'package:chat_app/core/themes/color_app.dart';
 import 'package:chat_app/core/themes/styles.dart';
 import 'package:chat_app/features/home/presentaion/view/widgets/image_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ChatItem extends StatelessWidget {
   const ChatItem({super.key});
@@ -15,8 +17,10 @@ class ChatItem extends StatelessWidget {
           image: AssetImages.userImage,
           borderColor: Colors.white10,
         ),
-        const SizedBox(
-          width: 20.0,
+        ResponsiveSizedBox(
+          sizedBoxContext: context,
+          hasWidth: true,
+          widthFraction: 20,
         ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -24,15 +28,17 @@ class ChatItem extends StatelessWidget {
             Text(
               'User name',
               style: Styles.textStyle10
-                  .copyWith(fontSize: 18, color: Colors.black),
+                  .copyWith(fontSize: 18.sp, color: Colors.black),
             ),
-            const SizedBox(
-              height: 10.0,
+            ResponsiveSizedBox(
+              sizedBoxContext: context,
+              hasHeight: true,
+              heightFraction: 70,
             ),
             Text(
               '# last message',
-              style:
-                  Styles.textStyle10.copyWith(fontSize: 16, color: Colors.grey),
+              style: Styles.textStyle10
+                  .copyWith(fontSize: 16.sp, color: Colors.grey),
             ),
           ],
         ),
@@ -44,15 +50,17 @@ class ChatItem extends StatelessWidget {
               '12:00 PM',
               style: Styles.textStyle10.copyWith(color: Colors.black87),
             ),
-            const SizedBox(
-              height: 10.0,
+            ResponsiveSizedBox(
+              sizedBoxContext: context,
+              hasHeight: true,
+              heightFraction: 70,
             ),
             Container(
               alignment: Alignment.center,
-              height: 20.0,
-              width: 20.0,
+              height: 20.0.h,
+              width: 20.0.w,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(50.0),
+                  borderRadius: BorderRadius.circular(50.0.sp),
                   color: ColorApp.primaryColor),
               child: const Text(
                 '2',
