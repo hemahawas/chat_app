@@ -1,7 +1,6 @@
-
-import 'package:chat_app/features/home/presentaion/view/widgets/calls_body.dart';
-import 'package:chat_app/features/home/presentaion/view/widgets/chat_body.dart';
-import 'package:chat_app/features/home/presentaion/view/widgets/status_body.dart';
+import 'package:chat_app/features/home/presentation/view/widgets/calls_body.dart';
+import 'package:chat_app/features/home/presentation/view/widgets/chat_body.dart';
+import 'package:chat_app/features/home/presentation/view/widgets/status_body.dart';
 import 'package:flutter/material.dart';
 
 class HomeBody extends StatelessWidget {
@@ -18,4 +17,3 @@ class HomeBody extends StatelessWidget {
     return homeBodies[currentIndex];
   }
 }
-

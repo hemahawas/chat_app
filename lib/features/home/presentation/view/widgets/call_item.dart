@@ -1,12 +1,12 @@
 import 'package:chat_app/core/constants/asset_images.dart';
 import 'package:chat_app/core/shared_widgets/responsive_sizedbox.dart';
 import 'package:chat_app/core/themes/styles.dart';
-import 'package:chat_app/features/home/presentaion/view/widgets/image_field.dart';
+import 'package:chat_app/features/home/presentation/view/widgets/image_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ViewedStatusItem extends StatelessWidget {
-  const ViewedStatusItem({super.key});
+class CallItem extends StatelessWidget {
+  const CallItem({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +14,7 @@ class ViewedStatusItem extends StatelessWidget {
       children: [
         const ImageField(
           image: AssetImages.userImage,
-          borderColor: Colors.grey,
+          borderColor: Colors.white10,
         ),
         ResponsiveSizedBox(
           sizedBoxContext: context,
@@ -35,12 +35,19 @@ class ViewedStatusItem extends StatelessWidget {
               heightFraction: 70,
             ),
             Text(
-              'Today, 12:00 PM',
+              'Today, 10:30 PM',
               style: Styles.textStyle10
                   .copyWith(fontSize: 16.sp, color: Colors.grey),
             ),
           ],
-        )
+        ),
+        const Spacer(),
+        IconButton(
+            onPressed: () {},
+            icon: Icon(
+              Icons.call,
+              size: 30.sp,
+            ))
       ],
     );
   }

@@ -14,7 +14,7 @@ class LogoutButton extends StatelessWidget {
     return BlocConsumer<AuthViewModel, AuthStates>(
       listener: (context, state) {
         if (state is LogoutSuccessState) {
-          showToast(msg: 'Login Successfully');
+          showToast(msg: 'Logout Successfully');
         }
       },
       builder: (context, state) => Center(

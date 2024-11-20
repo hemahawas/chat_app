@@ -1,7 +1,7 @@
-import 'package:chat_app/features/home/presentaion/view/widgets/home_appbar.dart';
-import 'package:chat_app/features/home/presentaion/view/widgets/home_body.dart';
-import 'package:chat_app/features/home/presentaion/view/widgets/home_bottom_navigation_bar.dart';
-import 'package:chat_app/features/home/presentaion/view/widgets/home_floating_action_button.dart';
+import 'package:chat_app/features/home/presentation/view/widgets/home_appbar.dart';
+import 'package:chat_app/features/home/presentation/view/widgets/home_body.dart';
+import 'package:chat_app/features/home/presentation/view/widgets/home_bottom_navigation_bar.dart';
+import 'package:chat_app/features/home/presentation/view/widgets/home_floating_action_button.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

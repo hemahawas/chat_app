@@ -33,8 +33,11 @@ class RegisterBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<AuthViewModel, AuthStates>(
       listener: (context, state) {
-        if (state is RegisterSuccessState) {
-          showToast(msg: 'Registered Successfully');
+        switch (state.runtimeType) {
+          case RegisterSuccessState:
+            showToast(msg: 'Register Successfully');
+          case RegisterErrorState:
+            showToast(msg: (state as RegisterErrorState).message);
         }
       },
       builder: (context, state) => Form(
@@ -96,7 +99,7 @@ class RegisterBody extends StatelessWidget {
                           await BlocProvider.of<AuthViewModel>(context)
                               .register(userModel, passwordController.text);
                           Navigator.pushReplacementNamed(
-                              context, Routes.loginRoute);
+                              context, Routes.homeRoute);
                         }),
                 ResponsiveSizedBox(
                   sizedBoxContext: context,

@@ -13,7 +13,7 @@ class AuthViewModel extends Cubit<AuthStates> {
     return await authRepository.logIn(email, password).then((_) {
       emit(LoginSuccessState());
     }).catchError((error) {
-      emit(LoginErrorState());
+      emit(LoginErrorState(message: error.toString()));
     });
   }
 
@@ -22,7 +22,7 @@ class AuthViewModel extends Cubit<AuthStates> {
     return await authRepository.logOut().then((_) {
       emit(LogoutSuccessState());
     }).catchError((error) {
-      emit(LoginErrorState());
+      emit(LoginErrorState(message: error.toString()));
     });
   }
 
@@ -31,7 +31,7 @@ class AuthViewModel extends Cubit<AuthStates> {
     return await authRepository.register(model, password).then((_) {
       emit(RegisterSuccessState());
     }).catchError((error) {
-      emit(RegisterErrorState());
+      emit(RegisterErrorState(message: error.toString()));
     });
   }
 

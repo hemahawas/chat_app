@@ -2,12 +2,13 @@ import 'package:chat_app/core/constants/app_strings.dart';
 import 'package:chat_app/features/auth/presentation/view/login_view.dart';
 import 'package:chat_app/features/auth/presentation/view/register_view.dart';
 import 'package:chat_app/features/auth/presentation/view_model/cubit.dart';
-import 'package:chat_app/features/home/presentaion/view/home_view.dart';
-import 'package:chat_app/features/home/presentaion/view/settings_view.dart';
+import 'package:chat_app/features/home/presentation/view/home_view.dart';
+import 'package:chat_app/features/home/presentation/view/settings_view.dart';
 import 'package:chat_app/features/splash_screen/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:chat_app/dependency_injection.dart' as di;
+import 'package:chat_app/features/auth/presentation/view_model/auth_injection_container.dart'
+    as auth_di;
 
 class Routes {
   static const String initialRoute = '/';
@@ -28,13 +29,13 @@ class AppRoutes {
       case Routes.loginRoute:
         return MaterialPageRoute(builder: ((context) {
           return BlocProvider(
-              create: ((context) => di.sl<AuthViewModel>()),
+              create: ((context) => auth_di.sl<AuthViewModel>()),
               child: const LoginView());
         }));
       case Routes.registerRoute:
         return MaterialPageRoute(builder: ((context) {
           return BlocProvider(
-              create: ((context) => di.sl<AuthViewModel>()),
+              create: ((context) => auth_di.sl<AuthViewModel>()),
               child: const RegisterView());
         }));
       case Routes.homeRoute:
@@ -44,7 +45,7 @@ class AppRoutes {
       case Routes.settingsRoute:
         return MaterialPageRoute(builder: ((context) {
           return BlocProvider(
-            create: ((context) => di.sl<AuthViewModel>()),
+            create: ((context) => auth_di.sl<AuthViewModel>()),
             child: const SettingsView(),
           );
         }));

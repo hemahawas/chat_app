@@ -1,6 +1,6 @@
 import 'package:chat_app/core/shared_widgets/responsive_sizedbox.dart';
 import 'package:chat_app/core/themes/styles.dart';
-import 'package:chat_app/features/home/presentaion/view/widgets/call_item.dart';
+import 'package:chat_app/features/home/presentation/view/widgets/call_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

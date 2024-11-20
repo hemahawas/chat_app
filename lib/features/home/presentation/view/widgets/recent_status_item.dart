@@ -1,12 +1,13 @@
 import 'package:chat_app/core/constants/asset_images.dart';
 import 'package:chat_app/core/shared_widgets/responsive_sizedbox.dart';
+import 'package:chat_app/core/themes/color_app.dart';
 import 'package:chat_app/core/themes/styles.dart';
-import 'package:chat_app/features/home/presentaion/view/widgets/image_field.dart';
+import 'package:chat_app/features/home/presentation/view/widgets/image_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class CallItem extends StatelessWidget {
-  const CallItem({super.key});
+class RecentStatusItem extends StatelessWidget {
+  const RecentStatusItem({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,7 @@ class CallItem extends StatelessWidget {
       children: [
         const ImageField(
           image: AssetImages.userImage,
-          borderColor: Colors.white10,
+          borderColor: ColorApp.primaryColor,
         ),
         ResponsiveSizedBox(
           sizedBoxContext: context,
@@ -35,19 +36,12 @@ class CallItem extends StatelessWidget {
               heightFraction: 70,
             ),
             Text(
-              'Today, 10:30 PM',
+              'Today, 12:00 PM',
               style: Styles.textStyle10
                   .copyWith(fontSize: 16.sp, color: Colors.grey),
             ),
           ],
-        ),
-        const Spacer(),
-        IconButton(
-            onPressed: () {},
-            icon: Icon(
-              Icons.call,
-              size: 30.sp,
-            ))
+        )
       ],
     );
   }

@@ -28,6 +28,9 @@ class LoginBody extends StatelessWidget {
       listener: (context, state) {
         if (state is LoginSuccessState) {
           showToast(msg: 'Login Successfully');
+          Navigator.pushReplacementNamed(context, Routes.homeRoute);
+        } else if (state is LoginErrorState) {
+          showToast(msg: state.message);
         }
       },
       builder: (context, state) => SingleChildScrollView(
@@ -67,7 +70,6 @@ class LoginBody extends StatelessWidget {
                 onSuccess: () async {
                   await BlocProvider.of<AuthViewModel>(context)
                       .logIn(emailController.text, passwordController.text);
-                  Navigator.pushReplacementNamed(context, Routes.homeRoute);
                 },
               ),
               ResponsiveSizedBox(

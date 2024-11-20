@@ -1,12 +1,13 @@
+import 'package:chat_app/core/constants/asset_images.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ImageField extends StatelessWidget {
-  final String image;
+  final String? image;
   final Color borderColor;
   const ImageField({
     super.key,
-    required this.image,
+    this.image,
     required this.borderColor,
   });
 
@@ -22,10 +23,15 @@ class ImageField extends StatelessWidget {
       ),
       child: ClipOval(
         clipBehavior: Clip.antiAlias,
-        child: Image.asset(
-          image,
-          fit: BoxFit.cover,
-        ),
+        child: image != null
+            ? Image.network(
+                image!,
+                fit: BoxFit.cover,
+              )
+            : Image.asset(
+                AssetImages.userImage,
+                fit: BoxFit.cover,
+              ),
       ),
     );
   }

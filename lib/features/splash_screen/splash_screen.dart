@@ -2,7 +2,8 @@ import 'package:chat_app/core/config/routes.dart';
 import 'package:chat_app/features/splash_screen/widgets/splash_body.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:chat_app/dependency_injection.dart' as di;
+import 'package:chat_app/features/auth/presentation/view_model/auth_injection_container.dart'
+    as di;
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
