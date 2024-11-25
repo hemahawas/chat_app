@@ -1,20 +1,22 @@
-import 'package:chat_app/core/constants/asset_images.dart';
 import 'package:chat_app/core/shared_widgets/responsive_sizedbox.dart';
 import 'package:chat_app/core/themes/color_app.dart';
 import 'package:chat_app/core/themes/styles.dart';
+import 'package:chat_app/features/home/data/model/chat_model.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/image_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ChatItem extends StatelessWidget {
-  const ChatItem({super.key});
+  final ChatModel chatModel;
+  const ChatItem({super.key, required this.chatModel});
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        const ImageField(
-          image: AssetImages.userImage,
+        ImageField(
+          // user image
+          image: chatModel.userModel!.image,
           borderColor: Colors.white10,
         ),
         ResponsiveSizedBox(
@@ -26,7 +28,8 @@ class ChatItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'User name',
+              // user name
+              chatModel.userModel!.name!,
               style: Styles.textStyle10
                   .copyWith(fontSize: 18.sp, color: Colors.black),
             ),
@@ -36,7 +39,8 @@ class ChatItem extends StatelessWidget {
               heightFraction: 70,
             ),
             Text(
-              '# last message',
+              // chat last message
+              chatModel.lastMessage?.body ?? '',
               style: Styles.textStyle10
                   .copyWith(fontSize: 16.sp, color: Colors.grey),
             ),
@@ -47,7 +51,7 @@ class ChatItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Text(
-              '12:00 PM',
+              chatModel.lastMessage?.sindingTime.toString() ?? '',
               style: Styles.textStyle10.copyWith(color: Colors.black87),
             ),
             ResponsiveSizedBox(
@@ -63,6 +67,7 @@ class ChatItem extends StatelessWidget {
                   borderRadius: BorderRadius.circular(50.0.sp),
                   color: ColorApp.primaryColor),
               child: const Text(
+                // Number of new messages
                 '2',
                 style: TextStyle(color: ColorApp.appBackgroundColor),
               ),

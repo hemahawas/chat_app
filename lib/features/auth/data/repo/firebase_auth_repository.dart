@@ -1,5 +1,6 @@
 import 'package:chat_app/core/utils/user_model.dart';
 import 'package:chat_app/features/auth/data/repo/auth_repository.dart';
+import 'package:chat_app/features/home/data/model/chat_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -32,6 +33,13 @@ class FirebaseAuthRepository extends AuthRepository {
           .collection('users')
           .doc(model.uId!)
           .set(model.toMap());
+
+      ChatModel chatModel =
+          ChatModel(userModel: model, lastMessage: null, messages: null);
+      await firebaseFirestore
+          .collection('chats')
+          .doc(model.uId!)
+          .set(chatModel.toMap());
     });
   }
 }

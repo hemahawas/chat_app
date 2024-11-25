@@ -48,10 +48,7 @@ class HomeAppbar extends StatelessWidget {
                       PopupMenuItem(
                         child: const Text('Profile'),
                         onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const ProfileView()));
+                          Navigator.pushNamed(context, Routes.profileRoute);
                         },
                       ),
                       PopupMenuItem(
