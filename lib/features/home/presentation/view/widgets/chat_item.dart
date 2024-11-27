@@ -40,7 +40,7 @@ class ChatItem extends StatelessWidget {
             ),
             Text(
               // chat last message
-              chatModel.lastMessage?.body ?? '',
+              chatModel.lastMessage?.body ?? 'Hey There. I\'m using chat app ',
               style: Styles.textStyle10
                   .copyWith(fontSize: 16.sp, color: Colors.grey),
             ),

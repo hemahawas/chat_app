@@ -46,7 +46,9 @@ class AppRoutes {
       case Routes.homeRoute:
         return MaterialPageRoute(builder: ((context) {
           return BlocProvider(
-            create: ((context) => home_di.sl<HomeViewModel>()..getChats()),
+            create: ((context) => home_di.sl<HomeViewModel>()
+              ..getChats()
+              ..getCurrentUser()),
             child: const HomeView(),
           );
         }));

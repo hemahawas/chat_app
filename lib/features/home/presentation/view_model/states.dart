@@ -9,6 +9,12 @@ class GetChatsFromFirebaseLoadingState extends HomeStates {}
 
 class GetChatsFromFirebaseErrorState extends HomeStates {}
 
+class GetChatsFromLocalSuccessState extends HomeStates {}
+
+class GetChatsFromLocalLoadingState extends HomeStates {}
+
+class GetChatsFromLocalErrorState extends HomeStates {}
+
 class GetUserInfoSuccessState extends HomeStates {}
 
 class GetUserInfoLoadingState extends HomeStates {}

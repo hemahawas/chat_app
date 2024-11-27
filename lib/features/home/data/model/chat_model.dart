@@ -1,7 +1,9 @@
-import 'package:chat_app/core/constants/hive_helper.dart';
+import 'package:chat_app/core/utils/hive_helper.dart';
 import 'package:chat_app/core/utils/user_model.dart';
 import 'package:chat_app/features/home/data/model/message_model.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
+part 'chat_model.g.dart';
 
 @HiveType(typeId: HiveHelper.chatType)
 class ChatModel {
