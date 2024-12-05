@@ -1,3 +1,4 @@
+import 'package:chat_app/core/constants/app_sizes.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/home_appbar.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/home_body.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/home_bottom_navigation_bar.dart';
@@ -19,7 +20,8 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-          preferredSize: Size.fromHeight(80.0.h), child: const HomeAppbar()),
+          preferredSize: Size.fromHeight(AppSizes.toolBarHieght.h),
+          child: const HomeAppbar()),
       body: HomeBody(
         currentIndex: currentIndex,
       ),

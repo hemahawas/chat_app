@@ -6,6 +6,7 @@ import 'package:chat_app/features/home/presentation/view/home_view.dart';
 import 'package:chat_app/features/home/presentation/view/profile_view.dart';
 import 'package:chat_app/features/home/presentation/view/settings_view.dart';
 import 'package:chat_app/features/home/presentation/view_model/cubit.dart';
+import 'package:chat_app/features/messaging/presentation/view/messaging_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chat_app/features/auth/presentation/view_model/auth_injection_container.dart'
@@ -21,6 +22,7 @@ class Routes {
   static const String homeRoute = '/homeRoute';
   static const String settingsRoute = '/settingsRoute';
   static const String profileRoute = '/profileRoute';
+  static const String messagingRoute = '/messagingRoute';
 }
 
 class AppRoutes {
@@ -67,6 +69,10 @@ class AppRoutes {
             child: const SettingsView(),
           );
         }));
+      case Routes.messagingRoute:
+        return MaterialPageRoute(builder: (context) {
+          return const MessagingView();
+        });
       default:
         return undefinedRoute();
     }

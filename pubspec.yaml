@@ -47,6 +47,7 @@ dependencies:
   google_fonts: ^6.2.1
   hive: null
   hive_flutter: ^1.1.0
+  image_picker: ^1.1.2
   internet_connection_checker: ^1.0.0+1
   widgetbook: ^3.10.0
   widgetbook_annotation: ^3.2.0
@@ -71,9 +72,9 @@ flutter:
   uses-material-design: true
   # To add assets to your application, add an assets section, like this:
   assets:
-
     - assets/images/splash.png
     - assets/images/user_image.png
+    - assets/images/messaging_background.png
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

@@ -1,3 +1,4 @@
+import 'package:chat_app/core/constants/app_sizes.dart';
 import 'package:chat_app/core/shared_widgets/responsive_sizedbox.dart';
 import 'package:chat_app/core/themes/styles.dart';
 
@@ -31,7 +32,7 @@ class ProfileView extends StatelessWidget {
 
         return Scaffold(
           appBar: PreferredSize(
-              preferredSize: Size.fromHeight(80.0.h),
+              preferredSize: Size.fromHeight(AppSizes.toolBarHieght.h),
               child: const ProfileAppbar()),
           body: Padding(
             padding: EdgeInsets.all(20.0.sp),

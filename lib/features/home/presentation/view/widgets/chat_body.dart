@@ -18,17 +18,15 @@ class ChatBody extends StatelessWidget {
         return ConditionalBuilder(
           condition: BlocProvider.of<HomeViewModel>(context).chats.isNotEmpty,
           fallback: (context) => Center(child: CircularProgressIndicator()),
-          builder: (context) => Padding(
-            padding: EdgeInsets.all(10.0.sp),
-            child: ListView.separated(
-              itemBuilder: (context, index) => ChatItem(
-                  chatModel:
-                      BlocProvider.of<HomeViewModel>(context).chats[index]),
-              itemCount: BlocProvider.of<HomeViewModel>(context).chats.length,
-              separatorBuilder: (context, index) => ResponsiveSizedBox(
-                sizedBoxContext: context,
-                hasHeight: true,
-              ),
+          builder: (context) => ListView.separated(
+            itemBuilder: (context, index) => ChatItem(
+                chatModel:
+                    BlocProvider.of<HomeViewModel>(context).chats[index]),
+            itemCount: BlocProvider.of<HomeViewModel>(context).chats.length,
+            separatorBuilder: (context, index) => ResponsiveSizedBox(
+              sizedBoxContext: context,
+              hasHeight: true,
+              heightFraction: 50,
             ),
           ),
         );
