@@ -1,16 +1,14 @@
-import 'package:chat_app/core/utils/network_info.dart';
 import 'package:chat_app/core/utils/user_model.dart';
 import 'package:chat_app/features/home/data/model/chat_model.dart';
-import 'package:chat_app/features/home/data/repo/home_repository.dart';
+import 'package:chat_app/features/home/data/repo/home_remote_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 
-class FirebaseHomeRepository extends HomeRepository {
+class HomeRemoteFirebaseRepository extends HomeRemoteRepository {
   final FirebaseAuth firebaseAuth;
   final FirebaseFirestore firebaseFirestore;
 
-  FirebaseHomeRepository(
+  HomeRemoteFirebaseRepository(
       {required this.firebaseAuth, required this.firebaseFirestore});
   @override
   Future<List<ChatModel>> getChats() async {

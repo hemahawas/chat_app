@@ -25,17 +25,20 @@ class FirebaseAuthRepository extends AuthRepository {
   // Create user
   @override
   Future<void> register(UserModel model, String password) async {
+    // Create user
     await firebaseAuth
         .createUserWithEmailAndPassword(email: model.email!, password: password)
         .then((userCredential) async {
       model.uId = userCredential.user!.uid;
+      // Add user in firestore
       await firebaseFirestore
           .collection('users')
           .doc(model.uId!)
           .set(model.toMap());
-
+      // Create new Chat for new user
       ChatModel chatModel =
           ChatModel(userModel: model, lastMessage: null, messages: null);
+      // Add the chat to firestore
       await firebaseFirestore
           .collection('chats')
           .doc(model.uId!)

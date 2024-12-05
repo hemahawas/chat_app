@@ -1,9 +1,9 @@
 import 'package:chat_app/core/utils/network_info.dart';
 import 'package:chat_app/core/utils/user_model.dart';
 import 'package:chat_app/features/home/data/model/chat_model.dart';
-import 'package:chat_app/features/home/data/repo/firebase_home_repository.dart';
-import 'package:chat_app/features/home/data/repo/home_repository.dart';
-import 'package:chat_app/features/home/data/repo/local_home_repository.dart';
+import 'package:chat_app/features/home/data/repo/home_remote_firebase_repository.dart';
+import 'package:chat_app/features/home/data/repo/home_remote_repository.dart';
+import 'package:chat_app/features/home/data/repo/home_local_hive_repository.dart';
 import 'package:chat_app/features/home/presentation/view_model/states.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,8 +15,8 @@ class HomeViewModel extends Cubit<HomeStates> {
       required this.networkInfo})
       : super(InitialHomeStates());
 
-  final FirebaseHomeRepository firebaseHomeRepository;
-  final LocalHomeRepository localHomeRepository;
+  final HomeRemoteFirebaseRepository firebaseHomeRepository;
+  final HomeLocalHiveRepository localHomeRepository;
   final NetworkInfo networkInfo;
 
   List<ChatModel> chats = [];

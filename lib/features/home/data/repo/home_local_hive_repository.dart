@@ -1,10 +1,11 @@
 import 'package:chat_app/core/utils/network_info.dart';
 import 'package:chat_app/core/utils/user_model.dart';
 import 'package:chat_app/features/home/data/model/chat_model.dart';
-import 'package:chat_app/features/home/data/repo/home_repository.dart';
+import 'package:chat_app/features/home/data/repo/home_local_reopsitory.dart';
+import 'package:chat_app/features/home/data/repo/home_remote_repository.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-class LocalHomeRepository extends HomeRepository {
+class HomeLocalHiveRepository extends HomeLocalReopsitory {
   @override
   Future<List<ChatModel>> getChats() async {
     List<ChatModel> chats = [];
@@ -27,6 +28,7 @@ class LocalHomeRepository extends HomeRepository {
     return user;
   }
 
+  @override
   Future<void> putChats(chats) async {
     var chatBox = await Hive.openBox<ChatModel>('chatBox');
     for (ChatModel chat in chats) {
@@ -36,6 +38,7 @@ class LocalHomeRepository extends HomeRepository {
     }
   }
 
+  @override
   Future<void> putUserInfo(UserModel user) async {
     var userBox = await Hive.openBox<UserModel>('userBox');
     if (!userBox.containsKey(user.uId)) {
