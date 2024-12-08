@@ -26,7 +26,7 @@ class CallItem extends StatelessWidget {
           children: [
             Text(
               'User name',
-              style: Styles.textStyle10
+              style: Styles.textStyle15
                   .copyWith(fontSize: 18.sp, color: Colors.black87),
             ),
             ResponsiveSizedBox(
@@ -36,7 +36,7 @@ class CallItem extends StatelessWidget {
             ),
             Text(
               'Today, 10:30 PM',
-              style: Styles.textStyle10
+              style: Styles.textStyle15
                   .copyWith(fontSize: 16.sp, color: Colors.grey),
             ),
           ],

@@ -1,4 +1,5 @@
 import 'package:chat_app/core/utils/hive_helper.dart';
+import 'package:chat_app/features/home/data/model/status_model.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 part 'user_model.g.dart';
@@ -18,6 +19,8 @@ class UserModel {
 
   bool? isEmailVerified;
 
+  StatusModel? status;
+
   UserModel({
     this.email,
     this.name,
@@ -25,6 +28,7 @@ class UserModel {
     this.uId,
     this.image,
     this.isEmailVerified,
+    this.status,
   });
 
   UserModel.fromJson(Map<String, dynamic>? json) {

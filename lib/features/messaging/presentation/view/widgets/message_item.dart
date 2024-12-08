@@ -45,7 +45,7 @@ class MessageItem extends StatelessWidget {
                 alignment: Alignment.bottomRight,
                 child: Text(
                   '15:03',
-                  style: Styles.textStyle10
+                  style: Styles.textStyle15
                       .copyWith(fontSize: 12.0, color: Colors.grey),
                 ),
               )

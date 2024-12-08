@@ -39,7 +39,7 @@ class ChatItem extends StatelessWidget {
                   Text(
                     // user name
                     chatModel.userModel!.name!,
-                    style: Styles.textStyle10
+                    style: Styles.textStyle15
                         .copyWith(fontSize: 18.sp, color: Colors.black),
                   ),
                   ResponsiveSizedBox(
@@ -54,7 +54,7 @@ class ChatItem extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     softWrap: true,
-                    style: Styles.textStyle10.copyWith(color: Colors.grey),
+                    style: Styles.textStyle15.copyWith(color: Colors.grey),
                   ),
                 ],
               ),
@@ -65,7 +65,7 @@ class ChatItem extends StatelessWidget {
             children: [
               Text(
                 chatModel.lastMessage?.sindingTime.toString() ?? '',
-                style: Styles.textStyle10.copyWith(color: Colors.black87),
+                style: Styles.textStyle15.copyWith(color: Colors.black87),
               ),
               ResponsiveSizedBox(
                 sizedBoxContext: context,

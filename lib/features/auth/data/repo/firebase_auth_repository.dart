@@ -22,7 +22,7 @@ class FirebaseAuthRepository extends AuthRepository {
     await firebaseAuth.signOut();
   }
 
-  // Create user
+  // Create user with its features
   @override
   Future<void> register(UserModel model, String password) async {
     // Create user
@@ -30,19 +30,25 @@ class FirebaseAuthRepository extends AuthRepository {
         .createUserWithEmailAndPassword(email: model.email!, password: password)
         .then((userCredential) async {
       model.uId = userCredential.user!.uid;
-      // Add user in firestore
-      await firebaseFirestore
-          .collection('users')
-          .doc(model.uId!)
-          .set(model.toMap());
-      // Create new Chat for new user
-      ChatModel chatModel =
-          ChatModel(userModel: model, lastMessage: null, messages: null);
-      // Add the chat to firestore
-      await firebaseFirestore
-          .collection('chats')
-          .doc(model.uId!)
-          .set(chatModel.toMap());
+      _createUserFeatures(model);
     });
+  }
+
+  // Create user features
+  // Chat - Status - Call
+  _createUserFeatures(model) async {
+    // Add user in firestore
+    await firebaseFirestore
+        .collection('users')
+        .doc(model.uId!)
+        .set(model.toMap());
+    // Create new Chat for new user
+    ChatModel chatModel =
+        ChatModel(userModel: model, lastMessage: null, messages: null);
+    // Add the chat to firestore
+    await firebaseFirestore
+        .collection('chats')
+        .doc(model.uId!)
+        .set(chatModel.toMap());
   }
 }

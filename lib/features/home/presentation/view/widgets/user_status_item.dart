@@ -1,9 +1,12 @@
 import 'package:chat_app/core/constants/asset_images.dart';
 import 'package:chat_app/core/shared_widgets/responsive_sizedbox.dart';
 import 'package:chat_app/core/themes/styles.dart';
+import 'package:chat_app/core/utils/user_model.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/add_status_icon.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/image_field.dart';
+import 'package:chat_app/features/home/presentation/view_model/cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class UserStatusItem extends StatelessWidget {
@@ -11,11 +14,13 @@ class UserStatusItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    UserModel user = BlocProvider.of<HomeViewModel>(context).currentUser!;
+
     return Row(
       children: [
-        const Stack(alignment: Alignment.bottomRight, children: [
+        Stack(alignment: Alignment.bottomRight, children: [
           ImageField(
-            image: AssetImages.userImage,
+            image: user.image,
             borderColor: Colors.white10,
           ),
           AddStatusIcon(),
@@ -30,7 +35,7 @@ class UserStatusItem extends StatelessWidget {
           children: [
             Text(
               'My status',
-              style: Styles.textStyle10
+              style: Styles.textStyle15
                   .copyWith(fontSize: 18.sp, color: Colors.black87),
             ),
             ResponsiveSizedBox(
@@ -40,7 +45,7 @@ class UserStatusItem extends StatelessWidget {
             ),
             Text(
               'Tap to add status update',
-              style: Styles.textStyle10
+              style: Styles.textStyle15
                   .copyWith(fontSize: 16.sp, color: Colors.grey),
             ),
           ],

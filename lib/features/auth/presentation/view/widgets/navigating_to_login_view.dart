@@ -12,7 +12,7 @@ class NavigatingToLoginView extends StatelessWidget {
       children: [
         Text(
           'Already have an account?',
-          style: Styles.textStyle10.copyWith(color: Colors.black),
+          style: Styles.textStyle15.copyWith(color: Colors.black),
         ),
         TextButton(
           onPressed: () {
@@ -20,7 +20,7 @@ class NavigatingToLoginView extends StatelessWidget {
           },
           child: Text(
             'Login here',
-            style: Styles.textStyle10,
+            style: Styles.textStyle15,
           ),
         )
       ],

@@ -16,9 +16,9 @@ class HomeBottomNavigationBar extends StatelessWidget {
         unselectedIconTheme: const IconThemeData(
           color: ColorApp.primaryColor,
         ),
-        selectedLabelStyle: Styles.textStyle10
+        selectedLabelStyle: Styles.textStyle15
             .copyWith(fontSize: 18.sp, fontWeight: FontWeight.bold),
-        unselectedLabelStyle: Styles.textStyle10
+        unselectedLabelStyle: Styles.textStyle15
             .copyWith(color: Colors.grey, fontWeight: FontWeight.w300),
         currentIndex: currentIndex,
         onTap: onTap,
