@@ -48,17 +48,18 @@ class AppRoutes {
       case Routes.homeRoute:
         return MaterialPageRoute(builder: ((context) {
           return BlocProvider(
+            // This invokation order may be critical
             create: ((context) => home_di.sl<HomeViewModel>()
-              ..getChats()
-              ..getCurrentUser()),
+              ..getUsers()
+              ..getCurrentUser()
+              ..getChats()),
             child: const HomeView(),
           );
         }));
       case Routes.profileRoute:
         return MaterialPageRoute(builder: ((context) {
-          return BlocProvider(
-            create: ((context) =>
-                home_di.sl<HomeViewModel>()..getCurrentUser()),
+          return BlocProvider.value(
+            value: home_di.sl<HomeViewModel>(),
             child: const ProfileView(),
           );
         }));

@@ -5,6 +5,20 @@ class InitialHomeStates extends HomeStates {}
 // Navigation
 class ChangeNavBarState extends HomeStates {}
 
+// Get users
+class GetUsersFromFirebaseSuccessState extends HomeStates {}
+
+class GetUsersFromFirebaseLoadingState extends HomeStates {}
+
+class GetUsersFromFirebaseErrorState extends HomeStates {}
+
+//Add user to chat
+class AddUserToChatSuccessState extends HomeStates {}
+
+class AddUserToChatLoadingState extends HomeStates {}
+
+class AddUserToChatErrorState extends HomeStates {}
+
 // Get chats
 class GetChatsFromFirebaseSuccessState extends HomeStates {}
 

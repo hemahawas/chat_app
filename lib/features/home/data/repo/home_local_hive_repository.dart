@@ -23,7 +23,7 @@ class HomeLocalHiveRepository extends HomeLocalReopsitory {
     UserModel user = UserModel();
     if (await Hive.boxExists('userBox')) {
       var userBox = await Hive.openBox<UserModel>('userBox');
-      user = userBox.getAt(0) ?? UserModel();
+      user = userBox.getAt(0)!;
     }
     return user;
   }
@@ -32,8 +32,8 @@ class HomeLocalHiveRepository extends HomeLocalReopsitory {
   Future<void> putChats(chats) async {
     var chatBox = await Hive.openBox<ChatModel>('chatBox');
     for (ChatModel chat in chats) {
-      if (!chatBox.containsKey(chat.userModel!.uId)) {
-        await chatBox.put(chat.userModel!.uId, chat);
+      if (!chatBox.containsKey(chat.chatId)) {
+        await chatBox.put(chat.chatId, chat);
       }
     }
   }

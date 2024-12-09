@@ -19,9 +19,12 @@ class UserModel {
 
   bool? isEmailVerified;
 
+  List<String>? addedChats;
+  @HiveField(HiveHelper.userStatusField)
   StatusModel? status;
 
   UserModel({
+    this.addedChats,
     this.email,
     this.name,
     this.phone,
@@ -40,6 +43,7 @@ class UserModel {
         ? json['image']
         : 'https://firebasestorage.googleapis.com/v0/b/my-project-4120f.appspot.com/o/default_components%2Fuser.png?alt=media&token=346e27d2-eee4-45cd-aa7c-024069ba1ca4';
     isEmailVerified = json['isEmailVerified'];
+    addedChats = json['addedChats']?.cast<String>();
   }
 
   Map<String, dynamic> toMap() {
@@ -50,6 +54,7 @@ class UserModel {
       'uId': uId,
       'image': image,
       'isEmailVerified': isEmailVerified,
+      'addedChats': addedChats,
     };
   }
 }

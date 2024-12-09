@@ -19,16 +19,19 @@ class ChatModelAdapter extends TypeAdapter<ChatModel> {
     return ChatModel(
       lastMessage: fields[2] as MessageModel?,
       messages: (fields[1] as List?)?.cast<MessageModel>(),
-      userModel: fields[0] as UserModel?,
+      participants: (fields[0] as List?)?.cast<UserModel>(),
+      chatId: fields[3] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, ChatModel obj) {
     writer
+      ..writeByte(4)
       ..writeByte(3)
+      ..write(obj.chatId)
       ..writeByte(0)
-      ..write(obj.userModel)
+      ..write(obj.participants)
       ..writeByte(1)
       ..write(obj.messages)
       ..writeByte(2)

@@ -6,4 +6,7 @@ import 'package:chat_app/features/home/data/model/chat_model.dart';
 abstract class HomeRemoteRepository {
   Future<UserModel> getUserInfo();
   Future<List<ChatModel>> getChats();
+  Future<List<UserModel>> getUsers();
+  Future<ChatModel?> addNewChatThenGet(
+      UserModel currentUser, UserModel anotherUser);
 }
