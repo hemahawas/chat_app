@@ -1,7 +1,10 @@
 import 'package:chat_app/core/shared_widgets/responsive_sizedbox.dart';
+import 'package:chat_app/features/messaging/presentation/view/messaging_view.dart';
 import 'package:chat_app/features/messaging/presentation/view/widgets/message_item.dart';
+import 'package:chat_app/features/messaging/presentation/view_model/cubit.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Messages extends StatelessWidget {
   const Messages({super.key});
@@ -20,10 +23,14 @@ class Messages extends StatelessWidget {
               hasHeight: true,
               heightFraction: 90,
             ),
-            itemCount: 3,
+            itemCount: BlocProvider.of<MessagingViewModel>(context)
+                .chat!
+                .messages!
+                .length,
             itemBuilder: (context, index) => MessageItem(
-              index: index,
-            ),
+                message: BlocProvider.of<MessagingViewModel>(context)
+                    .chat!
+                    .messages![index]),
           ),
         ),
       ),

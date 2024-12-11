@@ -18,7 +18,7 @@ class MessageModelAdapter extends TypeAdapter<MessageModel> {
     };
     return MessageModel(
       messageUId: fields[2] as String?,
-      sindingTime: fields[3] as Timestamp?,
+      sendingTime: fields[3] as DateTime?,
       body: fields[0] as String?,
       image: fields[1] as String?,
     );
@@ -35,7 +35,7 @@ class MessageModelAdapter extends TypeAdapter<MessageModel> {
       ..writeByte(2)
       ..write(obj.messageUId)
       ..writeByte(3)
-      ..write(obj.sindingTime);
+      ..write(obj.sendingTime);
   }
 
   @override

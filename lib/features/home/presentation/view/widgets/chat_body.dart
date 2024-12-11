@@ -38,7 +38,6 @@ class ChatBody extends StatelessWidget {
                   itemBuilder: (context, index) => ChatItem(
                     chatModel:
                         BlocProvider.of<HomeViewModel>(context).chats[index],
-                    index: index,
                   ),
                   itemCount:
                       BlocProvider.of<HomeViewModel>(context).chats.length,

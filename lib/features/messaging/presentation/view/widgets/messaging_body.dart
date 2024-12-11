@@ -9,7 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MessagingBody extends StatelessWidget {
-  const MessagingBody({super.key});
+  MessagingBody({super.key});
+
+  TextEditingController sendController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +25,10 @@ class MessagingBody extends StatelessWidget {
         Messages(),
         Row(
           children: [
-            Expanded(child: SendField(sendController: TextEditingController())),
-            SendButton()
+            Expanded(child: SendField(sendController: sendController)),
+            SendButton(
+              sendController: sendController,
+            )
           ],
         ),
       ],

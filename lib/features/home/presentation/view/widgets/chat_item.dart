@@ -2,9 +2,15 @@ import 'package:chat_app/core/config/routes.dart';
 import 'package:chat_app/core/shared_widgets/responsive_sizedbox.dart';
 import 'package:chat_app/core/themes/color_app.dart';
 import 'package:chat_app/core/themes/styles.dart';
+import 'package:chat_app/core/utils/user_model.dart';
 import 'package:chat_app/features/home/data/model/chat_model.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/image_field.dart';
 import 'package:chat_app/features/home/presentation/view_model/cubit.dart';
+import 'package:chat_app/features/messaging/data/repo/messaging_firebase_remote_repository.dart';
+import 'package:chat_app/features/messaging/data/repo/messaging_remote_repository.dart';
+import 'package:chat_app/features/messaging/presentation/view/messaging_view.dart';
+import 'package:chat_app/features/messaging/presentation/view_model/cubit.dart';
+import 'package:chat_app/features/messaging/presentation/view_model/messaging_arguments.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,29 +18,33 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ChatItem extends StatelessWidget {
   final ChatModel chatModel;
-  final int index;
-  const ChatItem({super.key, required this.chatModel, required this.index});
+
+  const ChatItem({super.key, required this.chatModel});
 
   @override
   Widget build(BuildContext context) {
     // get the name of the other user
     var cubit = BlocProvider.of<HomeViewModel>(context);
-    String name;
-    if (cubit.chats[index].participants![0].uId == cubit.currentUser!.uId) {
-      name = cubit.chats[index].participants![1].name!;
+    UserModel anotherUser;
+    if (chatModel.participants![0].uId == cubit.currentUser!.uId) {
+      anotherUser = chatModel.participants![1];
     } else {
-      name = cubit.chats[index].participants![0].name!;
+      anotherUser = chatModel.participants![0];
     }
 
     return MaterialButton(
       onPressed: () {
-        Navigator.pushNamed(context, Routes.messagingRoute);
+        // Give the Required args from chat view model to messaging view model while routing
+        // See the routes.dart file
+        Navigator.pushNamed(context, Routes.messagingRoute,
+            arguments: MessagingArguments(
+                chatModel: chatModel, currentUser: cubit.currentUser!));
       },
       child: Row(
         children: [
           ImageField(
             // user image
-            image: null,
+            image: anotherUser.image,
             borderColor: Colors.white10,
           ),
           ResponsiveSizedBox(
@@ -49,7 +59,7 @@ class ChatItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    name,
+                    anotherUser.name!,
                     style: Styles.textStyle15
                         .copyWith(fontSize: 18.sp, color: Colors.black),
                   ),
@@ -75,7 +85,7 @@ class ChatItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
-                chatModel.lastMessage?.sindingTime.toString() ?? '',
+                chatModel.lastMessage?.sendingTime.toString() ?? '',
                 style: Styles.textStyle15.copyWith(color: Colors.black87),
               ),
               ResponsiveSizedBox(

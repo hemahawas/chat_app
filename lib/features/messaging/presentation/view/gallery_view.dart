@@ -1,7 +1,11 @@
 import 'dart:io';
 
+import 'package:chat_app/core/themes/color_app.dart';
+import 'package:chat_app/features/messaging/data/model/message_model.dart';
+import 'package:chat_app/features/messaging/presentation/view_model/cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class GalleryView extends StatelessWidget {
   final String path;
@@ -10,6 +14,7 @@ class GalleryView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController messageController = TextEditingController();
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
@@ -35,6 +40,7 @@ class GalleryView extends StatelessWidget {
                 width: MediaQuery.of(context).size.width,
                 padding: EdgeInsets.symmetric(vertical: 5, horizontal: 8),
                 child: TextFormField(
+                  controller: messageController,
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 17,
@@ -55,9 +61,25 @@ class GalleryView extends StatelessWidget {
                       ),
                       suffixIcon: CircleAvatar(
                         radius: 27,
-                        backgroundColor: Colors.tealAccent[700],
+                        backgroundColor: ColorApp.primaryColor,
                         child: IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            // Create message
+                            var message = MessageModel(
+                                body: messageController.text,
+                                image: path,
+                                messageUId:
+                                    BlocProvider.of<MessagingViewModel>(context)
+                                        .currentUser!
+                                        .uId,
+                                sendingTime: DateTime.now());
+                            // Then send the message
+                            BlocProvider.of<MessagingViewModel>(context)
+                                .sendMessage(
+                                    BlocProvider.of<MessagingViewModel>(context)
+                                        .chat!,
+                                    message);
+                          },
                           icon: Icon(
                             Icons.check,
                             color: Colors.white,
