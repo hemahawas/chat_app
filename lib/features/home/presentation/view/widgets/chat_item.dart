@@ -26,7 +26,7 @@ class ChatItem extends StatelessWidget {
     // get the name of the other user
     var cubit = BlocProvider.of<HomeViewModel>(context);
     UserModel anotherUser;
-    if (chatModel.participants![0].uId == cubit.currentUser!.uId) {
+    if (chatModel.participants?[0].uId == cubit.currentUser?.uId) {
       anotherUser = chatModel.participants![1];
     } else {
       anotherUser = chatModel.participants![0];
@@ -34,6 +34,8 @@ class ChatItem extends StatelessWidget {
 
     return MaterialButton(
       onPressed: () {
+        debugPrint(cubit.currentUser!.uId);
+        debugPrint(chatModel.chatId);
         // Give the Required args from chat view model to messaging view model while routing
         // See the routes.dart file
         Navigator.pushNamed(context, Routes.messagingRoute,
@@ -70,8 +72,10 @@ class ChatItem extends StatelessWidget {
                   ),
                   Text(
                     // chat last message
-                    chatModel.lastMessage?.body ??
-                        'Hey There. I\'m using chat app',
+                    // If the last message sender is the current user, show 'you: '
+                    '${chatModel.lastMessage?.messageSenderId == cubit.currentUser?.uId ? 'you: ' : ''}'
+                    // If the message has only image, show 'Photo.' , else show message body
+                    '${chatModel.lastMessage?.body ?? 'Hey There, I\'m using chat app'}',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     softWrap: true,
@@ -85,7 +89,9 @@ class ChatItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
-                chatModel.lastMessage?.sendingTime.toString() ?? '',
+                chatModel.lastMessage?.sendingTime != null
+                    ? '${chatModel.lastMessage?.sendingTime?.hour}:${chatModel.lastMessage?.sendingTime?.minute}'
+                    : '',
                 style: Styles.textStyle15.copyWith(color: Colors.black87),
               ),
               ResponsiveSizedBox(

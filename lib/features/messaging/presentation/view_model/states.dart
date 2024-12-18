@@ -10,6 +10,10 @@ class GetMessagingArgumentsSuccessState extends MessagingStates {}
 
 class GetMessagingArgumentsErrorState extends MessagingStates {}
 
+// Get messages in real time
+
+class GetMessagesInRealTimeSuccessState extends MessagingStates {}
+
 // Send message
 class SendMessageLoadingState extends MessagingStates {}
 

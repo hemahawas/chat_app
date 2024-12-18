@@ -11,24 +11,32 @@ class MessageModel {
   String? body;
   @HiveField(HiveHelper.messageImageField)
   String? image;
-  @HiveField(HiveHelper.messageUIdField)
-  String? messageUId;
+  @HiveField(HiveHelper.messageSenderIdField)
+  String? messageSenderId;
   @HiveField(HiveHelper.messageSendingTimeField)
   DateTime? sendingTime;
 
-  MessageModel({this.messageUId, this.sendingTime, this.body, this.image});
+  String? messageId;
+
+  MessageModel({this.messageSenderId, this.sendingTime, this.body, this.image});
 
   MessageModel.fromJson(Map<String, dynamic>? json) {
-    body = json!['body'];
-    image = json['image'];
-    sendingTime = json['sendingTime'];
+    body = json?['body'];
+    image = json?['image'];
+    sendingTime = json?['sendingTime'] != null
+        ? DateTime.parse(json!['sendingTime'])
+        : null;
+    messageSenderId = json?['messageSenderId'];
+    messageId = json?['messageId'];
   }
 
   Map<String, dynamic> toMap() {
     return {
       'body': body,
       'image': image,
-      'sindingTime': sendingTime,
+      'sendingTime': sendingTime!.toString(),
+      'messageSenderId': messageSenderId,
+      'messageId': messageId,
     };
   }
 }

@@ -20,7 +20,7 @@ class HiveHelper {
 
   static const int messageBodyField = 0;
   static const int messageImageField = 1;
-  static const int messageUIdField = 2;
+  static const int messageSenderIdField = 2;
   static const int messageSendingTimeField = 3;
 
   // User

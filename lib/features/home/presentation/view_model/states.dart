@@ -32,6 +32,11 @@ class GetChatsFromLocalLoadingState extends HomeStates {}
 
 class GetChatsFromLocalErrorState extends HomeStates {}
 
+// Notify Chat
+class NotifyChatState extends HomeStates {}
+
+// Set chats in real time
+class SetChatInRealTimeSuccessState extends HomeStates {}
 // User Info
 
 class GetUserInfoSuccessState extends HomeStates {}

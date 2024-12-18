@@ -56,8 +56,7 @@ class AppRoutes {
             // This invokation order may be critical
             create: ((context) => home_di.sl<HomeViewModel>()
               ..getUsers()
-              ..getCurrentUser()
-              ..getChats()),
+              ..getCurrentUser()),
             child: const HomeView(),
           );
         }));
@@ -77,12 +76,13 @@ class AppRoutes {
         }));
       case Routes.messagingRoute:
         return MaterialPageRoute(builder: (context) {
-          return BlocProvider(
-            create: (context) => messaging_di.sl<MessagingViewModel>()
+          return BlocProvider<MessagingViewModel>.value(
+            value: messaging_di.sl<MessagingViewModel>()
               // Here we got the arguments from routing then pass it to messaging view model
               // I did this to avoid cascading in passing arguments.
               // For more: https://www.geeksforgeeks.org/flutter-arguments-in-named-routes/
-              ..getMessagingArguments(context),
+              ..getMessagingArguments(
+                  routeSettings.arguments as MessagingArguments),
             child: const MessagingView(),
           );
         });

@@ -26,21 +26,17 @@ class ChatModel {
     participants = (json!['participants'] as List<dynamic>)
         .map((e) => UserModel.fromJson(e))
         .toList();
-    messages = json['messages'] != null
-        ? (json['messages'] as List<dynamic>)
-            .map((e) => MessageModel.fromJson(e))
-            .toList()
-        : null;
-    lastMessage = json['lastMessage'];
+
     chatId = json['chatId'];
+    lastMessage = MessageModel.fromJson(json['lastMessage']);
+    messages = [];
   }
 
   Map<String, dynamic> toMap() {
     return {
       'chatId': chatId,
-      'participants': participants!.map((e) => e.toMap()).toList(),
-      'messages': messages?.map((e) => e.toMap()).toList(),
-      'lastMessage': lastMessage,
+      'participants': participants?.map((e) => e.toMap()).toList(),
+      'lastMessage': lastMessage?.toMap()
     };
   }
 }

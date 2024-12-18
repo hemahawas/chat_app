@@ -18,7 +18,8 @@ class MessagingView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MessagingViewModel, MessagingStates>(
+    return BlocConsumer<MessagingViewModel, MessagingStates>(
+      listener: (context, state) {},
       builder: (context, state) {
         return Container(
           decoration: BoxDecoration(

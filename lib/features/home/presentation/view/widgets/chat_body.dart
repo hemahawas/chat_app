@@ -5,13 +5,30 @@ import 'package:chat_app/features/home/presentation/view/widgets/chat_item.dart'
 import 'package:chat_app/features/home/presentation/view/widgets/users_adder.dart';
 import 'package:chat_app/features/home/presentation/view_model/cubit.dart';
 import 'package:chat_app/features/home/presentation/view_model/states.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ChatBody extends StatelessWidget {
+import 'package:chat_app/features/home/presentation/view_model/home_injection_container.dart'
+    as home_di;
+
+class ChatBody extends StatefulWidget {
   const ChatBody({super.key});
+
+  @override
+  State<ChatBody> createState() => _ChatBodyState();
+}
+
+class _ChatBodyState extends State<ChatBody> {
+  Stream<QuerySnapshot<Map<String, dynamic>>>? _chatSnapshots;
+
+  @override
+  void initState() {
+    _chatSnapshots = home_di.sl<HomeViewModel>().getChatsInRealTime();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,31 +39,50 @@ class ChatBody extends StatelessWidget {
           physics: AlwaysScrollableScrollPhysics(),
           child: Column(
             children: [
-              ConditionalBuilder(
-                condition:
-                    BlocProvider.of<HomeViewModel>(context).chats.isNotEmpty,
-                fallback: (context) => Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    AppStrings.addNewConnectionsForYourChat,
-                    style: Styles.textStyle15.copyWith(color: Colors.grey),
-                  ),
-                ),
-                builder: (context) => ListView.separated(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) => ChatItem(
-                    chatModel:
-                        BlocProvider.of<HomeViewModel>(context).chats[index],
-                  ),
-                  itemCount:
-                      BlocProvider.of<HomeViewModel>(context).chats.length,
-                  separatorBuilder: (context, index) => ResponsiveSizedBox(
-                    sizedBoxContext: context,
-                    hasHeight: true,
-                    heightFraction: 50,
-                  ),
-                ),
+              StreamBuilder(
+                stream: _chatSnapshots,
+                builder: (context, snapShot) {
+                  switch (snapShot.connectionState) {
+                    case ConnectionState.none:
+                    case ConnectionState.waiting:
+                      return Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          AppStrings.addNewConnectionsForYourChat,
+                          style:
+                              Styles.textStyle15.copyWith(color: Colors.grey),
+                        ),
+                      );
+                    case ConnectionState.active:
+                    case ConnectionState.done:
+                      home_di.sl<HomeViewModel>().setChats(snapShot);
+
+                      return home_di.sl<HomeViewModel>().chats.isNotEmpty
+                          ? ListView.separated(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemBuilder: (context, index) => ChatItem(
+                                chatModel:
+                                    home_di.sl<HomeViewModel>().chats[index],
+                              ),
+                              itemCount:
+                                  home_di.sl<HomeViewModel>().chats.length,
+                              separatorBuilder: (context, index) =>
+                                  ResponsiveSizedBox(
+                                sizedBoxContext: context,
+                                hasHeight: true,
+                                heightFraction: 50,
+                              ),
+                            )
+                          : Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                                AppStrings.addNewConnectionsForYourChat,
+                                style: Styles.textStyle15
+                                    .copyWith(color: Colors.grey),
+                              ));
+                  }
+                },
               ),
               SizedBox(
                 height: 20.0,

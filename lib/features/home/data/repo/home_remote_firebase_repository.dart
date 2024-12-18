@@ -25,7 +25,6 @@ class HomeRemoteFirebaseRepository extends HomeRemoteRepository {
         if (chat.chatId!
             // ignore: collection_methods_unrelated_type
             .contains(firebaseAuth.currentUser!.uid.toString())) {
-          print("TRUEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
           chats.add(chat);
         }
       }
@@ -74,20 +73,9 @@ class HomeRemoteFirebaseRepository extends HomeRemoteRepository {
           return null;
         }
       }
+    }).catchError((error) {
+      print(error.toString());
     });
-
-    // Then create new chat
-    var chat = ChatModel(
-        participants: [currentUser, anotherUser],
-        chatId: '${currentUser.uId}-${anotherUser.uId}',
-        lastMessage: null,
-        messages: []);
-
-    // Add the new chat to firestore
-    await firebaseFirestore
-        .collection('chats')
-        .doc('${currentUser.uId}-${anotherUser.uId}')
-        .set(chat.toMap());
 
     // Update the users to add new chats
     currentUser.addedChats ??= [];
@@ -95,16 +83,45 @@ class HomeRemoteFirebaseRepository extends HomeRemoteRepository {
     anotherUser.addedChats ??= [];
     anotherUser.addedChats!.add(currentUser.uId.toString());
 
+    // Then create new chat
+    var chat = ChatModel(
+        participants: [currentUser, anotherUser],
+        chatId: '${currentUser.uId}-${anotherUser.uId}',
+        messages: [],
+        lastMessage: null);
+
+    // Add the new chat to firestore
+    await firebaseFirestore
+        .collection('chats')
+        .doc('${currentUser.uId}-${anotherUser.uId}')
+        .set(chat.toMap())
+        .catchError((error) {
+      print(error.toString());
+    });
+
+    // update the two users
     await firebaseFirestore
         .collection('users')
         .doc(currentUser.uId)
-        .set(currentUser.toMap());
+        .set(currentUser.toMap())
+        .catchError((error) {
+      print(error.toString());
+    });
 
     await firebaseFirestore
         .collection('users')
         .doc(anotherUser.uId)
-        .set(anotherUser.toMap());
+        .set(anotherUser.toMap())
+        .catchError((error) {
+      print(error.toString());
+    });
     // return the new chat
     return chat;
+  }
+
+  @override
+  Stream<QuerySnapshot<Map<String, dynamic>>> getChatsInRealTime() async* {
+    // get chat snapshots from firebase
+    yield* firebaseFirestore.collection('chats').snapshots();
   }
 }

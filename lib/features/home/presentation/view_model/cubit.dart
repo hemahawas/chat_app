@@ -8,8 +8,11 @@ import 'package:chat_app/features/home/data/repo/home_remote_firebase_repository
 import 'package:chat_app/features/home/data/repo/home_remote_repository.dart';
 import 'package:chat_app/features/home/data/repo/home_local_hive_repository.dart';
 import 'package:chat_app/features/home/presentation/view_model/states.dart';
+import 'package:chat_app/features/messaging/data/model/message_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 
 class HomeViewModel extends Cubit<HomeStates> {
   HomeViewModel(
@@ -34,19 +37,20 @@ class HomeViewModel extends Cubit<HomeStates> {
   // The nonAddedUsers used for non Added users shown in bottomSheet
   List<UserModel> nonAddedUsers = [];
   List<UserModel> addedUsers = [];
+
   // Get users to add new chats
   Future<void> getUsers() async {
     emit(GetUsersFromFirebaseLoadingState());
+    addedUsers = [];
+    nonAddedUsers = [];
     await firebaseHomeRepository.getUsers().then((value) async {
       for (UserModel user in value) {
         var currentUser = await firebaseHomeRepository.getUserInfo();
         if (user.addedChats != null &&
             user.addedChats!.contains(currentUser.uId)) {
           addedUsers.add(user);
-          debugPrint('################### added ${addedUsers.length}');
         } else {
           nonAddedUsers.add(user);
-          debugPrint('################### non added ${nonAddedUsers.length}');
         }
       }
       emit(GetUsersFromFirebaseSuccessState());
@@ -72,6 +76,7 @@ class HomeViewModel extends Cubit<HomeStates> {
         emit(GetChatsFromFirebaseSuccessState());
         await localHomeRepository.putChats(chats);
       }).catchError((error) {
+        debugPrint(error.toString());
         emit(GetChatsFromFirebaseErrorState());
       });
     } else {
@@ -91,7 +96,7 @@ class HomeViewModel extends Cubit<HomeStates> {
     emit(AddUserToChatLoadingState());
     await firebaseHomeRepository
         .addNewChatThenGet(currentUser, anotherUser)
-        .then((value) {
+        .then((value) async {
       if (value != null) {
         // add user to chat
         chats.add(value);
@@ -99,21 +104,22 @@ class HomeViewModel extends Cubit<HomeStates> {
 
         anotherUser.addedChats ??= [];
         // add user id in added chats for both
-        currentUser.addedChats!.add(anotherUser.uId!);
-        anotherUser.addedChats!.add(currentUser.uId!);
+        currentUser.addedChats?.add(anotherUser.uId!);
+        anotherUser.addedChats?.add(currentUser.uId!);
 
         // change the users state
-        nonAddedUsers.remove(anotherUser);
-        addedUsers.add(anotherUser);
+
+        await getUsers();
         emit(AddUserToChatSuccessState());
       }
     }).catchError((error) {
+      debugPrint(error.toString());
       emit(AddUserToChatErrorState());
     });
   }
 
   // Get current user
-  UserModel? currentUser;
+  UserModel? currentUser = UserModel(email: 'email');
   Future<void> getCurrentUser() async {
     if (await networkInfo.isConnected) {
       emit(GetUserInfoLoadingState());
@@ -133,6 +139,41 @@ class HomeViewModel extends Cubit<HomeStates> {
         debugPrint(error.toString());
         emit(GetUserInfoErrorState());
       });
+    }
+  }
+
+  void notifyChat(ChatModel updatedChat) {
+    // check if the chat is empty
+    if (updatedChat.messages!.isEmpty) {
+      return;
+    }
+    // Remove chat from chats, O(n) : not proffesional
+    chats.removeWhere((chat) {
+      return chat.chatId == updatedChat.chatId;
+    });
+    // modify the chat last message in the reciever user
+    updatedChat.lastMessage = updatedChat.messages?[0];
+    // Then add it in first to chats
+    chats.insert(0, updatedChat);
+    emit(NotifyChatState());
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getChatsInRealTime() async* {
+    yield* firebaseHomeRepository.getChatsInRealTime();
+  }
+
+  void setChats(snapShot) {
+    chats = [];
+    if (snapShot.data != null) {
+      for (var doc in snapShot.data!.docs) {
+        var chat = ChatModel.fromJson(doc.data());
+
+        if (chat.chatId!
+            // ignore: collection_methods_unrelated_type
+            .contains(currentUser!.uId.toString())) {
+          chats.add(chat);
+        }
+      }
     }
   }
 }
