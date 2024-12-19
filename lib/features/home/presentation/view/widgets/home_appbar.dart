@@ -3,8 +3,14 @@ import 'package:chat_app/core/themes/color_app.dart';
 import 'package:chat_app/core/themes/styles.dart';
 import 'package:chat_app/features/home/presentation/view/profile_view.dart';
 import 'package:chat_app/features/home/presentation/view/settings_view.dart';
+import 'package:chat_app/features/home/presentation/view/widgets/custom_search_delegate.dart';
+import 'package:chat_app/features/home/presentation/view_model/cubit.dart';
+import 'package:chat_app/features/home/presentation/view_model/states.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:chat_app/features/home/presentation/view_model/home_injection_container.dart'
+    as home_di;
 
 class HomeAppbar extends StatelessWidget {
   const HomeAppbar({super.key});
@@ -28,12 +34,18 @@ class HomeAppbar extends StatelessWidget {
       actions: [
         Padding(
           padding: EdgeInsets.only(top: 10.0.h),
-          child: IconButton(
-              onPressed: () {},
-              icon: Icon(
-                Icons.search,
-                size: 35.0.sp,
-              )),
+          child: BlocProvider<HomeViewModel>(
+            create: (context) => home_di.sl<HomeViewModel>(),
+            child: IconButton(
+                onPressed: () {
+                  showSearch(
+                      context: context, delegate: CustomSearchDelegate());
+                },
+                icon: Icon(
+                  Icons.search,
+                  size: 35.0.sp,
+                )),
+          ),
         ),
         Padding(
             padding: EdgeInsets.only(top: 10.0.h),

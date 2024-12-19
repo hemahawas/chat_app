@@ -23,7 +23,6 @@ class ChatBody extends StatefulWidget {
 
 class _ChatBodyState extends State<ChatBody> {
   Stream<QuerySnapshot<Map<String, dynamic>>>? _chatSnapshots;
-
   @override
   void initState() {
     _chatSnapshots = home_di.sl<HomeViewModel>().getChatsInRealTime();
