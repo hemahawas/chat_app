@@ -31,6 +31,7 @@ class ViewedStatusItem extends StatelessWidget {
             ResponsiveSizedBox(
               sizedBoxContext: context,
               hasHeight: true,
+              heightFraction: 70,
             ),
             Text(
               'Today, 12:00 PM',

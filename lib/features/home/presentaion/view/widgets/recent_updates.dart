@@ -15,6 +15,7 @@ class RecentUpdates extends StatelessWidget {
       separatorBuilder: (context, index) => ResponsiveSizedBox(
         sizedBoxContext: context,
         hasHeight: true,
+        heightFraction: 50,
       ),
     );
   }
