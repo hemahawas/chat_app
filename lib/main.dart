@@ -1,4 +1,4 @@
-import 'package:chat_app/core/config/routes.dart';
+import 'package:chat_app/config/routes.dart';
 import 'package:chat_app/core/themes/color_app.dart';
 import 'package:chat_app/core/utils/app_observer.dart';
 import 'package:chat_app/core/utils/firebase_notification.dart';

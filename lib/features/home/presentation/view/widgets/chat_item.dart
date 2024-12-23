@@ -1,8 +1,9 @@
-import 'package:chat_app/core/config/routes.dart';
+import 'package:chat_app/config/routes.dart';
 import 'package:chat_app/core/shared_widgets/responsive_sizedbox.dart';
 import 'package:chat_app/core/themes/color_app.dart';
 import 'package:chat_app/core/themes/styles.dart';
 import 'package:chat_app/core/utils/user_model.dart';
+import 'package:chat_app/features/group/data/model/group_model.dart';
 import 'package:chat_app/features/home/data/model/chat_model.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/image_field.dart';
 import 'package:chat_app/features/home/presentation/view_model/cubit.dart';
@@ -15,6 +16,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:chat_app/features/home/presentation/view_model/home_injection_container.dart'
+    as home_di;
 
 class ChatItem extends StatelessWidget {
   final ChatModel chatModel;
@@ -25,11 +28,13 @@ class ChatItem extends StatelessWidget {
   Widget build(BuildContext context) {
     // get the name of the other user
     var cubit = BlocProvider.of<HomeViewModel>(context);
-    UserModel anotherUser;
-    if (chatModel.participants?[0].uId == cubit.currentUser?.uId) {
-      anotherUser = chatModel.participants![1];
-    } else {
-      anotherUser = chatModel.participants![0];
+    UserModel? anotherUser;
+    if (chatModel is! GroupModel) {
+      if (chatModel.participants?[0].uId == cubit.currentUser?.uId) {
+        anotherUser = chatModel.participants?[1];
+      } else {
+        anotherUser = chatModel.participants?[0];
+      }
     }
 
     return MaterialButton(
@@ -46,7 +51,9 @@ class ChatItem extends StatelessWidget {
         children: [
           ImageField(
             // user image
-            image: anotherUser.image,
+            image: chatModel is GroupModel
+                ? (chatModel as GroupModel).groupImageUrl
+                : anotherUser!.image,
             borderColor: Colors.white10,
           ),
           ResponsiveSizedBox(
@@ -61,7 +68,9 @@ class ChatItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    anotherUser.name!,
+                    chatModel is GroupModel
+                        ? (chatModel as GroupModel).groupName
+                        : anotherUser!.name!,
                     style: Styles.textStyle15
                         .copyWith(fontSize: 18.sp, color: Colors.black),
                   ),

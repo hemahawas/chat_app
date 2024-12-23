@@ -1,5 +1,9 @@
+import 'dart:io';
+
+import 'package:chat_app/core/utils/cloudinary_service.dart';
 import 'package:chat_app/core/utils/network_info.dart';
 import 'package:chat_app/core/utils/user_model.dart';
+import 'package:chat_app/features/group/data/model/group_model.dart';
 import 'package:chat_app/features/home/data/model/call_Model.dart';
 import 'package:chat_app/features/home/data/model/chat_model.dart';
 import 'package:chat_app/features/home/data/model/status_model.dart';
@@ -43,21 +47,31 @@ class HomeViewModel extends Cubit<HomeStates> {
     emit(GetUsersFromFirebaseLoadingState());
     addedUsers = [];
     nonAddedUsers = [];
+
     await firebaseHomeRepository.getUsers().then((value) async {
       for (UserModel user in value) {
         var currentUser = await firebaseHomeRepository.getUserInfo();
         if (user.addedChats != null &&
             user.addedChats!.contains(currentUser.uId)) {
           addedUsers.add(user);
+          //print('This Should be printed twice#######################');
         } else {
           nonAddedUsers.add(user);
+          print('This Should not be printed');
         }
       }
+
       emit(GetUsersFromFirebaseSuccessState());
     }).catchError((error) {
       debugPrint(error.toString());
       emit(GetUsersFromFirebaseErrorState());
     });
+  }
+
+  Future<void> notifyUserChange() async {
+    // Notify the othe users for any user change
+    // by overrite the participants for each chat
+    await firebaseHomeRepository.notifyUserChange();
   }
 
   List<CallModel> calls = [];
@@ -99,16 +113,16 @@ class HomeViewModel extends Cubit<HomeStates> {
         .then((value) async {
       if (value != null) {
         // add user to chat
-        chats.add(value);
-        currentUser.addedChats ??= [];
+        //chats.add(value); --> is't not nesscary
+        // because we will get the chats from firebase by snapshots
 
+        currentUser.addedChats ??= [];
         anotherUser.addedChats ??= [];
         // add user id in added chats for both
         currentUser.addedChats?.add(anotherUser.uId!);
         anotherUser.addedChats?.add(currentUser.uId!);
 
         // change the users state
-
         await getUsers();
         emit(AddUserToChatSuccessState());
       }
@@ -163,17 +177,57 @@ class HomeViewModel extends Cubit<HomeStates> {
   }
 
   void setChats(snapShot) {
+    // Ensure that all users exist
+    if (addedUsers.isEmpty || currentUser == null) {
+      return;
+    }
     chats = [];
     if (snapShot.data != null) {
       for (var doc in snapShot.data!.docs) {
-        var chat = ChatModel.fromJson(doc.data());
+        // Check if it is group or chat
+        ChatModel chat;
+        if (doc.data()['groupName'] == null) {
+          chat = ChatModel.fromJson(doc.data());
+        } else {
+          print('################### Group Model');
+          chat = GroupModel.fromJson(doc.data());
+        }
 
+        // Add the chat that has connection to the current user
         if (chat.chatId!
             // ignore: collection_methods_unrelated_type
             .contains(currentUser!.uId.toString())) {
           chats.add(chat);
+        } // For group
+        else if ((chat is GroupModel) &&
+            chat.participantsUId!.contains(currentUser!.uId)) {
+          print('################### Group Chat');
+          chats.add(chat);
         }
       }
     }
+  }
+
+  Future<void> createGroup(GroupModel group) async {
+    group.participants!.add(currentUser!);
+    group.participantsUId!.add(currentUser!.uId!);
+    emit(CreateGroupLoadingState());
+    await firebaseHomeRepository.createGroup(group).then((value) {
+      emit(CreateGroupSuccessState());
+    }).catchError((error) {
+      emit(CreateGroupErrorState());
+    });
+  }
+
+  Future<void> updateUserImage(String image) async {
+    emit(UpdateUserImageLoadingState());
+    return await firebaseHomeRepository
+        .uploadUserImage(currentUser!, image)
+        .then((_) {
+      emit(UpdateUserImageSuccessState());
+    }).catchError((error) {
+      debugPrint(error.toString());
+      emit(UpdateUserImageErrorState());
+    });
   }
 }

@@ -9,6 +9,7 @@ part 'chat_model.g.dart';
 class ChatModel {
   @HiveField(HiveHelper.chatIdField)
   String? chatId;
+  List<String>? participantsUId;
   @HiveField(HiveHelper.chatParticipantsField)
   List<UserModel>? participants;
   @HiveField(HiveHelper.chatMessagesField)
@@ -19,7 +20,8 @@ class ChatModel {
   ChatModel(
       {this.lastMessage,
       this.messages,
-      required this.participants,
+      this.participants,
+      required this.participantsUId,
       required this.chatId});
 
   ChatModel.fromJson(Map<String, dynamic>? json) {
@@ -28,15 +30,16 @@ class ChatModel {
         .toList();
 
     chatId = json['chatId'];
+    participantsUId = json['participantsUId'].cast<String>();
     lastMessage = MessageModel.fromJson(json['lastMessage']);
-    messages = [];
   }
 
   Map<String, dynamic> toMap() {
     return {
       'chatId': chatId,
+      'participantsUId': participantsUId?.toList(),
       'participants': participants?.map((e) => e.toMap()).toList(),
-      'lastMessage': lastMessage?.toMap()
+      'lastMessage': lastMessage?.toMap(),
     };
   }
 }

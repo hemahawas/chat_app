@@ -9,7 +9,7 @@ import 'package:chat_app/features/home/presentation/view_model/home_injection_co
     as home_di;
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class CustomSearchDelegate extends SearchDelegate {
+class ChatSearchDelegate extends SearchDelegate {
   // The Users
   List<ChatItem> searchTerms = [];
   // To clear the query

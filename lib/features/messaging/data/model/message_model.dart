@@ -34,7 +34,7 @@ class MessageModel {
     return {
       'body': body,
       'image': image,
-      'sendingTime': sendingTime!.toString(),
+      'sendingTime': sendingTime?.toString(),
       'messageSenderId': messageSenderId,
       'messageId': messageId,
     };

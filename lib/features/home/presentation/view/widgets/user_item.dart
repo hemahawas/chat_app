@@ -14,7 +14,8 @@ import 'package:chat_app/features/home/presentation/view_model/home_injection_co
 
 class UserItem extends StatelessWidget {
   final UserModel model;
-  const UserItem({super.key, required this.model});
+  final VoidCallback? onTap;
+  const UserItem({super.key, required this.model, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -46,10 +47,11 @@ class UserItem extends StatelessWidget {
               ),
               Spacer(),
               IconButton(
-                  onPressed: () {
-                    var cubit = BlocProvider.of<HomeViewModel>(context);
-                    cubit.addNewChat(cubit.currentUser!, model);
-                  },
+                  onPressed: onTap ??
+                      () {
+                        var cubit = BlocProvider.of<HomeViewModel>(context);
+                        cubit.addNewChat(cubit.currentUser!, model);
+                      },
                   icon: Icon(Icons.add))
             ],
           );
