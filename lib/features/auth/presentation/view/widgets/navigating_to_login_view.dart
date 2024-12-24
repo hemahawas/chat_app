@@ -1,5 +1,5 @@
+import 'package:chat_app/config/routes.dart';
 import 'package:chat_app/core/themes/styles.dart';
-import 'package:chat_app/features/auth/presentation/view/login_view.dart';
 import 'package:flutter/material.dart';
 
 class NavigatingToLoginView extends StatelessWidget {
@@ -12,16 +12,15 @@ class NavigatingToLoginView extends StatelessWidget {
       children: [
         Text(
           'Already have an account?',
-          style: Styles.textStyle10.copyWith(color: Colors.black),
+          style: Styles.textStyle15.copyWith(color: Colors.black),
         ),
         TextButton(
           onPressed: () {
-            Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (context) => LoginView()));
+            Navigator.pushReplacementNamed(context, Routes.loginRoute);
           },
           child: Text(
             'Login here',
-            style: Styles.textStyle10,
+            style: Styles.textStyle15,
           ),
         )
       ],

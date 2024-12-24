@@ -11,7 +11,7 @@ Widget defaultFormField(
         bool isPassword = false,
         required Function validate,
         Function(PointerDownEvent)? onTapOutside,
-        required String label,
+        String? label,
         String? hint,
         IconData? prefix,
         IconData? suffix,
