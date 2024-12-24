@@ -1,5 +1,6 @@
 import 'package:chat_app/core/utils/user_model.dart';
 import 'package:chat_app/features/auth/data/repo/auth_repository.dart';
+import 'package:chat_app/features/home/data/model/chat_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -21,13 +22,16 @@ class FirebaseAuthRepository extends AuthRepository {
     await firebaseAuth.signOut();
   }
 
-  // Create user
+  // Create user with its features
   @override
   Future<void> register(UserModel model, String password) async {
+    // Create user
     await firebaseAuth
         .createUserWithEmailAndPassword(email: model.email!, password: password)
         .then((userCredential) async {
       model.uId = userCredential.user!.uid;
+
+      // Add the new user to firestore
       await firebaseFirestore
           .collection('users')
           .doc(model.uId!)

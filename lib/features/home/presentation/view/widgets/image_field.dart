@@ -5,17 +5,19 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class ImageField extends StatelessWidget {
   final String? image;
   final Color borderColor;
+  final double? size;
   const ImageField({
     super.key,
     this.image,
     required this.borderColor,
+    this.size = 60,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 60.h,
-      height: 60.w,
+      width: size!.h,
+      height: size!.w,
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30.h),

@@ -1,4 +1,4 @@
-import 'package:chat_app/core/config/routes.dart';
+import 'package:chat_app/config/routes.dart';
 import 'package:chat_app/core/themes/styles.dart';
 import 'package:flutter/material.dart';
 
@@ -12,7 +12,7 @@ class NvigatingToRegisterView extends StatelessWidget {
       children: [
         Text(
           'Don’t have an account?',
-          style: Styles.textStyle10.copyWith(color: Colors.black),
+          style: Styles.textStyle15.copyWith(color: Colors.black),
         ),
         TextButton(
           onPressed: () {
@@ -20,7 +20,7 @@ class NvigatingToRegisterView extends StatelessWidget {
           },
           child: Text(
             'Register here',
-            style: Styles.textStyle10,
+            style: Styles.textStyle15,
           ),
         )
       ],

@@ -8,7 +8,7 @@ abstract class Styles {
     fontWeight: FontWeight.w600,
   );
 
-  static TextStyle textStyle10 = TextStyle(
+  static TextStyle textStyle15 = TextStyle(
     color: ColorApp.primaryColor,
     fontSize: 15.sp,
     fontWeight: FontWeight.w600,
