@@ -1,4 +1,5 @@
 import 'package:chat_app/core/shared_widgets/responsive_sizedbox.dart';
+import 'package:chat_app/features/group/data/model/group_model.dart';
 import 'package:chat_app/features/home/presentation/view_model/cubit.dart';
 import 'package:chat_app/features/messaging/presentation/view/messaging_view.dart';
 import 'package:chat_app/features/messaging/presentation/view/widgets/message_item.dart';
@@ -45,6 +46,12 @@ class _MessagesState extends State<Messages> {
             case ConnectionState.done:
               if (snapShot.hasData) {
                 messaging_di.sl<MessagingViewModel>().setMessages(snapShot);
+                Map<String, String> names = {};
+                names.addEntries(messaging_di
+                    .sl<MessagingViewModel>()
+                    .chat!
+                    .participants!
+                    .map((e) => MapEntry(e.uId!, e.name!)));
 
                 return Expanded(
                   child: SizedBox(
@@ -70,6 +77,10 @@ class _MessagesState extends State<Messages> {
                                   .messages!
                                   .length,
                               itemBuilder: (context, index) => MessageItem(
+                                participantNames: names,
+                                isGroup: messaging_di
+                                    .sl<MessagingViewModel>()
+                                    .chat is GroupModel,
                                 message: messaging_di
                                     .sl<MessagingViewModel>()
                                     .chat!

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:chat_app/core/constants/app_strings.dart';
+import 'package:chat_app/core/utils/cloudinary_service.dart';
 import 'package:chat_app/features/home/data/model/chat_model.dart';
 import 'package:chat_app/features/messaging/data/model/message_model.dart';
 import 'package:chat_app/features/messaging/data/repo/messaging_remote_repository.dart';
@@ -10,9 +11,12 @@ import 'package:firebase_storage/firebase_storage.dart';
 class MessagingFirebaseRemoteRepository extends MessagingRemoteRepository {
   final FirebaseFirestore firebaseFirestore;
   final FirebaseStorage firebaseStorage;
+  final CloudinaryService cloudinaryService;
 
   MessagingFirebaseRemoteRepository(
-      {required this.firebaseStorage, required this.firebaseFirestore});
+      {required this.cloudinaryService,
+      required this.firebaseStorage,
+      required this.firebaseFirestore});
 
   @override
   Future<List<MessageModel>> getMessages(ChatModel chat) {
@@ -57,22 +61,12 @@ class MessagingFirebaseRemoteRepository extends MessagingRemoteRepository {
   @override
   Future<void> sendImageMessage(ChatModel chat, MessageModel message) async {
     // Note: the image field contains the path, then it will contain the url
-
-    // upload the image
-    await firebaseStorage
-        .ref()
-        .child(
-            'chats/${chat.chatId}/${Uri.file(message.image!).pathSegments.last}')
-        .putFile(File(message.image!))
-        .then((value) {
-      value.ref.getDownloadURL().then((value) {
-        // get the image url
-        message.image = value;
-      });
-    });
+    if (message.image == null) return;
+    // upload the image to cloudinary
+    message.image = await cloudinaryService.uploadImageThenGet(message.image!);
 
     // if the message has no body
-    if (message.body == AppStrings.addCaption) {
+    if (message.body!.isEmpty) {
       message.body = 'Photo.';
     }
 

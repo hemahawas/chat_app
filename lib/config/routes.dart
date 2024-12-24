@@ -56,7 +56,8 @@ class AppRoutes {
             // This invokation order may be critical
             create: ((context) => home_di.sl<HomeViewModel>()
               ..getUsers()
-              ..getCurrentUser()),
+              ..getCurrentUser()
+              ..notifyUserChange()),
             child: const HomeView(),
           );
         }));
