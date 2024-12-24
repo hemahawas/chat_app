@@ -17,8 +17,8 @@ class MessageModelAdapter extends TypeAdapter<MessageModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return MessageModel(
-      messageUId: fields[2] as String?,
-      sindingTime: fields[3] as Timestamp?,
+      messageSenderId: fields[2] as String?,
+      sendingTime: fields[3] as DateTime?,
       body: fields[0] as String?,
       image: fields[1] as String?,
     );
@@ -33,9 +33,9 @@ class MessageModelAdapter extends TypeAdapter<MessageModel> {
       ..writeByte(1)
       ..write(obj.image)
       ..writeByte(2)
-      ..write(obj.messageUId)
+      ..write(obj.messageSenderId)
       ..writeByte(3)
-      ..write(obj.sindingTime);
+      ..write(obj.sendingTime);
   }
 
   @override

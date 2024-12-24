@@ -25,10 +25,8 @@ class ProfileView extends StatelessWidget {
       listener: (context, state) {},
       builder: (context, state) {
         var user = BlocProvider.of<HomeViewModel>(context).currentUser;
-        if (state is GetUserInfoSuccessState) {
-          nameController.text = user!.name!;
-          phoneController.text = user.phone!;
-        }
+        nameController.text = user!.name!;
+        phoneController.text = user.phone!;
 
         return Scaffold(
           appBar: PreferredSize(
@@ -43,9 +41,9 @@ class ProfileView extends StatelessWidget {
                   sizedBoxContext: context,
                   hasHeight: true,
                 ),
-                const Center(
+                Center(
                   child: ProfileImageAndModify(
-                    userProfileImage: null,
+                    userProfileImage: user.image,
                   ),
                 ),
                 ResponsiveSizedBox(

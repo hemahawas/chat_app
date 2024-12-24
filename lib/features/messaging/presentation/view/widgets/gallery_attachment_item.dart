@@ -24,8 +24,6 @@ class _GalleryAttachmentItemState extends State<GalleryAttachmentItem> {
           onPressed: () async {
             // show gallery from phone (demo)
             await _getImageFromGallery();
-
-            print("Pressed____88888888888888888888888");
           },
           color: Colors.purple,
         ),

@@ -1,4 +1,4 @@
-import 'package:chat_app/core/config/routes.dart';
+import 'package:chat_app/config/routes.dart';
 import 'package:chat_app/core/shared_widgets/default_text_button.dart';
 import 'package:chat_app/core/utils/network_info.dart';
 import 'package:chat_app/core/utils/user_model.dart';
