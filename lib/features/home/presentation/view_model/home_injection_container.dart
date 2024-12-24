@@ -1,3 +1,4 @@
+import 'package:chat_app/core/utils/cloudinary_service.dart';
 import 'package:chat_app/core/utils/network_info.dart';
 import 'package:chat_app/features/home/data/repo/home_remote_firebase_repository.dart';
 import 'package:chat_app/features/home/data/repo/home_local_hive_repository.dart';
@@ -26,13 +27,16 @@ Future<void> initHomeSl() async {
   // Repositories
   sl.registerLazySingleton<HomeRemoteRepository>(() =>
       HomeRemoteFirebaseRepository(
-          firebaseAuth: sl(), firebaseFirestore: sl()));
+          cloudinaryService: sl(),
+          firebaseAuth: sl(),
+          firebaseFirestore: sl()));
   sl.registerLazySingleton<HomeLocalReopsitory>(
       () => HomeLocalHiveRepository());
 
   // Externals
   sl.registerLazySingleton(() => FirebaseAuth.instance);
   sl.registerLazySingleton(() => FirebaseFirestore.instance);
+  sl.registerLazySingleton(() => CloudinaryService());
   sl.registerLazySingleton(() => NetworkInfo(internetConnectionChecker: sl()));
   sl.registerLazySingleton(() => InternetConnectionChecker());
 }

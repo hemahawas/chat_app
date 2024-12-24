@@ -30,6 +30,11 @@ class _ChatBodyState extends State<ChatBody> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocConsumer<HomeViewModel, HomeStates>(
       listener: (context, state) {},
@@ -54,32 +59,41 @@ class _ChatBodyState extends State<ChatBody> {
                       );
                     case ConnectionState.active:
                     case ConnectionState.done:
-                      home_di.sl<HomeViewModel>().setChats(snapShot);
+                      // Before building the listview, we shoul check about
+                      // 1. current user is not null
+                      // 2. All users exists
 
-                      return home_di.sl<HomeViewModel>().chats.isNotEmpty
-                          ? ListView.separated(
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              itemBuilder: (context, index) => ChatItem(
-                                chatModel:
-                                    home_di.sl<HomeViewModel>().chats[index],
-                              ),
-                              itemCount:
-                                  home_di.sl<HomeViewModel>().chats.length,
-                              separatorBuilder: (context, index) =>
-                                  ResponsiveSizedBox(
-                                sizedBoxContext: context,
-                                hasHeight: true,
-                                heightFraction: 50,
-                              ),
-                            )
-                          : Align(
-                              alignment: Alignment.center,
-                              child: Text(
-                                AppStrings.addNewConnectionsForYourChat,
-                                style: Styles.textStyle15
-                                    .copyWith(color: Colors.grey),
-                              ));
+                      if (snapShot.hasData) {
+                        home_di.sl<HomeViewModel>().setChats(snapShot);
+                        return home_di.sl<HomeViewModel>().chats.isNotEmpty
+                            ? ListView.separated(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemBuilder: (context, index) => ChatItem(
+                                  chatModel:
+                                      home_di.sl<HomeViewModel>().chats[index],
+                                ),
+                                itemCount:
+                                    home_di.sl<HomeViewModel>().chats.length,
+                                separatorBuilder: (context, index) =>
+                                    ResponsiveSizedBox(
+                                  sizedBoxContext: context,
+                                  hasHeight: true,
+                                  heightFraction: 50,
+                                ),
+                              )
+                            : Align(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  AppStrings.addNewConnectionsForYourChat,
+                                  style: Styles.textStyle15
+                                      .copyWith(color: Colors.grey),
+                                ));
+                      } else {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
                   }
                 },
               ),

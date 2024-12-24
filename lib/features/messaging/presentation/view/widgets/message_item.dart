@@ -11,10 +11,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MessageItem extends StatelessWidget {
+  final Map<String, String> participantNames;
   final MessageModel message;
   final bool dateIsShown;
+  final bool isGroup;
   const MessageItem(
-      {super.key, required this.message, required this.dateIsShown});
+      {super.key,
+      required this.message,
+      required this.dateIsShown,
+      required this.isGroup,
+      required this.participantNames});
 
   @override
   Widget build(BuildContext context) {
@@ -28,44 +34,73 @@ class MessageItem extends StatelessWidget {
                 date: message.sendingTime!,
               )
             : Container(),
-        Container(
-          width: double.infinity,
-          padding: EdgeInsets.all(8),
-          margin: currentUserUId == message.messageSenderId
-              ? EdgeInsets.only(
-                  left: MediaQuery.of(context).size.width * 0.25, right: 5)
-              : EdgeInsets.only(
-                  right: MediaQuery.of(context).size.width * 0.25, left: 5),
-          alignment: Alignment.topRight,
-          decoration: BoxDecoration(
-              borderRadius: currentUserUId == message.messageSenderId
-                  ? BorderRadius.circular(10.0).copyWith(topRight: Radius.zero)
-                  : BorderRadius.circular(10.0).copyWith(topLeft: Radius.zero),
-              color: currentUserUId == message.messageSenderId
-                  ? ColorApp.messageBodyOfCurrentUserColor
-                  : ColorApp.messageBodyOfOtherUserColor),
-          child: Column(
-            children: [
-              Container(
-                child: message.image != null
-                    ? Image.network(message.image!)
-                    : null,
+        ConstrainedBox(
+          constraints: BoxConstraints(minHeight: 50),
+          child: Flexible(
+            fit: FlexFit.tight,
+            child: Container(
+              height: 80,
+              width: double.infinity,
+              padding: EdgeInsets.all(8),
+              margin: currentUserUId == message.messageSenderId
+                  ? EdgeInsets.only(
+                      top: 1,
+                      bottom: 1,
+                      left: MediaQuery.of(context).size.width * 0.25,
+                      right: 5)
+                  : EdgeInsets.only(
+                      top: 1,
+                      bottom: 1,
+                      right: MediaQuery.of(context).size.width * 0.25,
+                      left: 5),
+              alignment: Alignment.topRight,
+              decoration: BoxDecoration(
+                  borderRadius: currentUserUId == message.messageSenderId
+                      ? BorderRadius.circular(10.0)
+                          .copyWith(topRight: Radius.zero)
+                      : BorderRadius.circular(10.0)
+                          .copyWith(topLeft: Radius.zero),
+                  color: currentUserUId == message.messageSenderId
+                      ? ColorApp.messageBodyOfCurrentUserColor
+                      : ColorApp.messageBodyOfOtherUserColor),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  isGroup
+                      ? Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            currentUserUId == message.messageSenderId
+                                ? ''
+                                : '${participantNames[message.messageSenderId]}',
+                            style: Styles.textStyle15,
+                          ),
+                        )
+                      : Container(),
+                  Container(
+                    child: message.image != null
+                        ? Image.network(message.image!)
+                        : null,
+                  ),
+                  Text(
+                    message.body == null
+                        ? ''
+                        : (message.body == 'Photo.' ? '' : message.body!),
+                    maxLines: 6,
+                  ),
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: Text(
+                      message.sendingTime != null
+                          ? '${message.sendingTime!.hour}:${message.sendingTime!.minute}'
+                          : '',
+                      style: Styles.textStyle15
+                          .copyWith(fontSize: 12.0, color: Colors.grey),
+                    ),
+                  )
+                ],
               ),
-              Text(
-                message.body ?? '',
-                maxLines: 6,
-              ),
-              Align(
-                alignment: Alignment.bottomRight,
-                child: Text(
-                  message.sendingTime != null
-                      ? '${message.sendingTime!.hour}:${message.sendingTime!.minute}'
-                      : '',
-                  style: Styles.textStyle15
-                      .copyWith(fontSize: 12.0, color: Colors.grey),
-                ),
-              )
-            ],
+            ),
           ),
         ),
       ],

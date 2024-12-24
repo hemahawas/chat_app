@@ -1,3 +1,4 @@
+import 'package:chat_app/core/utils/cloudinary_service.dart';
 import 'package:chat_app/features/messaging/data/repo/messaging_firebase_remote_repository.dart';
 import 'package:chat_app/features/messaging/data/repo/messaging_remote_repository.dart';
 import 'package:chat_app/features/messaging/presentation/view_model/cubit.dart';
@@ -15,9 +16,12 @@ Future<void> initMessagingSl() async {
   // Repositories
   sl.registerLazySingleton<MessagingRemoteRepository>(() =>
       MessagingFirebaseRemoteRepository(
-          firebaseFirestore: sl(), firebaseStorage: sl()));
+          cloudinaryService: sl(),
+          firebaseFirestore: sl(),
+          firebaseStorage: sl()));
 
   // External
   sl.registerLazySingleton(() => FirebaseFirestore.instance);
   sl.registerLazySingleton(() => FirebaseStorage.instance);
+  sl.registerLazySingleton(() => CloudinaryService());
 }

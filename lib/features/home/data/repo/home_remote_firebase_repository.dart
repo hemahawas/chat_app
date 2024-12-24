@@ -1,15 +1,23 @@
+import 'dart:io';
+
+import 'package:chat_app/core/utils/cloudinary_service.dart';
 import 'package:chat_app/core/utils/user_model.dart';
+import 'package:chat_app/features/group/data/model/group_model.dart';
 import 'package:chat_app/features/home/data/model/chat_model.dart';
 import 'package:chat_app/features/home/data/repo/home_remote_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 
 class HomeRemoteFirebaseRepository extends HomeRemoteRepository {
   final FirebaseAuth firebaseAuth;
   final FirebaseFirestore firebaseFirestore;
+  final CloudinaryService cloudinaryService;
 
   HomeRemoteFirebaseRepository(
-      {required this.firebaseAuth, required this.firebaseFirestore});
+      {required this.cloudinaryService,
+      required this.firebaseAuth,
+      required this.firebaseFirestore});
 
   @override
   Future<List<ChatModel>> getChats() async {
@@ -77,7 +85,7 @@ class HomeRemoteFirebaseRepository extends HomeRemoteRepository {
       print(error.toString());
     });
 
-    // Update the users to add new chats
+    // Update the users to add new chat
     currentUser.addedChats ??= [];
     currentUser.addedChats!.add(anotherUser.uId.toString());
     anotherUser.addedChats ??= [];
@@ -85,6 +93,7 @@ class HomeRemoteFirebaseRepository extends HomeRemoteRepository {
 
     // Then create new chat
     var chat = ChatModel(
+        participantsUId: [currentUser.uId!, anotherUser.uId!],
         participants: [currentUser, anotherUser],
         chatId: '${currentUser.uId}-${anotherUser.uId}',
         messages: [],
@@ -123,5 +132,92 @@ class HomeRemoteFirebaseRepository extends HomeRemoteRepository {
   Stream<QuerySnapshot<Map<String, dynamic>>> getChatsInRealTime() async* {
     // get chat snapshots from firebase
     yield* firebaseFirestore.collection('chats').snapshots();
+  }
+
+  // Create group
+  @override
+  Future<void> createGroup(GroupModel group) async {
+    // upload the image then assign it
+    if (group.groupImageUrl != null) {
+      group.groupImageUrl =
+          await cloudinaryService.uploadImageThenGet(group.groupImageUrl!);
+    }
+    // Add to chat
+    await firebaseFirestore
+        .collection('chats')
+        .doc(group.chatId)
+        .set((group).toMap());
+
+    // Add the new group to users
+    await firebaseFirestore
+        .collection('users')
+        .where('uId', whereIn: group.participantsUId)
+        .get()
+        .then((users) async {
+      for (var user in users.docs) {
+        UserModel userModel = UserModel.fromJson(user.data());
+        userModel.addedChats ??= [];
+        userModel.addedChats!.add(group.chatId!);
+        // Update users
+        await firebaseFirestore
+            .collection('users')
+            .doc(userModel.uId)
+            .set(userModel.toMap());
+      }
+    });
+  }
+
+  @override
+  Future<void> uploadUserImage(UserModel user, String image) async {
+    // upload to cloudinary then put the url in user image
+    user.image = await cloudinaryService.uploadImageThenGet(image);
+    // Update user in firestore
+    await firebaseFirestore.collection('users').doc(user.uId).set(user.toMap());
+  }
+
+  @override
+  Future<void> notifyUserChange() async {
+    // 1. get the Users
+    await firebaseFirestore.collection('users').get().then((users) async {
+      for (var user in users.docs) {
+        // 2. get the chats that the user is in
+        await firebaseFirestore
+            .collection('chats')
+            .where('participantsUId', arrayContains: user.data()['uId'])
+            .get()
+            .then((chats) async {
+          for (var chat in chats.docs) {
+            ChatModel chatModel;
+
+            if (chat.data()['groupName'] == null) {
+              chatModel = ChatModel.fromJson(chat.data());
+            } else {
+              chatModel = GroupModel.fromJson(chat.data());
+            }
+
+            // 3. update the user in the chat
+            for (var participant in chatModel.participants ?? []) {
+              if (participant.uId == user.data()['uId']) {
+                chatModel.participants ??= [];
+                chatModel.participants?.remove(participant);
+                chatModel.participants?.add(UserModel.fromJson(user.data()));
+              }
+              // 4. update the chat
+              await firebaseFirestore
+                  .collection('chats')
+                  .doc(chatModel.chatId)
+                  .set(chatModel.toMap())
+                  .catchError((error) {
+                debugPrint('update Chat Error: ' '${error.toString()}');
+              });
+            }
+          }
+        }).catchError((error) {
+          debugPrint('get Chat Error: ' '${error.toString()}');
+        });
+      }
+    }).catchError((error) {
+      debugPrint('get User Error: ' '${error.toString()}');
+    });
   }
 }

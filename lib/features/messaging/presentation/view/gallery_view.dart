@@ -74,7 +74,7 @@ class GalleryView extends StatelessWidget {
                                 return IconButton(
                                   onPressed: () {
                                     // Create message
-                                    /*var message = MessageModel(
+                                    var message = MessageModel(
                                         body: messageController.text,
                                         image: path,
                                         messageSenderId: messaging_di
@@ -91,7 +91,7 @@ class GalleryView extends StatelessWidget {
                                                 .chat!,
                                             message);
                                     // Then return to messaging view
-                                    Navigator.pop(context);*/
+                                    Navigator.pop(context);
                                   },
                                   icon: Icon(
                                     Icons.check,

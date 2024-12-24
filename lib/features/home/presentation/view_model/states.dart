@@ -44,3 +44,17 @@ class GetUserInfoSuccessState extends HomeStates {}
 class GetUserInfoLoadingState extends HomeStates {}
 
 class GetUserInfoErrorState extends HomeStates {}
+
+// Create group
+class CreateGroupSuccessState extends HomeStates {}
+
+class CreateGroupLoadingState extends HomeStates {}
+
+class CreateGroupErrorState extends HomeStates {}
+
+// Upload profile image
+class UpdateUserImageLoadingState extends HomeStates {}
+
+class UpdateUserImageSuccessState extends HomeStates {}
+
+class UpdateUserImageErrorState extends HomeStates {}

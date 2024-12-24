@@ -41,9 +41,9 @@ class ProfileView extends StatelessWidget {
                   sizedBoxContext: context,
                   hasHeight: true,
                 ),
-                const Center(
+                Center(
                   child: ProfileImageAndModify(
-                    userProfileImage: null,
+                    userProfileImage: user.image,
                   ),
                 ),
                 ResponsiveSizedBox(
