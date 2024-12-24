@@ -10,7 +10,7 @@ class ViewedUpdates extends StatelessWidget {
     return ListView.separated(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      itemBuilder: (context, index) => const ViewedStatusItem(),
+      itemBuilder: (context, index) => Container(),
       itemCount: 4,
       separatorBuilder: (context, index) => ResponsiveSizedBox(
         sizedBoxContext: context,

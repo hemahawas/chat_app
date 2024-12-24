@@ -1,6 +1,6 @@
 import 'package:chat_app/core/shared_widgets/responsive_sizedbox.dart';
 import 'package:chat_app/core/themes/styles.dart';
-import 'package:chat_app/features/home/presentaion/view/widgets/recent_updates.dart';
+
 import 'package:chat_app/features/home/presentaion/view/widgets/user_status_item.dart';
 import 'package:chat_app/features/home/presentaion/view/widgets/viewed_updates.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +32,7 @@ class StatusBody extends StatelessWidget {
               hasHeight: true,
               heightFraction: 40,
             ),
-            const RecentUpdates(),
+            //const RecentUpdates(),
             ResponsiveSizedBox(
               sizedBoxContext: context,
               hasHeight: true,
