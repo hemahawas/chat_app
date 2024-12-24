@@ -98,7 +98,7 @@ class ChatItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
-                chatModel.lastMessage?.sendingTime != null
+                chatModel.lastMessage?.sendingTime!.year != 0
                     ? '${chatModel.lastMessage?.sendingTime?.hour}:${chatModel.lastMessage?.sendingTime?.minute}'
                     : '',
                 style: Styles.textStyle15.copyWith(color: Colors.black87),

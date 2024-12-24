@@ -182,6 +182,7 @@ class HomeViewModel extends Cubit<HomeStates> {
       return;
     }
     chats = [];
+    List<ChatModel> localChats = [];
     if (snapShot.data != null) {
       for (var doc in snapShot.data!.docs) {
         // Check if it is group or chat
@@ -197,15 +198,27 @@ class HomeViewModel extends Cubit<HomeStates> {
         if (chat.chatId!
             // ignore: collection_methods_unrelated_type
             .contains(currentUser!.uId.toString())) {
-          chats.add(chat);
+          localChats.add(chat);
         } // For group
         else if ((chat is GroupModel) &&
             chat.participantsUId!.contains(currentUser!.uId)) {
           print('################### Group Chat');
-          chats.add(chat);
+          localChats.add(chat);
         }
       }
     }
+    // Sort the chats by the last message
+    localChats.sort(
+      (a, b) {
+        a.lastMessage ??= MessageModel(sendingTime: DateTime(0));
+        b.lastMessage ??= MessageModel(sendingTime: DateTime(0));
+        a.lastMessage!.sendingTime ??= DateTime(0);
+        b.lastMessage!.sendingTime ??= DateTime(0);
+        return b.lastMessage!.sendingTime!
+            .compareTo(a.lastMessage!.sendingTime!);
+      },
+    );
+    chats = localChats;
   }
 
   Future<void> createGroup(GroupModel group) async {

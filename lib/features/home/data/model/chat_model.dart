@@ -25,13 +25,13 @@ class ChatModel {
       required this.chatId});
 
   ChatModel.fromJson(Map<String, dynamic>? json) {
-    participants = (json!['participants'] as List<dynamic>)
+    participants = (json?['participants'] as List<dynamic>)
         .map((e) => UserModel.fromJson(e))
         .toList();
 
-    chatId = json['chatId'];
-    participantsUId = json['participantsUId'].cast<String>();
-    lastMessage = MessageModel.fromJson(json['lastMessage']);
+    chatId = json?['chatId'];
+    participantsUId = json?['participantsUId'].cast<String>();
+    lastMessage = MessageModel.fromJson(json?['lastMessage']);
   }
 
   Map<String, dynamic> toMap() {
