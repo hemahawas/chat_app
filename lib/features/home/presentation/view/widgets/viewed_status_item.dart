@@ -2,6 +2,7 @@ import 'package:chat_app/core/constants/asset_images.dart';
 import 'package:chat_app/core/shared_widgets/responsive_sizedbox.dart';
 import 'package:chat_app/core/themes/styles.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/image_field.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -19,7 +20,6 @@ class ViewedStatusItem extends StatelessWidget {
         ResponsiveSizedBox(
           sizedBoxContext: context,
           hasWidth: true,
-          widthFraction: 20,
         ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -32,7 +32,6 @@ class ViewedStatusItem extends StatelessWidget {
             ResponsiveSizedBox(
               sizedBoxContext: context,
               hasHeight: true,
-              heightFraction: 70,
             ),
             Text(
               'Today, 12:00 PM',
