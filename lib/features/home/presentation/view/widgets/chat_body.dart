@@ -70,6 +70,7 @@ class _ChatBodyState extends State<ChatBody> {
                                 shrinkWrap: true,
                                 physics: NeverScrollableScrollPhysics(),
                                 itemBuilder: (context, index) => ChatItem(
+                                  isSearched: false,
                                   chatModel:
                                       home_di.sl<HomeViewModel>().chats[index],
                                 ),

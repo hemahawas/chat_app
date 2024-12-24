@@ -5,6 +5,7 @@ import 'package:chat_app/core/themes/styles.dart';
 import 'package:chat_app/core/utils/user_model.dart';
 import 'package:chat_app/features/group/data/model/group_model.dart';
 import 'package:chat_app/features/home/data/model/chat_model.dart';
+import 'package:chat_app/features/home/presentation/view/widgets/chat_search_delegate.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/image_field.dart';
 import 'package:chat_app/features/home/presentation/view_model/cubit.dart';
 import 'package:chat_app/features/messaging/data/repo/messaging_firebase_remote_repository.dart';
@@ -21,8 +22,10 @@ import 'package:chat_app/features/home/presentation/view_model/home_injection_co
 
 class ChatItem extends StatelessWidget {
   final ChatModel chatModel;
+  final bool isSearched;
 
-  const ChatItem({super.key, required this.chatModel});
+  const ChatItem(
+      {super.key, required this.chatModel, required this.isSearched});
 
   @override
   Widget build(BuildContext context) {
@@ -39,8 +42,11 @@ class ChatItem extends StatelessWidget {
 
     return MaterialButton(
       onPressed: () {
-        debugPrint(cubit.currentUser!.uId);
-        debugPrint(chatModel.chatId);
+        // if This chat is searched, close the search,
+        // so that when you press back arrow, you will back to home view
+        if (isSearched) {
+          Navigator.pop(context);
+        }
         // Give the Required args from chat view model to messaging view model while routing
         // See the routes.dart file
         Navigator.pushNamed(context, Routes.messagingRoute,
