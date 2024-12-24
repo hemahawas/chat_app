@@ -1,4 +1,5 @@
 import 'package:chat_app/core/utils/user_model.dart';
+import 'package:chat_app/features/group/data/model/group_model.dart';
 import 'package:chat_app/features/home/data/model/chat_model.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/chat_item.dart';
 import 'package:chat_app/features/home/presentation/view_model/cubit.dart';
@@ -39,18 +40,29 @@ class ChatSearchDelegate extends SearchDelegate {
           searchTerms = List.generate(
               home_di.sl<HomeViewModel>().chats.length,
               (index) => ChatItem(
+                  isSearched: true,
                   chatModel: home_di.sl<HomeViewModel>().chats[index]));
 
           List<ChatItem> matchQuery = [];
           // get searched chats and add it to matchQuery
           for (var chatItem in searchTerms) {
-            var anotherUser = chatItem.chatModel.participants!.firstWhere((e) {
-              return e.uId != home_di.sl<HomeViewModel>().currentUser!.uId;
-            });
-            if ((anotherUser.name!
-                .toLowerCase()
-                .contains(query.toLowerCase()))) {
-              matchQuery.add(chatItem);
+            if (chatItem.chatModel is GroupModel) {
+              if ((chatItem.chatModel as GroupModel)
+                  .chatId!
+                  .toLowerCase()
+                  .contains(query.toLowerCase())) {
+                matchQuery.add(chatItem);
+              }
+            } else {
+              var anotherUser =
+                  chatItem.chatModel.participants!.firstWhere((e) {
+                return e.uId != home_di.sl<HomeViewModel>().currentUser!.uId;
+              });
+              if ((anotherUser.name!
+                  .toLowerCase()
+                  .contains(query.toLowerCase()))) {
+                matchQuery.add(chatItem);
+              }
             }
           }
           // View the results
@@ -73,18 +85,29 @@ class ChatSearchDelegate extends SearchDelegate {
           searchTerms = List.generate(
               home_di.sl<HomeViewModel>().chats.length,
               (index) => ChatItem(
+                  isSearched: true,
                   chatModel: home_di.sl<HomeViewModel>().chats[index]));
 
           List<ChatItem> matchQuery = [];
           // get searched chats and add it to matchQuery
           for (var chatItem in searchTerms) {
-            var anotherUser = chatItem.chatModel.participants!.firstWhere((e) {
-              return e.uId != home_di.sl<HomeViewModel>().currentUser!.uId;
-            });
-            if ((anotherUser.name!
-                .toLowerCase()
-                .contains(query.toLowerCase()))) {
-              matchQuery.add(chatItem);
+            if (chatItem.chatModel is GroupModel) {
+              if ((chatItem.chatModel as GroupModel)
+                  .chatId!
+                  .toLowerCase()
+                  .contains(query.toLowerCase())) {
+                matchQuery.add(chatItem);
+              }
+            } else {
+              var anotherUser =
+                  chatItem.chatModel.participants!.firstWhere((e) {
+                return e.uId != home_di.sl<HomeViewModel>().currentUser!.uId;
+              });
+              if ((anotherUser.name!
+                  .toLowerCase()
+                  .contains(query.toLowerCase()))) {
+                matchQuery.add(chatItem);
+              }
             }
           }
           // View the results
