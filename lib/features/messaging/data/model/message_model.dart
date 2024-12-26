@@ -15,7 +15,7 @@ class MessageModel {
   String? messageSenderId;
   @HiveField(HiveHelper.messageSendingTimeField)
   DateTime? sendingTime;
-  Map<String, bool>? isSeen;
+  List<String> isSeenBy = [];
 
   String? messageId;
 
@@ -29,7 +29,8 @@ class MessageModel {
         : null;
     messageSenderId = json?['messageSenderId'];
     messageId = json?['messageId'];
-    isSeen = json?['isSeen'];
+    isSeenBy =
+        json?['isSeenBy'] == null ? [] : json?['isSeenBy'].cast<String>();
   }
 
   Map<String, dynamic> toMap() {
@@ -39,7 +40,7 @@ class MessageModel {
       'sendingTime': sendingTime?.toString(),
       'messageSenderId': messageSenderId,
       'messageId': messageId,
-      'isSeen': isSeen,
+      'isSeenBy': isSeenBy.toList(),
     };
   }
 }

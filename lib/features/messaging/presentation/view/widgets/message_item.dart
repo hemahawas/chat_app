@@ -9,6 +9,7 @@ import 'package:chat_app/features/messaging/presentation/view_model/cubit.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
 class MessageItem extends StatelessWidget {
   final Map<String, String> participantNames;
@@ -34,73 +35,59 @@ class MessageItem extends StatelessWidget {
                 date: message.sendingTime!,
               )
             : Container(),
-        ConstrainedBox(
-          constraints: BoxConstraints(minHeight: 30),
-          child: Container(
-            height: message.image != null ? 200 : 60,
-            width: double.infinity,
-            padding: EdgeInsets.all(8),
-            margin: currentUserUId == message.messageSenderId
-                ? EdgeInsets.only(
-                    left: MediaQuery.of(context).size.width * 0.25, right: 5)
-                : EdgeInsets.only(
-                    right: MediaQuery.of(context).size.width * 0.25, left: 5),
-            alignment: Alignment.topRight,
-            decoration: BoxDecoration(
-                borderRadius: currentUserUId == message.messageSenderId
-                    ? BorderRadius.circular(10.0)
-                        .copyWith(topRight: Radius.zero)
-                    : BorderRadius.circular(10.0)
-                        .copyWith(topLeft: Radius.zero),
-                color: currentUserUId == message.messageSenderId
-                    ? ColorApp.messageBodyOfCurrentUserColor
-                    : ColorApp.messageBodyOfOtherUserColor),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                isGroup && currentUserUId != message.messageSenderId
-                    ? Align(
-                        alignment: Alignment.topLeft,
-                        child: Text(
-                          '${participantNames[message.messageSenderId]}',
-                          style: Styles.textStyle15,
-                        ),
-                      )
-                    : Container(
-                        child: null,
-                      ),
-                Container(
-                  child: message.image != null
-                      ? Image.network(message.image!)
-                      : null,
-                ),
-                Flexible(
-                  child: Row(children: [
-                    LimitedBox(
-                      maxWidth: MediaQuery.of(context).size.width * 0.6,
+        Container(
+          width: double.infinity,
+          padding: EdgeInsets.all(5),
+          margin: currentUserUId == message.messageSenderId
+              ? EdgeInsets.only(
+                  left: MediaQuery.of(context).size.width * 0.25, right: 5)
+              : EdgeInsets.only(
+                  right: MediaQuery.of(context).size.width * 0.25, left: 5),
+          alignment: Alignment.topRight,
+          decoration: BoxDecoration(
+              borderRadius: currentUserUId == message.messageSenderId
+                  ? BorderRadius.circular(10.0).copyWith(topRight: Radius.zero)
+                  : BorderRadius.circular(10.0).copyWith(topLeft: Radius.zero),
+              color: currentUserUId == message.messageSenderId
+                  ? ColorApp.messageBodyOfCurrentUserColor
+                  : ColorApp.messageBodyOfOtherUserColor),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              isGroup && currentUserUId != message.messageSenderId
+                  ? Align(
+                      alignment: Alignment.topLeft,
                       child: Text(
-                        message.body == null
-                            ? ''
-                            : (message.body == 'Photo.' ? '' : message.body!),
-                        maxLines: 6,
-                        style: TextStyle(fontWeight: FontWeight.w500),
-                      ),
-                    ),
-                    Spacer(),
-                    Align(
-                      alignment: Alignment.bottomRight,
-                      child: Text(
-                        message.sendingTime != null
-                            ? '${message.sendingTime!.hour}:${message.sendingTime!.minute}'
-                            : '',
-                        style: Styles.textStyle15
-                            .copyWith(fontSize: 12.0, color: Colors.grey),
+                        '${participantNames[message.messageSenderId]}',
+                        style: Styles.textStyle15,
                       ),
                     )
-                  ]),
+                  : Container(
+                      child: null,
+                    ),
+              Container(
+                child: message.image != null
+                    ? Image.network(message.image!)
+                    : null,
+              ),
+              Text(
+                message.body == null
+                    ? ''
+                    : (message.body == 'Photo.' ? '' : message.body!),
+                maxLines: 6,
+                style: TextStyle(fontWeight: FontWeight.w500),
+              ),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: Text(
+                  message.sendingTime != null
+                      ? DateFormat.jm().format(message.sendingTime!)
+                      : '',
+                  style: Styles.textStyle15
+                      .copyWith(fontSize: 12.0, color: Colors.grey),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ],

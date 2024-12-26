@@ -8,4 +8,5 @@ abstract class MessagingRemoteRepository {
   Future<List<MessageModel>> getMessages(ChatModel chat);
   Stream<QuerySnapshot<Map<String, dynamic>>> getMessagesInRealTime(
       ChatModel chat);
+  Future<void> chatIsSeen(ChatModel chat);
 }

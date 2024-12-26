@@ -19,8 +19,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:chat_app/features/home/presentation/view_model/home_injection_container.dart'
     as home_di;
+import 'package:intl/intl.dart';
 
-class ChatItem extends StatelessWidget {
+class ChatItem extends StatefulWidget {
   final ChatModel chatModel;
   final bool isSearched;
 
@@ -28,15 +29,37 @@ class ChatItem extends StatelessWidget {
       {super.key, required this.chatModel, required this.isSearched});
 
   @override
+  State<ChatItem> createState() => _ChatItemState();
+}
+
+class _ChatItemState extends State<ChatItem> {
+  int newMessages = 0;
+
+  @override
   Widget build(BuildContext context) {
     // get the name of the other user
     var cubit = BlocProvider.of<HomeViewModel>(context);
     UserModel? anotherUser;
-    if (chatModel is! GroupModel) {
-      if (chatModel.participants?[0].uId == cubit.currentUser?.uId) {
-        anotherUser = chatModel.participants?[1];
+    if (widget.chatModel is! GroupModel) {
+      if (widget.chatModel.participants?[0].uId == cubit.currentUser?.uId) {
+        anotherUser = widget.chatModel.participants?[1];
       } else {
-        anotherUser = chatModel.participants?[0];
+        anotherUser = widget.chatModel.participants?[0];
+      }
+    }
+
+    // Get the number of new messages
+    if (widget.chatModel.messages != null &&
+        widget.chatModel.messages!.isNotEmpty) {
+      print("chatModel.messages: ${widget.chatModel.messages!.length}");
+      for (var message in widget.chatModel.messages!) {
+        if (message.isSeenBy.contains(cubit.currentUser!.uId)) {
+          break;
+        } else {
+          setState(() {
+            newMessages++;
+          });
+        }
       }
     }
 
@@ -44,21 +67,26 @@ class ChatItem extends StatelessWidget {
       onPressed: () {
         // if This chat is searched, close the search,
         // so that when you press back arrow, you will back to home view
-        if (isSearched) {
+        if (widget.isSearched) {
           Navigator.pop(context);
         }
+
+        //When the user open the chat, he will see the new messages
+
+        // bloc. chat is seen
+
         // Give the Required args from chat view model to messaging view model while routing
         // See the routes.dart file
         Navigator.pushNamed(context, Routes.messagingRoute,
             arguments: MessagingArguments(
-                chatModel: chatModel, currentUser: cubit.currentUser!));
+                chatModel: widget.chatModel, currentUser: cubit.currentUser!));
       },
       child: Row(
         children: [
           ImageField(
             // user image
-            image: chatModel is GroupModel
-                ? (chatModel as GroupModel).groupImageUrl
+            image: widget.chatModel is GroupModel
+                ? (widget.chatModel as GroupModel).groupImageUrl
                 : anotherUser!.image,
             borderColor: Colors.white10,
           ),
@@ -74,8 +102,8 @@ class ChatItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    chatModel is GroupModel
-                        ? (chatModel as GroupModel).groupName
+                    widget.chatModel is GroupModel
+                        ? (widget.chatModel as GroupModel).groupName
                         : anotherUser!.name!,
                     style: Styles.textStyle15
                         .copyWith(fontSize: 18.sp, color: Colors.black),
@@ -88,9 +116,9 @@ class ChatItem extends StatelessWidget {
                   Text(
                     // chat last message
                     // If the last message sender is the current user, show 'you: '
-                    '${chatModel.lastMessage?.messageSenderId == cubit.currentUser?.uId ? 'you: ' : ''}'
+                    '${widget.chatModel.lastMessage?.messageSenderId == cubit.currentUser?.uId ? 'you: ' : ''}'
                     // If the message has only image, show 'Photo.' , else show message body
-                    '${chatModel.lastMessage?.body ?? 'Hey There, I\'m using chat app'}',
+                    '${widget.chatModel.lastMessage?.body ?? 'Hey There, I\'m using chat app'}',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     softWrap: true,
@@ -104,8 +132,9 @@ class ChatItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
-                chatModel.lastMessage?.sendingTime!.year != 0
-                    ? '${chatModel.lastMessage?.sendingTime?.hour}:${chatModel.lastMessage?.sendingTime?.minute}'
+                widget.chatModel.lastMessage?.sendingTime!.year != 0
+                    ? DateFormat.jm()
+                        .format(widget.chatModel.lastMessage!.sendingTime!)
                     : '',
                 style: Styles.textStyle15.copyWith(color: Colors.black87),
               ),
@@ -114,19 +143,21 @@ class ChatItem extends StatelessWidget {
                 hasHeight: true,
                 heightFraction: 70,
               ),
-              Container(
-                alignment: Alignment.center,
-                height: 20.0.h,
-                width: 20.0.w,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50.0.sp),
-                    color: ColorApp.primaryColor),
-                child: const Text(
-                  // Number of new messages
-                  '2',
-                  style: TextStyle(color: ColorApp.appBackgroundColor),
-                ),
-              )
+              true
+                  ? const SizedBox()
+                  : Container(
+                      alignment: Alignment.center,
+                      height: 20.0.h,
+                      width: 20.0.w,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50.0),
+                          color: ColorApp.primaryColor),
+                      child: Text(
+                        // Number of new messages
+                        newMessages.toString(),
+                        style: TextStyle(color: ColorApp.appBackgroundColor),
+                      ),
+                    )
             ],
           )
         ],
