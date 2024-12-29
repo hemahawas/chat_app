@@ -190,7 +190,6 @@ class HomeViewModel extends Cubit<HomeStates> {
         if (doc.data()['groupName'] == null) {
           chat = ChatModel.fromJson(doc.data());
         } else {
-          print('################### Group Model');
           chat = GroupModel.fromJson(doc.data());
         }
 
@@ -202,7 +201,6 @@ class HomeViewModel extends Cubit<HomeStates> {
         } // For group
         else if ((chat is GroupModel) &&
             chat.participantsUId!.contains(currentUser!.uId)) {
-          print('################### Group Chat');
           localChats.add(chat);
         }
       }
@@ -241,6 +239,19 @@ class HomeViewModel extends Cubit<HomeStates> {
     }).catchError((error) {
       debugPrint(error.toString());
       emit(UpdateUserImageErrorState());
+    });
+  }
+
+  Future<void> chatIsSeen(ChatModel chat) async {
+    emit(ChatIsSeenLoadingState());
+    // the user saw the messages
+    chat.newMessages[currentUser!.uId!] = 0;
+    debugPrint("########Chat is Seen = ${chat.newMessages[currentUser!.uId!]}");
+    await firebaseHomeRepository.chatIsSeen(chat).then((_) {
+      emit(ChatIsSeenSuccessState());
+    }).catchError((error) {
+      debugPrint('chatIsSeen error: ${error.toString()}');
+      emit(ChatIsSeenErrorState());
     });
   }
 }

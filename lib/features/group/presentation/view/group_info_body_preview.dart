@@ -81,13 +81,18 @@ class _GroupInfoBodyPreviewState extends State<GroupInfoBodyPreview> {
           child: FloatingActionButton(
             backgroundColor: ColorApp.primaryColor,
             onPressed: () async {
+              Map<String, int> newMessages = {};
+              for (var user in widget.addedUsers) {
+                newMessages[user.uId!] = 0;
+              }
               GroupModel group = GroupModel(
                   participantsUId: List<String>.from(
                       widget.addedUsers.map((i) => i.uId.toString())),
                   participants: widget.addedUsers,
                   chatId: groupNameGontroller.text,
                   groupName: groupNameGontroller.text,
-                  groupImageUrl: pickedImage?.path);
+                  groupImageUrl: pickedImage?.path,
+                  newMessages: newMessages);
               await home_di.sl<HomeViewModel>().createGroup(group);
               Navigator.pop(context);
               Navigator.pop(context);

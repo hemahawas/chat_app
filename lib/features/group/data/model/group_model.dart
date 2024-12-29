@@ -7,6 +7,7 @@ class GroupModel extends ChatModel {
   String? groupImageUrl = 'https://image.pngaaa.com/728/8014728-middle.png';
   GroupModel({
     super.participantsUId,
+    required super.newMessages,
     required super.participants,
     required super.chatId,
     required this.groupName,
@@ -14,7 +15,11 @@ class GroupModel extends ChatModel {
   });
 
   GroupModel.fromJson(Map<String, dynamic>? json)
-      : super(participants: [], chatId: '', participantsUId: []) {
+      : super(
+            participants: [],
+            chatId: '',
+            participantsUId: [],
+            newMessages: {}) {
     super.participants = (json!['participants'] as List<dynamic>)
         .map((e) => UserModel.fromJson(e))
         .toList();
@@ -24,6 +29,10 @@ class GroupModel extends ChatModel {
     groupName = json['groupName'];
     groupImageUrl = json['groupImageUrl'];
     super.lastMessage = MessageModel.fromJson(json['lastMessage']);
+    Map<String, dynamic> unparsedNewMessages = json['newMessages'] ?? {};
+    unparsedNewMessages.forEach((k, v) {
+      super.newMessages[k] = v as int;
+    });
   }
 
   @override
@@ -35,6 +44,7 @@ class GroupModel extends ChatModel {
       'participants': participants?.map((e) => e.toMap()).toList(),
       'lastMessage': lastMessage?.toMap(),
       'groupImageUrl': groupImageUrl,
+      'newMessages': newMessages,
     };
   }
 }

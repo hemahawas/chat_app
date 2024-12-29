@@ -97,6 +97,7 @@ class HomeRemoteFirebaseRepository extends HomeRemoteRepository {
         participants: [currentUser, anotherUser],
         chatId: '${currentUser.uId}-${anotherUser.uId}',
         messages: [],
+        newMessages: {currentUser.uId!: 0, anotherUser.uId!: 0},
         lastMessage: null);
 
     // Add the new chat to firestore
@@ -219,5 +220,13 @@ class HomeRemoteFirebaseRepository extends HomeRemoteRepository {
     }).catchError((error) {
       debugPrint('get User Error: ' '${error.toString()}');
     });
+  }
+
+  @override
+  Future<void> chatIsSeen(ChatModel chat) async {
+    await firebaseFirestore
+        .collection('chats')
+        .doc(chat.chatId)
+        .set(chat.toMap());
   }
 }

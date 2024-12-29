@@ -17,4 +17,5 @@ abstract class HomeRemoteRepository {
   Future<void> createGroup(GroupModel group);
   Future<void> uploadUserImage(UserModel user, String image);
   Future<void> notifyUserChange();
+  Future<void> chatIsSeen(ChatModel chat);
 }

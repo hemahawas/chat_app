@@ -91,14 +91,4 @@ class MessagingFirebaseRemoteRepository extends MessagingRemoteRepository {
         .doc(chat.chatId)
         .set(chat.toMap());
   }
-
-  @override
-  Future<void> chatIsSeen(ChatModel chat) async {
-    await firebaseFirestore
-        .collection('chats')
-        .doc(chat.chatId)
-        .collection('messages')
-        .doc(chat.messages?[0].messageId)
-        .set(chat.messages![0].toMap());
-  }
 }

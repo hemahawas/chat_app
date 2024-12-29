@@ -58,3 +58,10 @@ class UpdateUserImageLoadingState extends HomeStates {}
 class UpdateUserImageSuccessState extends HomeStates {}
 
 class UpdateUserImageErrorState extends HomeStates {}
+
+// Chat is seen
+class ChatIsSeenLoadingState extends HomeStates {}
+
+class ChatIsSeenSuccessState extends HomeStates {}
+
+class ChatIsSeenErrorState extends HomeStates {}
