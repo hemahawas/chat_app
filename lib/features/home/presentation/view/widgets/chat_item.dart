@@ -37,9 +37,29 @@ class ChatItem extends StatelessWidget {
       if (chatModel.participants?[0].uId == cubit.currentUser?.uId) {
         anotherUser = chatModel.participants?[1];
       } else {
+
         anotherUser = chatModel.participants?[0];
+
+       
       }
     }
+
+    // Get the number of new messages
+    /*
+    if (widget.chatModel.messages != null &&
+        widget.chatModel.messages!.isNotEmpty) {
+      print("chatModel.messages: ${widget.chatModel.messages!.length}");
+      for (var message in widget.chatModel.messages!) {
+        if (message.isSeenBy.contains(cubit.currentUser!.uId)) {
+          break;
+        } else {
+          setState(() {
+            newMessages++;
+          });
+        }
+
+      }
+    }*/
 
     return MaterialButton(
       onPressed: () {
