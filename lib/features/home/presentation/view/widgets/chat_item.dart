@@ -49,6 +49,7 @@ class _ChatItemState extends State<ChatItem> {
     }
 
     // Get the number of new messages
+    /*
     if (widget.chatModel.messages != null &&
         widget.chatModel.messages!.isNotEmpty) {
       print("chatModel.messages: ${widget.chatModel.messages!.length}");
@@ -61,7 +62,7 @@ class _ChatItemState extends State<ChatItem> {
           });
         }
       }
-    }
+    }*/
 
     return MaterialButton(
       onPressed: () {

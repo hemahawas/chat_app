@@ -1,6 +1,7 @@
 import 'package:chat_app/core/themes/color_app.dart';
 import 'package:chat_app/core/utils/user_model.dart';
 import 'package:chat_app/features/group/data/model/group_model.dart';
+import 'package:chat_app/features/group/presentation/view/group_members_view.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/image_field.dart';
 import 'package:chat_app/features/messaging/presentation/view_model/cubit.dart';
 
@@ -37,18 +38,30 @@ class MessagingAppbar extends StatelessWidget {
           Navigator.pop(context);
         },
       ),
-      title: Row(
-        children: [
-          ImageField(
-            image: cubit.chat is GroupModel
-                ? (cubit.chat as GroupModel).groupImageUrl
-                : anotherUser!.image,
-            borderColor: Colors.transparent,
-            size: 40,
-          ),
-          Text(
-              '${cubit.chat is GroupModel ? (cubit.chat as GroupModel).groupName : anotherUser!.name}')
-        ],
+      title: MaterialButton(
+        onPressed: () {
+          if (cubit.chat is GroupModel) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => GroupMembersView(
+                          groupModel: (cubit.chat as GroupModel),
+                        )));
+          }
+        },
+        child: Row(
+          children: [
+            ImageField(
+              image: cubit.chat is GroupModel
+                  ? (cubit.chat as GroupModel).groupImageUrl
+                  : anotherUser!.image,
+              borderColor: Colors.transparent,
+              size: 40,
+            ),
+            Text(
+                '${cubit.chat is GroupModel ? (cubit.chat as GroupModel).groupName : anotherUser!.name}')
+          ],
+        ),
       ),
     );
   }
