@@ -21,7 +21,7 @@ import 'package:chat_app/features/home/presentation/view_model/home_injection_co
     as home_di;
 import 'package:intl/intl.dart';
 
-class ChatItem extends StatefulWidget {
+class ChatItem extends StatelessWidget {
   final ChatModel chatModel;
   final bool isSearched;
 
@@ -29,37 +29,15 @@ class ChatItem extends StatefulWidget {
       {super.key, required this.chatModel, required this.isSearched});
 
   @override
-  State<ChatItem> createState() => _ChatItemState();
-}
-
-class _ChatItemState extends State<ChatItem> {
-  int newMessages = 0;
-
-  @override
   Widget build(BuildContext context) {
     // get the name of the other user
     var cubit = BlocProvider.of<HomeViewModel>(context);
     UserModel? anotherUser;
-    if (widget.chatModel is! GroupModel) {
-      if (widget.chatModel.participants?[0].uId == cubit.currentUser?.uId) {
-        anotherUser = widget.chatModel.participants?[1];
+    if (chatModel is! GroupModel) {
+      if (chatModel.participants?[0].uId == cubit.currentUser?.uId) {
+        anotherUser = chatModel.participants?[1];
       } else {
-        anotherUser = widget.chatModel.participants?[0];
-      }
-    }
-
-    // Get the number of new messages
-    if (widget.chatModel.messages != null &&
-        widget.chatModel.messages!.isNotEmpty) {
-      print("chatModel.messages: ${widget.chatModel.messages!.length}");
-      for (var message in widget.chatModel.messages!) {
-        if (message.isSeenBy.contains(cubit.currentUser!.uId)) {
-          break;
-        } else {
-          setState(() {
-            newMessages++;
-          });
-        }
+        anotherUser = chatModel.participants?[0];
       }
     }
 
@@ -67,26 +45,28 @@ class _ChatItemState extends State<ChatItem> {
       onPressed: () {
         // if This chat is searched, close the search,
         // so that when you press back arrow, you will back to home view
-        if (widget.isSearched) {
+        if (isSearched) {
           Navigator.pop(context);
         }
 
         //When the user open the chat, he will see the new messages
 
         // bloc. chat is seen
-
+        if (chatModel.lastMessage != null) {
+          cubit.chatIsSeen(chatModel);
+        }
         // Give the Required args from chat view model to messaging view model while routing
         // See the routes.dart file
         Navigator.pushNamed(context, Routes.messagingRoute,
             arguments: MessagingArguments(
-                chatModel: widget.chatModel, currentUser: cubit.currentUser!));
+                chatModel: chatModel, currentUser: cubit.currentUser!));
       },
       child: Row(
         children: [
           ImageField(
             // user image
-            image: widget.chatModel is GroupModel
-                ? (widget.chatModel as GroupModel).groupImageUrl
+            image: chatModel is GroupModel
+                ? (chatModel as GroupModel).groupImageUrl
                 : anotherUser!.image,
             borderColor: Colors.white10,
           ),
@@ -102,8 +82,8 @@ class _ChatItemState extends State<ChatItem> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    widget.chatModel is GroupModel
-                        ? (widget.chatModel as GroupModel).groupName
+                    chatModel is GroupModel
+                        ? (chatModel as GroupModel).groupName
                         : anotherUser!.name!,
                     style: Styles.textStyle15
                         .copyWith(fontSize: 18.sp, color: Colors.black),
@@ -116,13 +96,18 @@ class _ChatItemState extends State<ChatItem> {
                   Text(
                     // chat last message
                     // If the last message sender is the current user, show 'you: '
-                    '${widget.chatModel.lastMessage?.messageSenderId == cubit.currentUser?.uId ? 'you: ' : ''}'
+                    '${chatModel.lastMessage?.messageSenderId == cubit.currentUser?.uId ? 'you: ' : ''}'
                     // If the message has only image, show 'Photo.' , else show message body
-                    '${widget.chatModel.lastMessage?.body ?? 'Hey There, I\'m using chat app'}',
+                    '${chatModel.lastMessage?.body ?? 'Hey There, I\'m using chat app'}',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     softWrap: true,
-                    style: Styles.textStyle15.copyWith(color: Colors.grey),
+                    style: Styles.textStyle15.copyWith(
+                        color: (chatModel.newMessages[cubit.currentUser!.uId] ??
+                                    0) ==
+                                0
+                            ? Colors.grey
+                            : ColorApp.primaryColor),
                   ),
                 ],
               ),
@@ -132,20 +117,27 @@ class _ChatItemState extends State<ChatItem> {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
-                widget.chatModel.lastMessage != null &&
-                        widget.chatModel.lastMessage!.sendingTime != null &&
-                        widget.chatModel.lastMessage!.sendingTime!.year != 0
+                // Sending time
+                chatModel.lastMessage != null &&
+                        chatModel.lastMessage!.sendingTime != null &&
+                        chatModel.lastMessage!.sendingTime!.year != 0
                     ? DateFormat.jm()
-                        .format(widget.chatModel.lastMessage!.sendingTime!)
+                        .format(chatModel.lastMessage!.sendingTime!)
                     : '',
-                style: Styles.textStyle15.copyWith(color: Colors.black87),
+                style: Styles.textStyle15.copyWith(
+                    color:
+                        (chatModel.newMessages[cubit.currentUser!.uId] ?? 0) ==
+                                0
+                            ? Colors.black87
+                            : ColorApp.primaryColor),
               ),
               ResponsiveSizedBox(
                 sizedBoxContext: context,
                 hasHeight: true,
                 heightFraction: 70,
               ),
-              true
+              // Number of new messages
+              (chatModel.newMessages[cubit.currentUser!.uId] ?? 0) == 0
                   ? const SizedBox()
                   : Container(
                       alignment: Alignment.center,
@@ -156,7 +148,8 @@ class _ChatItemState extends State<ChatItem> {
                           color: ColorApp.primaryColor),
                       child: Text(
                         // Number of new messages
-                        newMessages.toString(),
+                        chatModel.newMessages[cubit.currentUser!.uId]
+                            .toString(),
                         style: TextStyle(color: ColorApp.appBackgroundColor),
                       ),
                     )

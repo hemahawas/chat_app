@@ -17,6 +17,7 @@ class ChatModelAdapter extends TypeAdapter<ChatModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return ChatModel(
+      newMessages: {},
       participantsUId: null,
       lastMessage: fields[2] as MessageModel?,
       messages: (fields[1] as List?)?.cast<MessageModel>(),
