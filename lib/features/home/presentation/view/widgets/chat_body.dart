@@ -39,70 +39,77 @@ class _ChatBodyState extends State<ChatBody> {
     return BlocConsumer<HomeViewModel, HomeStates>(
       listener: (context, state) {},
       builder: (context, state) {
-        return SingleChildScrollView(
-          physics: AlwaysScrollableScrollPhysics(),
-          child: Column(
-            children: [
-              StreamBuilder(
-                stream: _chatSnapshots,
-                builder: (context, snapShot) {
-                  switch (snapShot.connectionState) {
-                    case ConnectionState.none:
-                    case ConnectionState.waiting:
-                      return Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          AppStrings.addNewConnectionsForYourChat,
-                          style:
-                              Styles.textStyle15.copyWith(color: Colors.grey),
-                        ),
-                      );
-                    case ConnectionState.active:
-                    case ConnectionState.done:
-                      // Before building the listview, we shoul check about
-                      // 1. current user is not null
-                      // 2. All users exists
-
-                      if (snapShot.hasData) {
-                        home_di.sl<HomeViewModel>().setChats(snapShot);
-                        return home_di.sl<HomeViewModel>().chats.isNotEmpty
-                            ? ListView.separated(
-                                shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
-                                itemBuilder: (context, index) => ChatItem(
-                                  isSearched: false,
-                                  chatModel:
-                                      home_di.sl<HomeViewModel>().chats[index],
-                                ),
-                                itemCount:
-                                    home_di.sl<HomeViewModel>().chats.length,
-                                separatorBuilder: (context, index) =>
-                                    ResponsiveSizedBox(
-                                  sizedBoxContext: context,
-                                  hasHeight: true,
-                                  heightFraction: 50,
-                                ),
-                              )
-                            : Align(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  AppStrings.addNewConnectionsForYourChat,
-                                  style: Styles.textStyle15
-                                      .copyWith(color: Colors.grey),
-                                ));
-                      } else {
-                        return const Center(
-                          child: CircularProgressIndicator(),
+        return RefreshIndicator(
+          onRefresh: () async {
+            await home_di.sl<HomeViewModel>().getUsers();
+            await home_di.sl<HomeViewModel>().notifyUserChange();
+          },
+          child: SingleChildScrollView(
+            physics: AlwaysScrollableScrollPhysics(),
+            child: Column(
+              children: [
+                StreamBuilder(
+                  stream: _chatSnapshots,
+                  builder: (context, snapShot) {
+                    switch (snapShot.connectionState) {
+                      case ConnectionState.none:
+                      case ConnectionState.waiting:
+                        return Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            AppStrings.addNewConnectionsForYourChat,
+                            style:
+                                Styles.textStyle15.copyWith(color: Colors.grey),
+                          ),
                         );
-                      }
-                  }
-                },
-              ),
-              SizedBox(
-                height: 20.0,
-              ),
-              UsersAdder(),
-            ],
+                      case ConnectionState.active:
+                      case ConnectionState.done:
+                        // Before building the listview, we shoul check about
+                        // 1. current user is not null
+                        // 2. All users exists
+
+                        if (snapShot.hasData) {
+                          home_di.sl<HomeViewModel>().setChats(snapShot);
+                          return home_di.sl<HomeViewModel>().chats.isNotEmpty
+                              ? ListView.separated(
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemBuilder: (context, index) => ChatItem(
+                                    isSearched: false,
+                                    chatModel: home_di
+                                        .sl<HomeViewModel>()
+                                        .chats[index],
+                                  ),
+                                  itemCount:
+                                      home_di.sl<HomeViewModel>().chats.length,
+                                  separatorBuilder: (context, index) =>
+                                      ResponsiveSizedBox(
+                                    sizedBoxContext: context,
+                                    hasHeight: true,
+                                    heightFraction: 50,
+                                  ),
+                                )
+                              : Align(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    AppStrings.addNewConnectionsForYourChat,
+                                    style: Styles.textStyle15
+                                        .copyWith(color: Colors.grey),
+                                  ));
+                        } else {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                    }
+                  },
+                ),
+                SizedBox(
+                  height: 20.0,
+                ),
+                UsersAdder(),
+              ],
+            ),
           ),
         );
       },

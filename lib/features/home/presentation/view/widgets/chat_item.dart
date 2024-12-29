@@ -132,7 +132,9 @@ class _ChatItemState extends State<ChatItem> {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
-                widget.chatModel.lastMessage?.sendingTime!.year != 0
+                widget.chatModel.lastMessage != null &&
+                        widget.chatModel.lastMessage!.sendingTime != null &&
+                        widget.chatModel.lastMessage!.sendingTime!.year != 0
                     ? DateFormat.jm()
                         .format(widget.chatModel.lastMessage!.sendingTime!)
                     : '',

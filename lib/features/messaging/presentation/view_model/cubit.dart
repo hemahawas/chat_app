@@ -19,7 +19,7 @@ class MessagingViewModel extends Cubit<MessagingStates> {
   // Here we got the arguments and now the view model is ready to work
   Future<void> getMessagingArguments(MessagingArguments arguments) async {
     chat = arguments.chatModel;
-    await messagingFirebaseRemoteRepository.chatIsSeen(chat!);
+
     currentUser = arguments.currentUser;
     emit(GetMessagingArgumentsSuccessState());
   }
@@ -64,6 +64,10 @@ class MessagingViewModel extends Cubit<MessagingStates> {
 
   Future<void> chatIsSeen(ChatModel chat) async {
     chat.messages?[0].isSeenBy.add(currentUser!.uId!);
-    await messagingFirebaseRemoteRepository.chatIsSeen(chat);
+    await messagingFirebaseRemoteRepository
+        .chatIsSeen(chat)
+        .catchError((error) {
+      debugPrint('chatIsSeen error: ${error.toString()}');
+    });
   }
 }
