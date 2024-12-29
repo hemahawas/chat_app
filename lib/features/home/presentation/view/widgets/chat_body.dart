@@ -41,7 +41,6 @@ class _ChatBodyState extends State<ChatBody> {
       builder: (context, state) {
         return RefreshIndicator(
           onRefresh: () async {
-            await home_di.sl<HomeViewModel>().getUsers();
             await home_di.sl<HomeViewModel>().notifyUserChange();
           },
           child: SingleChildScrollView(
