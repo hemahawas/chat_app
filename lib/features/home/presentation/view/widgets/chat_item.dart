@@ -37,10 +37,7 @@ class ChatItem extends StatelessWidget {
       if (chatModel.participants?[0].uId == cubit.currentUser?.uId) {
         anotherUser = chatModel.participants?[1];
       } else {
-
         anotherUser = chatModel.participants?[0];
-
-       
       }
     }
 
@@ -69,11 +66,9 @@ class ChatItem extends StatelessWidget {
           Navigator.pop(context);
         }
 
-        //When the user open the chat, he will see the new messages
-
-        // bloc. chat is seen
+        // To ensure that the chat is seen
         if (chatModel.lastMessage != null) {
-          cubit.chatIsSeen(chatModel);
+          //cubit.chatIsSeen(chatModel);
         }
         // Give the Required args from chat view model to messaging view model while routing
         // See the routes.dart file

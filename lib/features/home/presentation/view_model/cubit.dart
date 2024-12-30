@@ -86,7 +86,7 @@ class HomeViewModel extends Cubit<HomeStates> {
       emit(GetChatsFromFirebaseLoadingState());
       await firebaseHomeRepository.getChats().then((value) async {
         chats = value;
-        debugPrint('################### chats ${chats.length}');
+        //debugPrint('################### chats ${chats.length}');
         emit(GetChatsFromFirebaseSuccessState());
         await localHomeRepository.putChats(chats);
       }).catchError((error) {
@@ -242,16 +242,16 @@ class HomeViewModel extends Cubit<HomeStates> {
     });
   }
 
-  Future<void> chatIsSeen(ChatModel chat) async {
+  /*Future<void> chatIsSeen(ChatModel chat) async {
     emit(ChatIsSeenLoadingState());
     // the user saw the messages
     chat.newMessages[currentUser!.uId!] = 0;
-    debugPrint("########Chat is Seen = ${chat.newMessages[currentUser!.uId!]}");
+
     await firebaseHomeRepository.chatIsSeen(chat).then((_) {
       emit(ChatIsSeenSuccessState());
     }).catchError((error) {
       debugPrint('chatIsSeen error: ${error.toString()}');
       emit(ChatIsSeenErrorState());
     });
-  }
+  }*/
 }

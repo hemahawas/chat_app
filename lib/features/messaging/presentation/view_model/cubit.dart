@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:chat_app/core/utils/user_model.dart';
 import 'package:chat_app/features/home/data/model/chat_model.dart';
 import 'package:chat_app/features/messaging/data/model/message_model.dart';
@@ -16,6 +18,7 @@ class MessagingViewModel extends Cubit<MessagingStates> {
 
   ChatModel? chat;
   UserModel? currentUser;
+
   // Here we got the arguments and now the view model is ready to work
   Future<void> getMessagingArguments(MessagingArguments arguments) async {
     chat = arguments.chatModel;
@@ -69,5 +72,14 @@ class MessagingViewModel extends Cubit<MessagingStates> {
       debugPrint(error.toString());
       emit(SendMessageErrorState());
     });
+  }
+
+  // This stream is used to reset the new messages
+  //becuase the user is already inside chat and see the messages
+  Future<void> messagesIsSeen(chat) async {
+    if (chat != null) {
+      chat!.newMessages[currentUser!.uId!] = 0;
+      await messagingFirebaseRemoteRepository.messagesIsSeen(chat!);
+    }
   }
 }
