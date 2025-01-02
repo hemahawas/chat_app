@@ -79,8 +79,11 @@ class MessagingViewModel extends Cubit<MessagingStates> {
   Future<void> messagesIsSeen() async {
     if (chat != null) {
       chat!.newMessages[currentUser!.uId!] = 0;
-      await messagingFirebaseRemoteRepository.messagesIsSeen(
-          chat!.chatId!, currentUser!.uId!);
+      await messagingFirebaseRemoteRepository
+          .messagesIsSeen(chat!.chatId!, currentUser!.uId!)
+          .catchError((error) {
+        debugPrint(error.toString());
+      });
     }
   }
 }

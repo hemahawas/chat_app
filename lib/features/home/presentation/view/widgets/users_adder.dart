@@ -9,8 +9,19 @@ import 'package:chat_app/features/home/presentation/view_model/home_injection_co
     as home_di;
 
 // Add new users
-class UsersAdder extends StatelessWidget {
-  const UsersAdder({super.key});
+class UsersAdder extends StatefulWidget {
+  const UsersAdder({super.key, required this.blocContext});
+  final BuildContext blocContext;
+
+  @override
+  State<UsersAdder> createState() => _UsersAdderState();
+}
+
+class _UsersAdderState extends State<UsersAdder> {
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,18 +29,17 @@ class UsersAdder extends StatelessWidget {
       onPressed: () {
         showModalBottomSheet(
             context: context,
-            builder: (context) => BlocProvider(
-                  create: (context) => HomeViewModel()..getUsers(),
-                  child: Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: BlocConsumer<HomeViewModel, HomeStates>(
-                      listener: (context, state) {
-                        // TODO: implement listener
-                      },
+            builder: (context) => Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: BlocProvider.value(
+                    value: BlocProvider.of<HomeViewModel>(widget.blocContext),
+                    child: BlocBuilder<HomeViewModel, HomeStates>(
                       builder: (context, state) {
                         return ConditionalBuilder(
                           fallback: (context) => Center(
-                            child: CircularProgressIndicator(),
+                            child: Center(
+                              child: Text('Wait For Coming Users'),
+                            ),
                           ),
                           condition: BlocProvider.of<HomeViewModel>(context)
                               .nonAddedUsers

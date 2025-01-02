@@ -28,7 +28,9 @@ class _GroupUsersBodyState extends State<GroupUsersBody> {
 
   @override
   void initState() {
+    debugPrint("GroupUsersBody: initState");
     _groupUsers = _getUsers();
+    debugPrint("${_groupUsers.length}");
     super.initState();
   }
 
@@ -43,103 +45,90 @@ class _GroupUsersBodyState extends State<GroupUsersBody> {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
-    /*
-    return BlocProvider<HomeViewModel>.value(
-      value: BlocProvider.of<HomeViewModel>(context),
-      child: BlocConsumer<HomeViewModel, HomeStates>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          // View the results
-          return Stack(children: [
-            SingleChildScrollView(
-              physics: const NeverScrollableScrollPhysics(),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _addedGroupUsers.isNotEmpty
-                      ? SizedBox(
-                          height: 100,
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                            physics: const BouncingScrollPhysics(),
-                            itemCount: _addedGroupUsers.length,
-                            itemBuilder: (context, index) => Column(
-                              children: [
-                                Stack(
-                                    alignment: Alignment.bottomRight,
-                                    children: [
-                                      ImageField(
-                                          borderColor: Colors.transparent,
-                                          image: _addedGroupUsers[index].image),
-                                      IconItemButton(
-                                        icon: Icon(Icons.close),
-                                        size: 20,
-                                        onPressed: () {
-                                          setState(() {
-                                            _groupUsers
-                                                .add(_addedGroupUsers[index]);
-                                            _addedGroupUsers.remove(
-                                                _addedGroupUsers[index]);
-                                          });
-                                        },
-                                      ),
-                                    ]),
-                                Text(_addedGroupUsers[index].name!),
-                              ],
+    return Stack(children: [
+      SingleChildScrollView(
+        physics: const NeverScrollableScrollPhysics(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _addedGroupUsers.isNotEmpty
+                ? SizedBox(
+                    height: 100,
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      physics: const BouncingScrollPhysics(),
+                      itemCount: _addedGroupUsers.length,
+                      itemBuilder: (context, index) => Column(
+                        children: [
+                          Stack(alignment: Alignment.bottomRight, children: [
+                            ImageField(
+                                borderColor: Colors.transparent,
+                                image: _addedGroupUsers[index].image),
+                            IconItemButton(
+                              icon: Icon(Icons.close),
+                              size: 20,
+                              onPressed: () {
+                                setState(() {
+                                  _groupUsers.add(_addedGroupUsers[index]);
+                                  _addedGroupUsers
+                                      .remove(_addedGroupUsers[index]);
+                                });
+                              },
                             ),
-                          ),
-                        )
-                      : Container(),
-                  SizedBox(
-                    height: 2,
-                    width: double.infinity,
-                    child: Container(
-                      height: 1,
-                      color: Colors.grey,
+                          ]),
+                          Text(_addedGroupUsers[index].name!),
+                        ],
+                      ),
                     ),
-                  ),
-                  ListView.builder(
-                    physics: AlwaysScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: _groupUsers.isNotEmpty ? _groupUsers.length : 0,
-                    itemBuilder: (context, index) => UserItem(
-                      model: _groupUsers[index],
-                      onTap: () {
-                        setState(() {
-                          _addedGroupUsers.add(_groupUsers[index]);
-                          _groupUsers.remove(_groupUsers[index]);
-                        });
-                      },
-                    ),
-                  ),
-                ],
+                  )
+                : Container(),
+            SizedBox(
+              height: 2,
+              width: double.infinity,
+              child: Container(
+                height: 1,
+                color: Colors.grey,
               ),
             ),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: Padding(
-                padding: EdgeInsets.all(20),
-                child: FloatingActionButton(
-                  backgroundColor: ColorApp.primaryColor,
-                  onPressed: () {
-                    if (_addedGroupUsers.isNotEmpty) {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => GroupInfoBodyPreview(
-                                    addedUsers: _addedGroupUsers,
-                                  )));
-                    }
-                  },
-                  child: Icon(Icons.arrow_forward),
-                ),
+            ListView.builder(
+              physics: AlwaysScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: _groupUsers.length,
+              itemBuilder: (context, index) => UserItem(
+                model: _groupUsers[index],
+                onTap: () {
+                  setState(() {
+                    _addedGroupUsers.add(_groupUsers[index]);
+                    _groupUsers.remove(_groupUsers[index]);
+                  });
+                },
               ),
-            )
-          ]);
-        },
+            ),
+          ],
+        ),
       ),
-    );*/
+      Align(
+        alignment: Alignment.bottomRight,
+        child: Padding(
+          padding: EdgeInsets.all(20),
+          child: FloatingActionButton(
+            backgroundColor: ColorApp.primaryColor,
+            onPressed: () {
+              if (_addedGroupUsers.isNotEmpty) {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => GroupInfoBodyPreview(
+                              addedUsers: _addedGroupUsers,
+                            ),
+                        settings: RouteSettings(arguments: context)));
+              }
+            },
+            child: Icon(Icons.arrow_forward),
+          ),
+        ),
+      )
+    ]);
   }
 }

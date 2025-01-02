@@ -25,52 +25,44 @@ class _UserItemState extends State<UserItem> {
   @override
   Widget build(BuildContext context) {
     bool isAdded = false;
-    return Container();
-    /*
-    return BlocProvider.value(
-      value: BlocProvider.of<HomeViewModel>(context),
-      child: BlocConsumer<HomeViewModel, HomeStates>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          return Row(
-            children: [
-              ImageField(
-                image: widget.model.image,
-                borderColor: Colors.transparent,
-              ),
-              ResponsiveSizedBox(
-                sizedBoxContext: context,
-                hasWidth: true,
-                widthFraction: 20,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    widget.model.name!,
-                    style: Styles.textStyle15
-                        .copyWith(fontSize: 18.sp, color: Colors.black87),
-                  ),
-                ],
-              ),
-              Spacer(),
-              IconButton(
-                  onPressed: widget.onTap ??
-                      () {
-                        if (!isAdded) {
-                          setState(() {
-                            isAdded = true;
-                          });
 
-                          var cubit = BlocProvider.of<HomeViewModel>(context);
-                          cubit.addNewChat(cubit.currentUser!, widget.model);
-                        }
-                      },
-                  icon: isAdded ? Icon(Icons.done) : Icon(Icons.add))
-            ],
-          );
-        },
-      ),
-    );*/
+    return Row(
+      children: [
+        ImageField(
+          image: widget.model.image,
+          borderColor: Colors.transparent,
+        ),
+        ResponsiveSizedBox(
+          sizedBoxContext: context,
+          hasWidth: true,
+          widthFraction: 20,
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              widget.model.name!,
+              style: Styles.textStyle15
+                  .copyWith(fontSize: 18.sp, color: Colors.black87),
+            ),
+          ],
+        ),
+        Spacer(),
+        IconButton(
+            onPressed: widget.onTap ??
+                () async {
+                  if (!isAdded) {
+                    var cubit = BlocProvider.of<HomeViewModel>(context);
+                    setState(() {
+                      isAdded = true;
+                      cubit.nonAddedUsers.remove(widget.model);
+                      cubit.addedUsers.add(widget.model);
+                    });
+                    await cubit.addNewChat(cubit.currentUser!, widget.model);
+                  }
+                },
+            icon: isAdded ? Icon(Icons.done) : Icon(Icons.add))
+      ],
+    );
   }
 }

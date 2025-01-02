@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:chat_app/core/constants/app_strings.dart';
 import 'package:chat_app/core/utils/cloudinary_service.dart';
 import 'package:chat_app/core/utils/user_model.dart';
+import 'package:chat_app/features/group/data/model/group_model.dart';
 import 'package:chat_app/features/home/data/model/chat_model.dart';
 import 'package:chat_app/features/messaging/data/model/message_model.dart';
 import 'package:chat_app/features/messaging/data/repo/messaging_remote_repository.dart';
@@ -100,7 +101,13 @@ class MessagingFirebaseRemoteRepository extends MessagingRemoteRepository {
         .doc(chatId)
         .get()
         .then((value) async {
-      var localChat = ChatModel.fromJson(value.data());
+      ChatModel localChat;
+      if (value.data()!['groupName'] == null) {
+        localChat = ChatModel.fromJson(value.data());
+      } else {
+        localChat = GroupModel.fromJson(value.data());
+      }
+
       localChat.newMessages[currentUserId] = 0;
       await firebaseFirestore
           .collection('chats')

@@ -111,7 +111,9 @@ class _ChatBodyState extends State<ChatBody> {
                 SizedBox(
                   height: 20.0,
                 ),
-                UsersAdder(),
+                UsersAdder(
+                  blocContext: context,
+                ),
               ],
             ),
           ),

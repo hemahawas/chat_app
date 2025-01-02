@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:chat_app/core/shared_widgets/show_toast.dart';
 import 'package:chat_app/core/utils/cloudinary_service.dart';
 import 'package:chat_app/core/utils/network_info.dart';
 import 'package:chat_app/core/utils/user_model.dart';
@@ -130,7 +131,7 @@ class HomeViewModel extends Cubit<HomeStates> {
         // change the users state
         await getUsers();
         emit(AddUserToChatSuccessState());
-        //await notifyUserChange();
+        await notifyUserChange();
       }
     }).catchError((error) {
       debugPrint(error.toString());
@@ -182,7 +183,7 @@ class HomeViewModel extends Cubit<HomeStates> {
     yield* firebaseHomeRepository.getChatsInRealTime();
   }
 
-  void setChats(snapShot) {
+  Future<void> setChats(snapShot) async {
     // Ensure that all users exist
     if (addedUsers.isEmpty || currentUser == null) {
       return;
@@ -232,7 +233,8 @@ class HomeViewModel extends Cubit<HomeStates> {
 
     // A new chat is added
     if (oldChatsLength != 0 && oldChatsLength != newChatsLength) {
-      getUsers();
+      await getUsers();
+      showToast(msg: 'You got a new connection');
     }
   }
 
