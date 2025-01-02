@@ -94,10 +94,18 @@ class MessagingFirebaseRemoteRepository extends MessagingRemoteRepository {
   }
 
   @override
-  Future<void> messagesIsSeen(ChatModel chat) async {
+  Future<void> messagesIsSeen(String chatId, String currentUserId) async {
     await firebaseFirestore
         .collection('chats')
-        .doc(chat.chatId)
-        .update({'newMessages': chat.newMessages});
+        .doc(chatId)
+        .get()
+        .then((value) async {
+      var localChat = ChatModel.fromJson(value.data());
+      localChat.newMessages[currentUserId] = 0;
+      await firebaseFirestore
+          .collection('chats')
+          .doc(chatId)
+          .set(localChat.toMap());
+    });
   }
 }

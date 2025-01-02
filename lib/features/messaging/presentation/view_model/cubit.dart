@@ -76,10 +76,11 @@ class MessagingViewModel extends Cubit<MessagingStates> {
 
   // This stream is used to reset the new messages
   //becuase the user is already inside chat and see the messages
-  Future<void> messagesIsSeen(chat) async {
+  Future<void> messagesIsSeen() async {
     if (chat != null) {
       chat!.newMessages[currentUser!.uId!] = 0;
-      await messagingFirebaseRemoteRepository.messagesIsSeen(chat!);
+      await messagingFirebaseRemoteRepository.messagesIsSeen(
+          chat!.chatId!, currentUser!.uId!);
     }
   }
 }

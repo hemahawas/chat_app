@@ -11,5 +11,5 @@ abstract class MessagingRemoteRepository {
   Future<List<MessageModel>> getMessages(ChatModel chat);
   Stream<QuerySnapshot<Map<String, dynamic>>> getMessagesInRealTime(
       ChatModel chat);
-  Future<void> messagesIsSeen(ChatModel chat);
+  Future<void> messagesIsSeen(String chatId, String currentUserId);
 }
