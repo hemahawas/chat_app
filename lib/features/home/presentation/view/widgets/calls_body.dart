@@ -7,6 +7,8 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:chat_app/features/home/presentation/view_model/home_injection_container.dart'
+    as home_di;
 
 class CallsBody extends StatelessWidget {
   const CallsBody({super.key});

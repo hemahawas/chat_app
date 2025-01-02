@@ -33,15 +33,16 @@ class ChatSearchDelegate extends SearchDelegate {
   @override
   Widget buildResults(BuildContext context) {
     return BlocProvider<HomeViewModel>.value(
-      value: home_di.sl<HomeViewModel>(),
+      value: BlocProvider.of<HomeViewModel>(context),
       child: BlocBuilder<HomeViewModel, HomeStates>(
         builder: (context, state) {
           // Get chats
           searchTerms = List.generate(
-              home_di.sl<HomeViewModel>().chats.length,
+              BlocProvider.of<HomeViewModel>(context).chats.length,
               (index) => ChatItem(
                   isSearched: true,
-                  chatModel: home_di.sl<HomeViewModel>().chats[index]));
+                  chatModel:
+                      BlocProvider.of<HomeViewModel>(context).chats[index]));
 
           List<ChatItem> matchQuery = [];
           // get searched chats and add it to matchQuery
@@ -56,7 +57,8 @@ class ChatSearchDelegate extends SearchDelegate {
             } else {
               var anotherUser =
                   chatItem.chatModel.participants!.firstWhere((e) {
-                return e.uId != home_di.sl<HomeViewModel>().currentUser!.uId;
+                return e.uId !=
+                    BlocProvider.of<HomeViewModel>(context).currentUser!.uId;
               });
               if ((anotherUser.name!
                   .toLowerCase()
@@ -78,15 +80,16 @@ class ChatSearchDelegate extends SearchDelegate {
   @override
   Widget buildSuggestions(BuildContext context) {
     return BlocProvider<HomeViewModel>.value(
-      value: home_di.sl<HomeViewModel>(),
+      value: BlocProvider.of<HomeViewModel>(context),
       child: BlocBuilder<HomeViewModel, HomeStates>(
         builder: (context, state) {
           // Get chats
           searchTerms = List.generate(
-              home_di.sl<HomeViewModel>().chats.length,
+              BlocProvider.of<HomeViewModel>(context).chats.length,
               (index) => ChatItem(
                   isSearched: true,
-                  chatModel: home_di.sl<HomeViewModel>().chats[index]));
+                  chatModel:
+                      BlocProvider.of<HomeViewModel>(context).chats[index]));
 
           List<ChatItem> matchQuery = [];
           // get searched chats and add it to matchQuery
@@ -101,7 +104,8 @@ class ChatSearchDelegate extends SearchDelegate {
             } else {
               var anotherUser =
                   chatItem.chatModel.participants!.firstWhere((e) {
-                return e.uId != home_di.sl<HomeViewModel>().currentUser!.uId;
+                return e.uId !=
+                    BlocProvider.of<HomeViewModel>(context).currentUser!.uId;
               });
               if ((anotherUser.name!
                   .toLowerCase()

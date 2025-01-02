@@ -14,7 +14,8 @@ import 'package:chat_app/features/home/presentation/view_model/home_injection_co
     as home_di;
 
 class HomeAppbar extends StatelessWidget {
-  const HomeAppbar({super.key});
+  final BuildContext homeAppBarContext;
+  const HomeAppbar({super.key, required this.homeAppBarContext});
 
   @override
   Widget build(BuildContext context) {
@@ -36,17 +37,14 @@ class HomeAppbar extends StatelessWidget {
       actions: [
         Padding(
           padding: EdgeInsets.only(top: 10.0.h),
-          child: BlocProvider<HomeViewModel>(
-            create: (context) => home_di.sl<HomeViewModel>(),
-            child: IconButton(
-                onPressed: () {
-                  showSearch(context: context, delegate: ChatSearchDelegate());
-                },
-                icon: Icon(
-                  Icons.search,
-                  size: 35.0.sp,
-                )),
-          ),
+          child: IconButton(
+              onPressed: () {
+                showSearch(context: context, delegate: ChatSearchDelegate());
+              },
+              icon: Icon(
+                Icons.search,
+                size: 35.0.sp,
+              )),
         ),
         Padding(
             padding: EdgeInsets.only(top: 10.0.h),
@@ -68,7 +66,8 @@ class HomeAppbar extends StatelessWidget {
                       PopupMenuItem(
                         child: const Text('Profile'),
                         onTap: () {
-                          Navigator.pushNamed(context, Routes.profileRoute);
+                          Navigator.pushNamed(context, Routes.profileRoute,
+                              arguments: homeAppBarContext);
                         },
                       ),
                       PopupMenuItem(

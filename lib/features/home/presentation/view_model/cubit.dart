@@ -18,16 +18,17 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
-class HomeViewModel extends Cubit<HomeStates> {
-  HomeViewModel(
-      {required this.firebaseHomeRepository,
-      required this.localHomeRepository,
-      required this.networkInfo})
-      : super(InitialHomeStates());
+import 'package:chat_app/features/home/presentation/view_model/home_injection_container.dart'
+    as home_di;
 
-  final HomeRemoteRepository firebaseHomeRepository;
-  final HomeLocalReopsitory localHomeRepository;
-  final NetworkInfo networkInfo;
+class HomeViewModel extends Cubit<HomeStates> {
+  HomeViewModel() : super(InitialHomeStates());
+
+  final HomeRemoteRepository firebaseHomeRepository =
+      home_di.sl<HomeRemoteRepository>();
+  final HomeLocalReopsitory localHomeRepository =
+      home_di.sl<HomeLocalReopsitory>();
+  final NetworkInfo networkInfo = home_di.sl<NetworkInfo>();
 
   // To change the bottom nav bar
   int navBarCurrentIndex = 0;
@@ -44,9 +45,9 @@ class HomeViewModel extends Cubit<HomeStates> {
 
   // Get users to add new chats
   Future<void> getUsers() async {
-    emit(GetUsersFromFirebaseLoadingState());
     addedUsers = [];
     nonAddedUsers = [];
+    emit(GetUsersFromFirebaseLoadingState());
 
     await firebaseHomeRepository.getUsers().then((value) async {
       for (UserModel user in value) {
@@ -57,7 +58,7 @@ class HomeViewModel extends Cubit<HomeStates> {
           //print('This Should be printed twice#######################');
         } else {
           nonAddedUsers.add(user);
-          print('This Should not be printed');
+          //print('This Should not be printed');
         }
       }
 
@@ -86,7 +87,7 @@ class HomeViewModel extends Cubit<HomeStates> {
       emit(GetChatsFromFirebaseLoadingState());
       await firebaseHomeRepository.getChats().then((value) async {
         chats = value;
-        debugPrint('################### chats ${chats.length}');
+        //debugPrint('################### chats ${chats.length}');
         emit(GetChatsFromFirebaseSuccessState());
         await localHomeRepository.putChats(chats);
       }).catchError((error) {
@@ -119,12 +120,17 @@ class HomeViewModel extends Cubit<HomeStates> {
         currentUser.addedChats ??= [];
         anotherUser.addedChats ??= [];
         // add user id in added chats for both
-        currentUser.addedChats?.add(anotherUser.uId!);
-        anotherUser.addedChats?.add(currentUser.uId!);
+        if (!currentUser.addedChats!.contains(anotherUser.uId!)) {
+          currentUser.addedChats!.add(anotherUser.uId!);
+        }
+        if (!anotherUser.addedChats!.contains(currentUser.uId!)) {
+          anotherUser.addedChats!.add(currentUser.uId!);
+        }
 
         // change the users state
         await getUsers();
         emit(AddUserToChatSuccessState());
+        //await notifyUserChange();
       }
     }).catchError((error) {
       debugPrint(error.toString());
@@ -181,9 +187,11 @@ class HomeViewModel extends Cubit<HomeStates> {
     if (addedUsers.isEmpty || currentUser == null) {
       return;
     }
+    int oldChatsLength = chats.length;
     chats = [];
     List<ChatModel> localChats = [];
     if (snapShot.data != null) {
+      //For loop O(n)
       for (var doc in snapShot.data!.docs) {
         // Check if it is group or chat
         ChatModel chat;
@@ -205,7 +213,10 @@ class HomeViewModel extends Cubit<HomeStates> {
         }
       }
     }
+    // Add new user if there is new chat, and remove it from non added users
+
     // Sort the chats by the last message
+    // sort : O(n^2)
     localChats.sort(
       (a, b) {
         a.lastMessage ??= MessageModel(sendingTime: DateTime(0));
@@ -217,6 +228,12 @@ class HomeViewModel extends Cubit<HomeStates> {
       },
     );
     chats = localChats;
+    int newChatsLength = chats.length;
+
+    // A new chat is added
+    if (oldChatsLength != 0 && oldChatsLength != newChatsLength) {
+      getUsers();
+    }
   }
 
   Future<void> createGroup(GroupModel group) async {
@@ -242,16 +259,16 @@ class HomeViewModel extends Cubit<HomeStates> {
     });
   }
 
-  Future<void> chatIsSeen(ChatModel chat) async {
+  /*Future<void> chatIsSeen(ChatModel chat) async {
     emit(ChatIsSeenLoadingState());
     // the user saw the messages
     chat.newMessages[currentUser!.uId!] = 0;
-    debugPrint("########Chat is Seen = ${chat.newMessages[currentUser!.uId!]}");
+
     await firebaseHomeRepository.chatIsSeen(chat).then((_) {
       emit(ChatIsSeenSuccessState());
     }).catchError((error) {
       debugPrint('chatIsSeen error: ${error.toString()}');
       emit(ChatIsSeenErrorState());
     });
-  }
+  }*/
 }

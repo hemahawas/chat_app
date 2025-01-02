@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:chat_app/core/shared_widgets/responsive_sizedbox.dart';
 import 'package:chat_app/features/group/data/model/group_model.dart';
 import 'package:chat_app/features/home/presentation/view_model/cubit.dart';
+import 'package:chat_app/features/messaging/data/model/message_model.dart';
 import 'package:chat_app/features/messaging/presentation/view/messaging_view.dart';
 import 'package:chat_app/features/messaging/presentation/view/widgets/message_item.dart';
 import 'package:chat_app/features/messaging/presentation/view_model/cubit.dart';
@@ -22,12 +25,17 @@ class Messages extends StatefulWidget {
 
 class _MessagesState extends State<Messages> {
   Stream<QuerySnapshot<Map<String, dynamic>>>? _messagesSnapshots;
-
   @override
   void initState() {
     _messagesSnapshots =
         messaging_di.sl<MessagingViewModel>().getMessagesInRealTime();
+
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -46,6 +54,7 @@ class _MessagesState extends State<Messages> {
             case ConnectionState.done:
               if (snapShot.hasData) {
                 messaging_di.sl<MessagingViewModel>().setMessages(snapShot);
+
                 Map<String, String> names = {};
                 names.addEntries(messaging_di
                     .sl<MessagingViewModel>()

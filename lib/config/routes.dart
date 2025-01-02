@@ -1,14 +1,20 @@
 import 'package:chat_app/core/constants/app_strings.dart';
+import 'package:chat_app/core/utils/network_info.dart';
 import 'package:chat_app/features/auth/presentation/view/login_view.dart';
 import 'package:chat_app/features/auth/presentation/view/register_view.dart';
 import 'package:chat_app/features/auth/presentation/view_model/cubit.dart';
+import 'package:chat_app/features/home/data/repo/home_local_reopsitory.dart';
+import 'package:chat_app/features/home/data/repo/home_remote_repository.dart';
 import 'package:chat_app/features/home/presentation/view/home_view.dart';
 import 'package:chat_app/features/home/presentation/view/profile_view.dart';
 import 'package:chat_app/features/home/presentation/view/settings_view.dart';
+import 'package:chat_app/features/home/presentation/view/widgets/chat_search_delegate.dart';
 import 'package:chat_app/features/home/presentation/view_model/cubit.dart';
 import 'package:chat_app/features/messaging/presentation/view/messaging_view.dart';
 import 'package:chat_app/features/messaging/presentation/view_model/cubit.dart';
 import 'package:chat_app/features/messaging/presentation/view_model/messaging_arguments.dart';
+import 'package:chat_app/features/splash_screen/splash_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chat_app/features/auth/presentation/view_model/auth_injection_container.dart'
@@ -28,6 +34,7 @@ class Routes {
   static const String settingsRoute = '/settingsRoute';
   static const String profileRoute = '/profileRoute';
   static const String messagingRoute = '/messagingRoute';
+  static const String chatSearch = '/chatSearch';
 }
 
 class AppRoutes {
@@ -35,7 +42,7 @@ class AppRoutes {
     switch (routeSettings.name) {
       case Routes.initialRoute:
         return MaterialPageRoute(builder: (context) {
-          return const HomeView();
+          return const SplashScreen();
         });
 
       case Routes.loginRoute:
@@ -52,22 +59,20 @@ class AppRoutes {
         }));
       case Routes.homeRoute:
         return MaterialPageRoute(builder: ((context) {
-          return BlocProvider<HomeViewModel>.value(
+          return BlocProvider<HomeViewModel>(
             // This invokation order may be critical
-            value: (home_di.sl<HomeViewModel>()
+            create: (context) => home_di.sl<HomeViewModel>()
               ..getUsers()
-              ..getCurrentUser()
-              ..notifyUserChange()),
-            child: const HomeView(),
+              ..getCurrentUser(),
+            child: HomeView(),
           );
         }));
       case Routes.profileRoute:
-        return MaterialPageRoute(builder: ((context) {
-          return BlocProvider.value(
-            value: home_di.sl<HomeViewModel>(),
-            child: const ProfileView(),
-          );
-        }));
+        return MaterialPageRoute(
+            builder: ((context) {
+              return const ProfileView();
+            }),
+            settings: RouteSettings(arguments: routeSettings.arguments));
       case Routes.settingsRoute:
         return MaterialPageRoute(builder: ((context) {
           return BlocProvider(
@@ -87,6 +92,7 @@ class AppRoutes {
             child: const MessagingView(),
           );
         });
+
       default:
         return undefinedRoute();
     }

@@ -38,14 +38,15 @@ class _GroupUsersBodyState extends State<GroupUsersBody> {
   }
 
   List<UserModel> _getUsers() {
-    home_di.sl<HomeViewModel>().getUsers();
-    return home_di.sl<HomeViewModel>().addedUsers;
+    return BlocProvider.of<HomeViewModel>(context).addedUsers;
   }
 
   @override
   Widget build(BuildContext context) {
+    return Container();
+    /*
     return BlocProvider<HomeViewModel>.value(
-      value: home_di.sl<HomeViewModel>(),
+      value: BlocProvider.of<HomeViewModel>(context),
       child: BlocConsumer<HomeViewModel, HomeStates>(
         listener: (context, state) {},
         builder: (context, state) {
@@ -139,6 +140,6 @@ class _GroupUsersBodyState extends State<GroupUsersBody> {
           ]);
         },
       ),
-    );
+    );*/
   }
 }
