@@ -12,22 +12,30 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:chat_app/features/home/presentation/view_model/home_injection_container.dart'
     as home_di;
 
-class UserItem extends StatelessWidget {
+class UserItem extends StatefulWidget {
   final UserModel model;
   final VoidCallback? onTap;
   const UserItem({super.key, required this.model, this.onTap});
 
   @override
+  State<UserItem> createState() => _UserItemState();
+}
+
+class _UserItemState extends State<UserItem> {
+  @override
   Widget build(BuildContext context) {
+    bool isAdded = false;
+    return Container();
+    /*
     return BlocProvider.value(
-      value: home_di.sl<HomeViewModel>(),
+      value: BlocProvider.of<HomeViewModel>(context),
       child: BlocConsumer<HomeViewModel, HomeStates>(
         listener: (context, state) {},
         builder: (context, state) {
           return Row(
             children: [
               ImageField(
-                image: model.image,
+                image: widget.model.image,
                 borderColor: Colors.transparent,
               ),
               ResponsiveSizedBox(
@@ -39,7 +47,7 @@ class UserItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    model.name!,
+                    widget.model.name!,
                     style: Styles.textStyle15
                         .copyWith(fontSize: 18.sp, color: Colors.black87),
                   ),
@@ -47,16 +55,22 @@ class UserItem extends StatelessWidget {
               ),
               Spacer(),
               IconButton(
-                  onPressed: onTap ??
+                  onPressed: widget.onTap ??
                       () {
-                        var cubit = BlocProvider.of<HomeViewModel>(context);
-                        cubit.addNewChat(cubit.currentUser!, model);
+                        if (!isAdded) {
+                          setState(() {
+                            isAdded = true;
+                          });
+
+                          var cubit = BlocProvider.of<HomeViewModel>(context);
+                          cubit.addNewChat(cubit.currentUser!, widget.model);
+                        }
                       },
-                  icon: Icon(Icons.add))
+                  icon: isAdded ? Icon(Icons.done) : Icon(Icons.add))
             ],
           );
         },
       ),
-    );
+    );*/
   }
 }

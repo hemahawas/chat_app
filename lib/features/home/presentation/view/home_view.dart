@@ -10,6 +10,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'package:chat_app/features/home/presentation/view_model/home_injection_container.dart'
+    as home_di;
+
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
 
@@ -21,7 +24,9 @@ class HomeView extends StatelessWidget {
         return Scaffold(
           appBar: PreferredSize(
               preferredSize: Size.fromHeight(AppSizes.toolBarHieght.h),
-              child: const HomeAppbar()),
+              child: HomeAppbar(
+                homeAppBarContext: context,
+              )),
           body: HomeBody(
             currentIndex:
                 BlocProvider.of<HomeViewModel>(context).navBarCurrentIndex,

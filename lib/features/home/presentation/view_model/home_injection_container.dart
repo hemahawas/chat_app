@@ -13,16 +13,8 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 final sl = GetIt.asNewInstance();
 
 Future<void> initHomeSl() async {
-  // Blocs
-
-  // There is a problem found when using registerFactory()
-  // - the cubit invoke each time I open it, although the data is loaded
-  // Solution: use registerCachedFactory()
-  // Warning the profileview uses existing blocprovider
-  sl.registerCachedFactory(() => HomeViewModel(
-      firebaseHomeRepository: sl(),
-      localHomeRepository: sl(),
-      networkInfo: sl()));
+  // Bloc
+  sl.registerFactory(() => HomeViewModel());
 
   // Repositories
   sl.registerLazySingleton<HomeRemoteRepository>(() =>

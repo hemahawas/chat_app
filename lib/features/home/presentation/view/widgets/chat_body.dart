@@ -25,7 +25,8 @@ class _ChatBodyState extends State<ChatBody> {
   Stream<QuerySnapshot<Map<String, dynamic>>>? _chatSnapshots;
   @override
   void initState() {
-    _chatSnapshots = home_di.sl<HomeViewModel>().getChatsInRealTime();
+    _chatSnapshots =
+        BlocProvider.of<HomeViewModel>(context).getChatsInRealTime();
     super.initState();
   }
 
@@ -41,7 +42,7 @@ class _ChatBodyState extends State<ChatBody> {
       builder: (context, state) {
         return RefreshIndicator(
           onRefresh: () async {
-            await home_di.sl<HomeViewModel>().notifyUserChange();
+            await BlocProvider.of<HomeViewModel>(context).notifyUserChange();
           },
           child: SingleChildScrollView(
             physics: AlwaysScrollableScrollPhysics(),
@@ -66,21 +67,25 @@ class _ChatBodyState extends State<ChatBody> {
                         // Before building the listview, we shoul check about
                         // 1. current user is not null
                         // 2. All users exists
-
                         if (snapShot.hasData) {
-                          home_di.sl<HomeViewModel>().setChats(snapShot);
-                          return home_di.sl<HomeViewModel>().chats.isNotEmpty
+                          BlocProvider.of<HomeViewModel>(context)
+                              .setChats(snapShot);
+                          return BlocProvider.of<HomeViewModel>(context)
+                                  .chats
+                                  .isNotEmpty
                               ? ListView.separated(
                                   shrinkWrap: true,
                                   physics: NeverScrollableScrollPhysics(),
                                   itemBuilder: (context, index) => ChatItem(
                                     isSearched: false,
-                                    chatModel: home_di
-                                        .sl<HomeViewModel>()
-                                        .chats[index],
+                                    chatModel:
+                                        BlocProvider.of<HomeViewModel>(context)
+                                            .chats[index],
                                   ),
                                   itemCount:
-                                      home_di.sl<HomeViewModel>().chats.length,
+                                      BlocProvider.of<HomeViewModel>(context)
+                                          .chats
+                                          .length,
                                   separatorBuilder: (context, index) =>
                                       ResponsiveSizedBox(
                                     sizedBoxContext: context,

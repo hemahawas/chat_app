@@ -36,48 +36,47 @@ class _GroupInfoBodyPreviewState extends State<GroupInfoBodyPreview> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-            title: Text(
-          'Group Info',
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 20,
-          ),
-        )),
-        body: Padding(
-          padding: const EdgeInsets.all(10.0).copyWith(top: 80),
-          child: Row(
-            children: [
-              Stack(
-                alignment: Alignment.bottomRight,
-                children: [
-                  GroupImage(
-                    pickedImage: pickedImage,
-                  ),
-                  IconItemButton(
-                      icon: Icon(Icons.add),
-                      size: 30,
-                      onPressed: () async {
-                        var imagePicker = await ImagePicker()
-                            .pickImage(source: ImageSource.gallery);
-                        if (imagePicker != null) {
-                          setState(() {
-                            //don't define the pickedImage into build context,
-                            // because it will be initialized to null each set state
-                            pickedImage = File(imagePicker.path);
-                          });
-                        }
-                      })
-                ],
-              ),
-              Flexible(
-                  child:
-                      GroupNameField(groupNameGontroller: groupNameGontroller))
-            ],
-          ),
+      appBar: AppBar(
+          title: Text(
+        'Group Info',
+        style: TextStyle(
+          color: Colors.black,
+          fontSize: 20,
         ),
-        floatingActionButton: BlocProvider.value(
-          value: home_di.sl<HomeViewModel>(),
+      )),
+      body: Padding(
+        padding: const EdgeInsets.all(10.0).copyWith(top: 80),
+        child: Row(
+          children: [
+            Stack(
+              alignment: Alignment.bottomRight,
+              children: [
+                GroupImage(
+                  pickedImage: pickedImage,
+                ),
+                IconItemButton(
+                    icon: Icon(Icons.add),
+                    size: 30,
+                    onPressed: () async {
+                      var imagePicker = await ImagePicker()
+                          .pickImage(source: ImageSource.gallery);
+                      if (imagePicker != null) {
+                        setState(() {
+                          //don't define the pickedImage into build context,
+                          // because it will be initialized to null each set state
+                          pickedImage = File(imagePicker.path);
+                        });
+                      }
+                    })
+              ],
+            ),
+            Flexible(
+                child: GroupNameField(groupNameGontroller: groupNameGontroller))
+          ],
+        ),
+      ),
+      /*floatingActionButton: BlocProvider.value(
+          value: BlocProvider.of<HomeViewModel>(context),
           child: FloatingActionButton(
             backgroundColor: ColorApp.primaryColor,
             onPressed: () async {
@@ -93,7 +92,7 @@ class _GroupInfoBodyPreviewState extends State<GroupInfoBodyPreview> {
                   groupName: groupNameGontroller.text,
                   groupImageUrl: pickedImage?.path,
                   newMessages: newMessages);
-              await home_di.sl<HomeViewModel>().createGroup(group);
+              await BlocProvider.of<HomeViewModel>(context).createGroup(group);
               Navigator.pop(context);
               Navigator.pop(context);
             },
@@ -102,6 +101,7 @@ class _GroupInfoBodyPreviewState extends State<GroupInfoBodyPreview> {
               size: 30,
             ),
           ),
-        ));
+        )*/
+    );
   }
 }

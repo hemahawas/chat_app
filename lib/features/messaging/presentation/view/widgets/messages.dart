@@ -27,10 +27,6 @@ class _MessagesState extends State<Messages> {
   Stream<QuerySnapshot<Map<String, dynamic>>>? _messagesSnapshots;
   @override
   void initState() {
-    messaging_di
-        .sl<MessagingViewModel>()
-        .messagesIsSeen(messaging_di.sl<MessagingViewModel>().chat);
-
     _messagesSnapshots =
         messaging_di.sl<MessagingViewModel>().getMessagesInRealTime();
 
