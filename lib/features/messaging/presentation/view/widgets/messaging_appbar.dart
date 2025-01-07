@@ -40,6 +40,7 @@ class MessagingAppbar extends StatelessWidget {
       leading: IconButton(
         icon: Icon(Icons.arrow_back),
         onPressed: () async {
+          await messaging_di.sl<MessagingViewModel>().messagesIsSeen();
           Navigator.pop(context);
         },
       ),

@@ -1,3 +1,5 @@
+import 'package:chat_app/core/utils/user_model.dart';
+
 abstract class HomeStates {}
 
 class InitialHomeStates extends HomeStates {}
@@ -65,3 +67,10 @@ class ChatIsSeenLoadingState extends HomeStates {}
 class ChatIsSeenSuccessState extends HomeStates {}
 
 class ChatIsSeenErrorState extends HomeStates {}
+
+// New user is added
+class NewUserIsAddedState extends HomeStates {
+  final UserModel newUser;
+
+  NewUserIsAddedState({required this.newUser});
+}

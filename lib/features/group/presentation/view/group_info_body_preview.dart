@@ -13,6 +13,7 @@ import 'package:chat_app/features/group/presentation/view/widgets/group_name_fie
 import 'package:chat_app/features/home/data/model/chat_model.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/image_field.dart';
 import 'package:chat_app/features/home/presentation/view_model/cubit.dart';
+import 'package:chat_app/features/home/presentation/view_model/states.dart';
 import 'package:chat_app/features/messaging/presentation/view_model/messaging_arguments.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,73 +36,79 @@ class _GroupInfoBodyPreviewState extends State<GroupInfoBodyPreview> {
 
   @override
   Widget build(BuildContext context) {
+    var blocContext =
+        ModalRoute.of(context)!.settings.arguments as BuildContext;
     return Scaffold(
-      appBar: AppBar(
-          title: Text(
-        'Group Info',
-        style: TextStyle(
-          color: Colors.black,
-          fontSize: 20,
-        ),
-      )),
-      body: Padding(
-        padding: const EdgeInsets.all(10.0).copyWith(top: 80),
-        child: Row(
-          children: [
-            Stack(
-              alignment: Alignment.bottomRight,
-              children: [
-                GroupImage(
-                  pickedImage: pickedImage,
-                ),
-                IconItemButton(
-                    icon: Icon(Icons.add),
-                    size: 30,
-                    onPressed: () async {
-                      var imagePicker = await ImagePicker()
-                          .pickImage(source: ImageSource.gallery);
-                      if (imagePicker != null) {
-                        setState(() {
-                          //don't define the pickedImage into build context,
-                          // because it will be initialized to null each set state
-                          pickedImage = File(imagePicker.path);
-                        });
-                      }
-                    })
-              ],
-            ),
-            Flexible(
-                child: GroupNameField(groupNameGontroller: groupNameGontroller))
-          ],
-        ),
-      ),
-      /*floatingActionButton: BlocProvider.value(
-          value: BlocProvider.of<HomeViewModel>(context),
-          child: FloatingActionButton(
-            backgroundColor: ColorApp.primaryColor,
-            onPressed: () async {
-              Map<String, int> newMessages = {};
-              for (var user in widget.addedUsers) {
-                newMessages[user.uId!] = 0;
-              }
-              GroupModel group = GroupModel(
-                  participantsUId: List<String>.from(
-                      widget.addedUsers.map((i) => i.uId.toString())),
-                  participants: widget.addedUsers,
-                  chatId: groupNameGontroller.text,
-                  groupName: groupNameGontroller.text,
-                  groupImageUrl: pickedImage?.path,
-                  newMessages: newMessages);
-              await BlocProvider.of<HomeViewModel>(context).createGroup(group);
-              Navigator.pop(context);
-              Navigator.pop(context);
-            },
-            child: const Icon(
-              Icons.done,
-              size: 30,
-            ),
+        appBar: AppBar(
+            title: Text(
+          'Group Info',
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 20,
           ),
-        )*/
-    );
+        )),
+        body: Padding(
+          padding: const EdgeInsets.all(10.0).copyWith(top: 80),
+          child: Row(
+            children: [
+              Stack(
+                alignment: Alignment.bottomRight,
+                children: [
+                  GroupImage(
+                    pickedImage: pickedImage,
+                  ),
+                  IconItemButton(
+                      icon: Icon(Icons.add),
+                      size: 30,
+                      onPressed: () async {
+                        var imagePicker = await ImagePicker()
+                            .pickImage(source: ImageSource.gallery);
+                        if (imagePicker != null) {
+                          setState(() {
+                            //don't define the pickedImage into build context,
+                            // because it will be initialized to null each set state
+                            pickedImage = File(imagePicker.path);
+                          });
+                        }
+                      })
+                ],
+              ),
+              Flexible(
+                  child:
+                      GroupNameField(groupNameGontroller: groupNameGontroller))
+            ],
+          ),
+        ),
+        floatingActionButton: BlocProvider.value(
+          value: BlocProvider.of<HomeViewModel>(blocContext),
+          child: BlocBuilder<HomeViewModel, HomeStates>(
+            builder: (context, state) {
+              return FloatingActionButton(
+                backgroundColor: ColorApp.primaryColor,
+                onPressed: () async {
+                  Map<String, int> newMessages = {};
+                  for (var user in widget.addedUsers) {
+                    newMessages[user.uId!] = 0;
+                  }
+                  GroupModel group = GroupModel(
+                      participantsUId: List<String>.from(
+                          widget.addedUsers.map((i) => i.uId.toString())),
+                      participants: widget.addedUsers,
+                      chatId: groupNameGontroller.text,
+                      groupName: groupNameGontroller.text,
+                      groupImageUrl: pickedImage?.path,
+                      newMessages: newMessages);
+                  await BlocProvider.of<HomeViewModel>(context)
+                      .createGroup(group);
+                  Navigator.popUntil(context, (route) => route.isFirst);
+                },
+                child: const Icon(
+                  Icons.done,
+                  size: 30,
+                ),
+              );
+            },
+          ),
+        ));
   }
 }

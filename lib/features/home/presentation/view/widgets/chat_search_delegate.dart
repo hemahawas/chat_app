@@ -13,6 +13,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class ChatSearchDelegate extends SearchDelegate {
   // The Users
   List<ChatItem> searchTerms = [];
+  // The context arg for cubit
+  final BuildContext blocContext;
+  ChatSearchDelegate({required this.blocContext});
+
   // To clear the query
   @override
   List<Widget>? buildActions(BuildContext context) {
@@ -33,7 +37,7 @@ class ChatSearchDelegate extends SearchDelegate {
   @override
   Widget buildResults(BuildContext context) {
     return BlocProvider<HomeViewModel>.value(
-      value: BlocProvider.of<HomeViewModel>(context),
+      value: BlocProvider.of<HomeViewModel>(blocContext),
       child: BlocBuilder<HomeViewModel, HomeStates>(
         builder: (context, state) {
           // Get chats
@@ -80,7 +84,7 @@ class ChatSearchDelegate extends SearchDelegate {
   @override
   Widget buildSuggestions(BuildContext context) {
     return BlocProvider<HomeViewModel>.value(
-      value: BlocProvider.of<HomeViewModel>(context),
+      value: BlocProvider.of<HomeViewModel>(blocContext),
       child: BlocBuilder<HomeViewModel, HomeStates>(
         builder: (context, state) {
           // Get chats

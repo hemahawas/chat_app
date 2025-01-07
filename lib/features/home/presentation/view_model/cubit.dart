@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:chat_app/core/shared_widgets/show_toast.dart';
 import 'package:chat_app/core/utils/cloudinary_service.dart';
 import 'package:chat_app/core/utils/network_info.dart';
 import 'package:chat_app/core/utils/user_model.dart';
@@ -101,6 +102,7 @@ class HomeViewModel extends Cubit<HomeStates> {
 
         emit(GetChatsFromLocalSuccessState());
       }).catchError((error) {
+        debugPrint(error.toString());
         emit(GetChatsFromLocalErrorState());
       });
     }
@@ -127,10 +129,8 @@ class HomeViewModel extends Cubit<HomeStates> {
           anotherUser.addedChats!.add(currentUser.uId!);
         }
 
-        // change the users state
-        await getUsers();
         emit(AddUserToChatSuccessState());
-        //await notifyUserChange();
+        await notifyUserChange();
       }
     }).catchError((error) {
       debugPrint(error.toString());
@@ -182,7 +182,7 @@ class HomeViewModel extends Cubit<HomeStates> {
     yield* firebaseHomeRepository.getChatsInRealTime();
   }
 
-  void setChats(snapShot) {
+  Future<void> setChats(snapShot) async {
     // Ensure that all users exist
     if (addedUsers.isEmpty || currentUser == null) {
       return;
@@ -232,7 +232,23 @@ class HomeViewModel extends Cubit<HomeStates> {
 
     // A new chat is added
     if (oldChatsLength != 0 && oldChatsLength != newChatsLength) {
-      getUsers();
+      // Get the new user
+      var newUser;
+      // get chats, then get the new user in one chat
+      for (var chat in chats) {
+        for (var user in nonAddedUsers) {
+          // if the non added user id is in the chat, then this is the new chat
+          if (chat.participantsUId!.contains(user.uId)) {
+            newUser = user;
+            break;
+          }
+        }
+      }
+      // Update the users in application
+      if (newUser != null) {
+        emit(NewUserIsAddedState(newUser: newUser));
+        showToast(msg: 'You got a new connection');
+      }
     }
   }
 

@@ -39,7 +39,10 @@ class HomeAppbar extends StatelessWidget {
           padding: EdgeInsets.only(top: 10.0.h),
           child: IconButton(
               onPressed: () {
-                showSearch(context: context, delegate: ChatSearchDelegate());
+                showSearch(
+                    context: context,
+                    delegate:
+                        ChatSearchDelegate(blocContext: homeAppBarContext));
               },
               icon: Icon(
                 Icons.search,
@@ -57,10 +60,12 @@ class HomeAppbar extends StatelessWidget {
                         child: Text('New group'),
                         onTap: () {
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      GroupChatBodyPreview()));
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => GroupChatBodyPreview(),
+                                settings: RouteSettings(
+                                    arguments: homeAppBarContext)),
+                          );
                         },
                       ),
                       PopupMenuItem(
