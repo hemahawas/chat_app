@@ -102,6 +102,7 @@ class HomeViewModel extends Cubit<HomeStates> {
 
         emit(GetChatsFromLocalSuccessState());
       }).catchError((error) {
+        debugPrint(error.toString());
         emit(GetChatsFromLocalErrorState());
       });
     }
@@ -128,8 +129,6 @@ class HomeViewModel extends Cubit<HomeStates> {
           anotherUser.addedChats!.add(currentUser.uId!);
         }
 
-        // change the users state
-        await getUsers();
         emit(AddUserToChatSuccessState());
         await notifyUserChange();
       }
@@ -233,8 +232,23 @@ class HomeViewModel extends Cubit<HomeStates> {
 
     // A new chat is added
     if (oldChatsLength != 0 && oldChatsLength != newChatsLength) {
-      await getUsers();
-      showToast(msg: 'You got a new connection');
+      // Get the new user
+      var newUser;
+      // get chats, then get the new user in one chat
+      for (var chat in chats) {
+        for (var user in nonAddedUsers) {
+          // if the non added user id is in the chat, then this is the new chat
+          if (chat.participantsUId!.contains(user.uId)) {
+            newUser = user;
+            break;
+          }
+        }
+      }
+      // Update the users in application
+      if (newUser != null) {
+        emit(NewUserIsAddedState(newUser: newUser));
+        showToast(msg: 'You got a new connection');
+      }
     }
   }
 

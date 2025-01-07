@@ -55,8 +55,6 @@ class _UserItemState extends State<UserItem> {
                     var cubit = BlocProvider.of<HomeViewModel>(context);
                     setState(() {
                       isAdded = true;
-                      cubit.nonAddedUsers.remove(widget.model);
-                      cubit.addedUsers.add(widget.model);
                     });
                     await cubit.addNewChat(cubit.currentUser!, widget.model);
                   }

@@ -33,7 +33,17 @@ class _UsersAdderState extends State<UsersAdder> {
                   padding: EdgeInsets.all(10.0),
                   child: BlocProvider.value(
                     value: BlocProvider.of<HomeViewModel>(widget.blocContext),
-                    child: BlocBuilder<HomeViewModel, HomeStates>(
+                    child: BlocConsumer<HomeViewModel, HomeStates>(
+                      listener: (context, state) {
+                        if (state is NewUserIsAddedState) {
+                          BlocProvider.of<HomeViewModel>(context)
+                              .addedUsers
+                              .add(state.newUser);
+                          BlocProvider.of<HomeViewModel>(context)
+                              .nonAddedUsers
+                              .remove(state.newUser);
+                        }
+                      },
                       builder: (context, state) {
                         return ConditionalBuilder(
                           fallback: (context) => Center(
