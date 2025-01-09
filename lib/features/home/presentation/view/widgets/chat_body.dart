@@ -41,9 +41,7 @@ class _ChatBodyState extends State<ChatBody> {
       listener: (context, state) {},
       builder: (context, state) {
         return RefreshIndicator(
-          onRefresh: () async {
-            await BlocProvider.of<HomeViewModel>(context).notifyUserChange();
-          },
+          onRefresh: () async {},
           child: SingleChildScrollView(
             physics: AlwaysScrollableScrollPhysics(),
             child: Column(

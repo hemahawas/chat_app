@@ -70,10 +70,10 @@ class HomeViewModel extends Cubit<HomeStates> {
     });
   }
 
-  Future<void> notifyUserChange() async {
+  Future<void> notifyUserChange(UserModel user) async {
     // Notify the othe users for any user change
     // by overrite the participants for each chat
-    await firebaseHomeRepository.notifyUserChange();
+    await firebaseHomeRepository.notifyUserChange(user);
   }
 
   List<CallModel> calls = [];
@@ -130,7 +130,8 @@ class HomeViewModel extends Cubit<HomeStates> {
         }
 
         emit(AddUserToChatSuccessState());
-        await notifyUserChange();
+        await notifyUserChange(currentUser);
+        await notifyUserChange(anotherUser);
       }
     }).catchError((error) {
       debugPrint(error.toString());
@@ -184,7 +185,7 @@ class HomeViewModel extends Cubit<HomeStates> {
 
   Future<void> setChats(snapShot) async {
     // Ensure that all users exist
-    if (addedUsers.isEmpty || currentUser == null) {
+    if (currentUser == null) {
       return;
     }
     int oldChatsLength = chats.length;
@@ -229,16 +230,19 @@ class HomeViewModel extends Cubit<HomeStates> {
     );
     chats = localChats;
     int newChatsLength = chats.length;
-
+    debugPrint('#####################out if');
     // A new chat is added
-    if (oldChatsLength != 0 && oldChatsLength != newChatsLength) {
+    if (oldChatsLength != newChatsLength) {
+      debugPrint('#####################in if');
       // Get the new user
       var newUser;
       // get chats, then get the new user in one chat
+      // O(n^2)
       for (var chat in chats) {
         for (var user in nonAddedUsers) {
           // if the non added user id is in the chat, then this is the new chat
           if (chat.participantsUId!.contains(user.uId)) {
+            debugPrint('#####################22222222222');
             newUser = user;
             break;
           }
@@ -246,6 +250,7 @@ class HomeViewModel extends Cubit<HomeStates> {
       }
       // Update the users in application
       if (newUser != null) {
+        debugPrint('#####################in new user');
         emit(NewUserIsAddedState(newUser: newUser));
         showToast(msg: 'You got a new connection');
       }
@@ -253,8 +258,10 @@ class HomeViewModel extends Cubit<HomeStates> {
   }
 
   Future<void> createGroup(GroupModel group) async {
+    // Add current user to group
     group.participants!.add(currentUser!);
     group.participantsUId!.add(currentUser!.uId!);
+    group.newMessages[currentUser!.uId!] = 0;
     emit(CreateGroupLoadingState());
     await firebaseHomeRepository.createGroup(group).then((value) {
       emit(CreateGroupSuccessState());
@@ -269,6 +276,7 @@ class HomeViewModel extends Cubit<HomeStates> {
         .uploadUserImage(currentUser!, image)
         .then((_) {
       emit(UpdateUserImageSuccessState());
+      notifyUserChange(currentUser!);
     }).catchError((error) {
       debugPrint(error.toString());
       emit(UpdateUserImageErrorState());

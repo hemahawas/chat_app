@@ -16,6 +16,6 @@ abstract class HomeRemoteRepository {
   Stream<QuerySnapshot<Map<String, dynamic>>> getChatsInRealTime();
   Future<void> createGroup(GroupModel group);
   Future<void> uploadUserImage(UserModel user, String image);
-  Future<void> notifyUserChange();
+  Future<void> notifyUserChange(UserModel user);
   Future<void> chatIsSeen(ChatModel chat);
 }

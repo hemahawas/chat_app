@@ -85,11 +85,15 @@ class HomeRemoteFirebaseRepository extends HomeRemoteRepository {
       print(error.toString());
     });
 
-    // Update the users to add new chat
     currentUser.addedChats ??= [];
-    currentUser.addedChats!.add(anotherUser.uId.toString());
     anotherUser.addedChats ??= [];
-    anotherUser.addedChats!.add(currentUser.uId.toString());
+    // add user id in added chats for both
+    if (!currentUser.addedChats!.contains(anotherUser.uId!)) {
+      currentUser.addedChats!.add(anotherUser.uId!);
+    }
+    if (!anotherUser.addedChats!.contains(currentUser.uId!)) {
+      anotherUser.addedChats!.add(currentUser.uId!);
+    }
 
     // Then create new chat
     var chat = ChatModel(
@@ -177,48 +181,41 @@ class HomeRemoteFirebaseRepository extends HomeRemoteRepository {
   }
 
   @override
-  Future<void> notifyUserChange() async {
-    // 1. get the Users
-    await firebaseFirestore.collection('users').get().then((users) async {
-      for (var user in users.docs) {
-        // 2. get the chats that the user is in
-        await firebaseFirestore
-            .collection('chats')
-            .where('participantsUId', arrayContains: user.data()['uId'])
-            .get()
-            .then((chats) async {
-          for (var chat in chats.docs) {
-            ChatModel chatModel;
+  Future<void> notifyUserChange(UserModel user) async {
+    //1. Get the chats that the user is in
+    await firebaseFirestore
+        .collection('chats')
+        .where('participantsUId', arrayContains: user.uId)
+        .get()
+        .then((chats) async {
+      for (var chat in chats.docs) {
+        ChatModel chatModel;
 
-            if (chat.data()['groupName'] == null) {
-              chatModel = ChatModel.fromJson(chat.data());
-            } else {
-              chatModel = GroupModel.fromJson(chat.data());
-            }
+        if (chat.data()['groupName'] == null) {
+          chatModel = ChatModel.fromJson(chat.data());
+        } else {
+          chatModel = GroupModel.fromJson(chat.data());
+        }
 
-            // 3. update the user in the chat
-            for (var participant in chatModel.participants ?? []) {
-              if (participant.uId == user.data()['uId']) {
-                chatModel.participants ??= [];
-                chatModel.participants?.remove(participant);
-                chatModel.participants?.add(UserModel.fromJson(user.data()));
-              }
-              // 4. update the chat
-              await firebaseFirestore
-                  .collection('chats')
-                  .doc(chatModel.chatId)
-                  .set(chatModel.toMap())
-                  .catchError((error) {
-                debugPrint('update Chat Error: ' '${error.toString()}');
-              });
-            }
+        // 2. update the user in the chat
+        for (var participant in chatModel.participants ?? []) {
+          if (participant.uId == user.uId) {
+            chatModel.participants ??= [];
+            chatModel.participants?.remove(participant);
+            chatModel.participants?.add(user);
           }
-        }).catchError((error) {
-          debugPrint('get Chat Error: ' '${error.toString()}');
-        });
+          // 3. update the chat
+          await firebaseFirestore
+              .collection('chats')
+              .doc(chatModel.chatId)
+              .set(chatModel.toMap())
+              .catchError((error) {
+            debugPrint('update Chat Error: ' '${error.toString()}');
+          });
+        }
       }
     }).catchError((error) {
-      debugPrint('get User Error: ' '${error.toString()}');
+      debugPrint('get Chat Error: ' '${error.toString()}');
     });
   }
 
