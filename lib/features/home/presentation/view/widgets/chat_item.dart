@@ -10,7 +10,6 @@ import 'package:chat_app/features/home/presentation/view_model/cubit.dart';
 import 'package:chat_app/features/messaging/presentation/view_model/messaging_arguments.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 
 class ChatItem extends StatelessWidget {
@@ -94,7 +93,7 @@ class ChatItem extends StatelessWidget {
                           ? (chatModel as GroupModel).groupName
                           : anotherUser!.name!,
                       style: Styles.textStyle15
-                          .copyWith(fontSize: 18.sp, color: Colors.black),
+                          .copyWith(fontSize: 18, color: Colors.black),
                     ),
                     Spacer(),
                     Text(
@@ -144,8 +143,8 @@ class ChatItem extends StatelessWidget {
                             alignment: Alignment.centerLeft,
                             child: Container(
                               alignment: Alignment.center,
-                              height: 20.0.h,
-                              width: 20.0.w,
+                              height: 20.0,
+                              width: 20.0,
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(50.0),
                                   color: ColorApp.primaryColor),

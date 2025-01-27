@@ -30,5 +30,5 @@ Future<void> initHomeSl() async {
   sl.registerLazySingleton(() => FirebaseFirestore.instance);
   sl.registerLazySingleton(() => CloudinaryService());
   sl.registerLazySingleton(() => NetworkInfo(internetConnectionChecker: sl()));
-  sl.registerLazySingleton(() => InternetConnectionChecker());
+  sl.registerLazySingleton(() => InternetConnectionChecker.createInstance());
 }

@@ -1,7 +1,6 @@
 import 'package:chat_app/core/themes/color_app.dart';
 import 'package:chat_app/core/themes/styles.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProfileButton extends StatelessWidget {
   const ProfileButton({super.key});
@@ -12,11 +11,11 @@ class ProfileButton extends StatelessWidget {
       shape: const CircleBorder(),
       onPressed: () {},
       child: Container(
-        height: 50.h,
+        height: 50,
         width: double.infinity,
         decoration: BoxDecoration(
             color: ColorApp.primaryColor,
-            borderRadius: BorderRadius.circular(30.0.sp)),
+            borderRadius: BorderRadius.circular(30.0)),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -26,8 +25,8 @@ class ProfileButton extends StatelessWidget {
             ),
             Text(
               'Save Profile',
-              style: Styles.textStyle24.copyWith(
-                  color: ColorApp.appBackgroundColor, fontSize: 20.sp),
+              style: Styles.textStyle24
+                  .copyWith(color: ColorApp.appBackgroundColor, fontSize: 20),
             )
           ],
         ),

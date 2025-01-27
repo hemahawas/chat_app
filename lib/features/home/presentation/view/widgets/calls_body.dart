@@ -6,7 +6,6 @@ import 'package:chat_app/features/home/presentation/view_model/cubit.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CallsBody extends StatelessWidget {
   const CallsBody({super.key});
@@ -14,7 +13,7 @@ class CallsBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(15.0.sp),
+      padding: EdgeInsets.all(15.0),
       child: ConditionalBuilder(
         fallback: (context) => Center(
           child: Text(

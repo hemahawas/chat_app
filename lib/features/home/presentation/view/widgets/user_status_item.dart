@@ -6,7 +6,6 @@ import 'package:chat_app/features/home/presentation/view/widgets/image_field.dar
 import 'package:chat_app/features/home/presentation/view_model/cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class UserStatusItem extends StatelessWidget {
   const UserStatusItem({super.key});
@@ -35,7 +34,7 @@ class UserStatusItem extends StatelessWidget {
             Text(
               'My status',
               style: Styles.textStyle15
-                  .copyWith(fontSize: 18.sp, color: Colors.black87),
+                  .copyWith(fontSize: 18, color: Colors.black87),
             ),
             ResponsiveSizedBox(
               sizedBoxContext: context,
@@ -44,8 +43,8 @@ class UserStatusItem extends StatelessWidget {
             ),
             Text(
               'Tap to add status update',
-              style: Styles.textStyle15
-                  .copyWith(fontSize: 16.sp, color: Colors.grey),
+              style:
+                  Styles.textStyle15.copyWith(fontSize: 16, color: Colors.grey),
             ),
           ],
         )

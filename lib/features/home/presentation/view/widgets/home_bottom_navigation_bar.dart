@@ -1,7 +1,6 @@
 import 'package:chat_app/core/themes/color_app.dart';
 import 'package:chat_app/core/themes/styles.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HomeBottomNavigationBar extends StatelessWidget {
   final Function(int) onTap;
@@ -17,7 +16,7 @@ class HomeBottomNavigationBar extends StatelessWidget {
           color: ColorApp.primaryColor,
         ),
         selectedLabelStyle: Styles.textStyle15
-            .copyWith(fontSize: 18.sp, fontWeight: FontWeight.bold),
+            .copyWith(fontSize: 18, fontWeight: FontWeight.bold),
         unselectedLabelStyle: Styles.textStyle15
             .copyWith(color: Colors.grey, fontWeight: FontWeight.w300),
         currentIndex: currentIndex,

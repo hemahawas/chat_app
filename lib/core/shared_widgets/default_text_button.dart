@@ -1,7 +1,6 @@
 import 'package:chat_app/core/themes/color_app.dart';
 import 'package:chat_app/core/themes/styles.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class DefaultTextButton extends StatelessWidget {
   final VoidCallback onPressed;
@@ -18,9 +17,9 @@ class DefaultTextButton extends StatelessWidget {
           onPressed: onPressed,
           style: ElevatedButton.styleFrom(
               backgroundColor: ColorApp.primaryColor,
-              padding: EdgeInsets.symmetric(horizontal: 48.w, vertical: 12.h),
+              padding: EdgeInsets.symmetric(horizontal: 48, vertical: 12),
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(24.sp))),
+                  borderRadius: BorderRadius.circular(24))),
           child: Text(
             text.toUpperCase(),
             style: Styles.textStyle24.copyWith(color: Colors.black),

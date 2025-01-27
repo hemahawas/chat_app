@@ -14,7 +14,6 @@ import 'package:chat_app/features/auth/presentation/view_model/cubit.dart';
 import 'package:chat_app/features/auth/presentation/view_model/states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class RegisterBody extends StatelessWidget {
   RegisterBody({super.key});
@@ -44,7 +43,7 @@ class RegisterBody extends StatelessWidget {
         key: key,
         child: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.0.w),
+            padding: EdgeInsets.symmetric(horizontal: 20.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,

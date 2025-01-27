@@ -2,7 +2,6 @@ import 'package:chat_app/core/config/routes.dart';
 import 'package:chat_app/core/themes/color_app.dart';
 import 'package:chat_app/features/group/presentation/view/group_chat_body_preview.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class PopupMenuItems extends StatelessWidget {
   final BuildContext homeAppBarContext;
@@ -11,10 +10,10 @@ class PopupMenuItems extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: EdgeInsets.only(top: 10.0.h),
+        padding: EdgeInsets.only(top: 10.0),
         child: PopupMenuButton<String>(
             offset: const Offset(0, kToolbarHeight),
-            iconSize: 35.sp,
+            iconSize: 35,
             color: ColorApp.appBackgroundColor,
             itemBuilder: (context) => [
                   PopupMenuItem(

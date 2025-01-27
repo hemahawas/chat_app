@@ -4,7 +4,6 @@ import 'package:chat_app/core/themes/color_app.dart';
 import 'package:chat_app/core/themes/styles.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/image_field.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class RecentStatusItem extends StatelessWidget {
   const RecentStatusItem({super.key});
@@ -28,7 +27,7 @@ class RecentStatusItem extends StatelessWidget {
             Text(
               'User name',
               style: Styles.textStyle15
-                  .copyWith(fontSize: 18.sp, color: Colors.black87),
+                  .copyWith(fontSize: 18, color: Colors.black87),
             ),
             ResponsiveSizedBox(
               sizedBoxContext: context,
@@ -37,8 +36,8 @@ class RecentStatusItem extends StatelessWidget {
             ),
             Text(
               'Today, 12:00 PM',
-              style: Styles.textStyle15
-                  .copyWith(fontSize: 16.sp, color: Colors.grey),
+              style:
+                  Styles.textStyle15.copyWith(fontSize: 16, color: Colors.grey),
             ),
           ],
         )

@@ -10,7 +10,6 @@ import 'package:chat_app/features/home/presentation/view_model/cubit.dart';
 import 'package:chat_app/features/home/presentation/view_model/states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({super.key});
@@ -53,10 +52,10 @@ class _ProfileViewState extends State<ProfileView> {
 
           return Scaffold(
             appBar: PreferredSize(
-                preferredSize: Size.fromHeight(AppSizes.toolBarHieght.h),
+                preferredSize: Size.fromHeight(AppSizes.toolBarHieght),
                 child: const ProfileAppbar()),
             body: Padding(
-              padding: EdgeInsets.all(20.0.sp),
+              padding: EdgeInsets.all(20.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

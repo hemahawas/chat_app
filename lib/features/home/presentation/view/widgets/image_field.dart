@@ -1,6 +1,5 @@
 import 'package:chat_app/core/constants/asset_images.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ImageField extends StatelessWidget {
   final String? image;
@@ -16,18 +15,20 @@ class ImageField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: size!.h,
-      height: size!.w,
+      width: size!,
+      height: size!,
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(30.h),
-        border: Border.all(color: borderColor, width: 3.w),
+        borderRadius: BorderRadius.circular(30),
+        border: Border.all(color: borderColor, width: 3),
       ),
       child: ClipOval(
         clipBehavior: Clip.antiAlias,
         child: image != null
             ? Image.network(
                 image!,
+                cacheHeight: 120,
+                cacheWidth: 120,
                 fit: BoxFit.cover,
               )
             : Image.asset(

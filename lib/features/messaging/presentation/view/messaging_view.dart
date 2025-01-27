@@ -6,7 +6,6 @@ import 'package:chat_app/features/messaging/presentation/view_model/cubit.dart';
 import 'package:chat_app/features/messaging/presentation/view_model/states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MessagingView extends StatelessWidget {
   const MessagingView({super.key});
@@ -25,7 +24,7 @@ class MessagingView extends StatelessWidget {
             resizeToAvoidBottomInset: true,
             backgroundColor: Colors.transparent,
             appBar: PreferredSize(
-                preferredSize: Size.fromHeight(AppSizes.toolBarHieght.h),
+                preferredSize: Size.fromHeight(AppSizes.toolBarHieght),
                 child: MessagingAppbar()),
             body: MessagingBody(),
           ),

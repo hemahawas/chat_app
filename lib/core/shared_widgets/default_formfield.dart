@@ -1,6 +1,5 @@
 import 'package:chat_app/core/themes/color_app.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 Widget defaultFormField(
         {required TextEditingController controller,
@@ -60,9 +59,12 @@ Widget defaultFormField(
                     )
                   : Container(),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30.0.sp),
+                borderRadius: BorderRadius.circular(30.0),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30.0),
               ),
               focusedBorder: OutlineInputBorder(
                   borderSide:
-                      BorderSide(width: 2.0.w, color: ColorApp.primaryColor))),
+                      BorderSide(width: 2.0, color: ColorApp.primaryColor))),
     );

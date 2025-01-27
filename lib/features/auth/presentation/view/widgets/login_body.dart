@@ -11,7 +11,6 @@ import 'package:chat_app/features/auth/presentation/view_model/cubit.dart';
 import 'package:chat_app/features/auth/presentation/view_model/states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LoginBody extends StatelessWidget {
   LoginBody({super.key});
@@ -35,7 +34,7 @@ class LoginBody extends StatelessWidget {
       },
       builder: (context, state) => SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(20.0.w),
+          padding: EdgeInsets.all(20.0),
           child: Column(
             children: [
               const LogoWidget(),

@@ -3,10 +3,8 @@ import 'package:chat_app/core/themes/styles.dart';
 import 'package:chat_app/core/utils/user_model.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/image_field.dart';
 import 'package:chat_app/features/home/presentation/view_model/cubit.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class UserItem extends StatefulWidget {
   final UserModel model;
@@ -39,7 +37,7 @@ class _UserItemState extends State<UserItem> {
             Text(
               widget.model.name!,
               style: Styles.textStyle15
-                  .copyWith(fontSize: 18.sp, color: Colors.black87),
+                  .copyWith(fontSize: 18, color: Colors.black87),
             ),
           ],
         ),

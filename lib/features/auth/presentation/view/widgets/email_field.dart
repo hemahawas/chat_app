@@ -9,15 +9,17 @@ class EmailField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return defaultFormField(
-        controller: emailController,
-        type: TextInputType.emailAddress,
-        label: 'Enter Your Email',
-        hint: 'your email',
-        validate: (value) {
-          if (value.toString().isEmpty) {
-            return 'Email is required';
-          }
-        },
-        prefix: Icons.email_outlined);
+      controller: emailController,
+      type: TextInputType.emailAddress,
+      validate: (value) {
+        if (value.toString().isEmpty) {
+          return 'Email is required';
+        }
+      },
+      label: 'Enter Your Email',
+      hint: 'your email',
+      prefix: Icons.email_outlined,
+      isPassword: false,
+    );
   }
 }

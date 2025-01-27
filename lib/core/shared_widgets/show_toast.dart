@@ -1,6 +1,6 @@
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter/material.dart';
 
 showToast({
   required String msg,
 }) =>
-    Fluttertoast.showToast(msg: msg);
+    SnackBar(content: Text(msg));

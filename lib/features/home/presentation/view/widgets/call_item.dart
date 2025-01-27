@@ -3,7 +3,6 @@ import 'package:chat_app/core/shared_widgets/responsive_sizedbox.dart';
 import 'package:chat_app/core/themes/styles.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/image_field.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CallItem extends StatelessWidget {
   const CallItem({super.key});
@@ -27,7 +26,7 @@ class CallItem extends StatelessWidget {
             Text(
               'User name',
               style: Styles.textStyle15
-                  .copyWith(fontSize: 18.sp, color: Colors.black87),
+                  .copyWith(fontSize: 18, color: Colors.black87),
             ),
             ResponsiveSizedBox(
               sizedBoxContext: context,
@@ -36,8 +35,8 @@ class CallItem extends StatelessWidget {
             ),
             Text(
               'Today, 10:30 PM',
-              style: Styles.textStyle15
-                  .copyWith(fontSize: 16.sp, color: Colors.grey),
+              style:
+                  Styles.textStyle15.copyWith(fontSize: 16, color: Colors.grey),
             ),
           ],
         ),
@@ -46,7 +45,7 @@ class CallItem extends StatelessWidget {
             onPressed: () {},
             icon: Icon(
               Icons.call,
-              size: 30.sp,
+              size: 30,
             ))
       ],
     );

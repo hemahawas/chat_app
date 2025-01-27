@@ -7,7 +7,6 @@ import 'package:chat_app/features/home/presentation/view_model/cubit.dart';
 import 'package:chat_app/features/home/presentation/view_model/states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class StatusBody extends StatelessWidget {
   const StatusBody({super.key});
@@ -18,7 +17,7 @@ class StatusBody extends StatelessWidget {
       listener: (context, state) {},
       builder: (context, state) {
         return Padding(
-          padding: EdgeInsets.all(15.0.sp),
+          padding: EdgeInsets.all(15.0),
           child: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
             child: Column(

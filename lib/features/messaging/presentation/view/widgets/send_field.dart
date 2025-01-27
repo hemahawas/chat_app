@@ -3,7 +3,6 @@ import 'package:chat_app/core/themes/color_app.dart';
 import 'package:chat_app/features/messaging/presentation/view/widgets/attachment_items.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SendField extends StatelessWidget {
   final TextEditingController sendController;
@@ -38,10 +37,10 @@ class SendField extends StatelessWidget {
               hintText: 'send your message',
               floatingLabelStyle: const TextStyle(color: ColorApp.primaryColor),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30.0.sp),
+                borderRadius: BorderRadius.circular(30.0),
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30.0.sp),
+                borderRadius: BorderRadius.circular(30.0),
               ))),
     );
   }

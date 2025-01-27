@@ -2,7 +2,6 @@ import 'package:chat_app/core/themes/styles.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/chat_search_delegate.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/popup_menu_items.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HomeAppbar extends StatelessWidget {
   final BuildContext homeAppBarContext;
@@ -14,21 +13,21 @@ class HomeAppbar extends StatelessWidget {
       leading: SizedBox.shrink(),
       leadingWidth: 0,
       title: Padding(
-        padding: EdgeInsets.only(top: 20.0.h, left: 20.0.w),
+        padding: EdgeInsets.only(top: 20.0, left: 20.0),
         child: Text(
           'WhatsUp',
           style: Styles.textStyle24,
         ),
       ),
       bottom: PreferredSize(
-          preferredSize: Size.fromHeight(4.0.h),
+          preferredSize: Size.fromHeight(4.0),
           child: Container(
             color: Colors.grey.shade500,
-            height: 1.0.h,
+            height: 1.0,
           )),
       actions: [
         Padding(
-          padding: EdgeInsets.only(top: 10.0.h),
+          padding: EdgeInsets.only(top: 10.0),
           child: IconButton(
               onPressed: () {
                 showSearch(
@@ -38,7 +37,7 @@ class HomeAppbar extends StatelessWidget {
               },
               icon: Icon(
                 Icons.search,
-                size: 35.0.sp,
+                size: 35.0,
               )),
         ),
         PopupMenuItems(homeAppBarContext: homeAppBarContext),

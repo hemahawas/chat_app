@@ -2,9 +2,7 @@ import 'package:chat_app/core/constants/asset_images.dart';
 import 'package:chat_app/core/shared_widgets/responsive_sizedbox.dart';
 import 'package:chat_app/core/themes/styles.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/image_field.dart';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ViewedStatusItem extends StatelessWidget {
   const ViewedStatusItem({super.key});
@@ -27,7 +25,7 @@ class ViewedStatusItem extends StatelessWidget {
             Text(
               'User name',
               style: Styles.textStyle15
-                  .copyWith(fontSize: 18.sp, color: Colors.black87),
+                  .copyWith(fontSize: 18, color: Colors.black87),
             ),
             ResponsiveSizedBox(
               sizedBoxContext: context,
@@ -35,8 +33,8 @@ class ViewedStatusItem extends StatelessWidget {
             ),
             Text(
               'Today, 12:00 PM',
-              style: Styles.textStyle15
-                  .copyWith(fontSize: 16.sp, color: Colors.grey),
+              style:
+                  Styles.textStyle15.copyWith(fontSize: 16, color: Colors.grey),
             ),
           ],
         )

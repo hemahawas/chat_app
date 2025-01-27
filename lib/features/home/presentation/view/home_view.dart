@@ -7,7 +7,6 @@ import 'package:chat_app/features/home/presentation/view_model/cubit.dart';
 import 'package:chat_app/features/home/presentation/view_model/states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -19,7 +18,7 @@ class HomeView extends StatelessWidget {
         final cubit = BlocProvider.of<HomeViewModel>(context);
         return Scaffold(
           appBar: PreferredSize(
-              preferredSize: Size.fromHeight(AppSizes.toolBarHieght.h),
+              preferredSize: Size.fromHeight(AppSizes.toolBarHieght),
               child: HomeAppbar(
                 homeAppBarContext: context,
               )),
