@@ -1,5 +1,5 @@
 import 'package:chat_app/core/themes/color_app.dart';
-import 'package:flutter/foundation.dart';
+
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 

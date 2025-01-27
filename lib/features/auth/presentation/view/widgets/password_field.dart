@@ -22,8 +22,6 @@ class PasswordField extends StatelessWidget {
       validate: (value) {
         if (value!.toString().isEmpty) {
           return 'Password is too short';
-        } else {
-          return null;
         }
       },
       label: 'Enter Your Password',

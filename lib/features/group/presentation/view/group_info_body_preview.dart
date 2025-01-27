@@ -1,24 +1,15 @@
 import 'dart:io';
-import 'dart:math';
 
-import 'package:chat_app/config/routes.dart';
-import 'package:chat_app/core/constants/asset_images.dart';
 import 'package:chat_app/core/shared_widgets/icon_item_button.dart';
 import 'package:chat_app/core/themes/color_app.dart';
 import 'package:chat_app/core/utils/user_model.dart';
-import 'package:chat_app/features/auth/presentation/view/widgets/name_field.dart';
 import 'package:chat_app/features/group/data/model/group_model.dart';
 import 'package:chat_app/features/group/presentation/view/widgets/group_image.dart';
 import 'package:chat_app/features/group/presentation/view/widgets/group_name_field.dart';
-import 'package:chat_app/features/home/data/model/chat_model.dart';
-import 'package:chat_app/features/home/presentation/view/widgets/image_field.dart';
 import 'package:chat_app/features/home/presentation/view_model/cubit.dart';
 import 'package:chat_app/features/home/presentation/view_model/states.dart';
-import 'package:chat_app/features/messaging/presentation/view_model/messaging_arguments.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:chat_app/features/home/presentation/view_model/home_injection_container.dart'
-    as home_di;
 import 'package:image_picker/image_picker.dart';
 
 class GroupInfoBodyPreview extends StatefulWidget {
@@ -59,7 +50,7 @@ class _GroupInfoBodyPreviewState extends State<GroupInfoBodyPreview> {
                   ),
                   IconItemButton(
                       icon: Icon(Icons.add),
-                      size: 30,
+                      size: 20,
                       onPressed: () async {
                         var imagePicker = await ImagePicker()
                             .pickImage(source: ImageSource.gallery);
@@ -72,6 +63,9 @@ class _GroupInfoBodyPreviewState extends State<GroupInfoBodyPreview> {
                         }
                       })
                 ],
+              ),
+              SizedBox(
+                width: 10,
               ),
               Flexible(
                   child:

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:chat_app/core/utils/cloudinary_service.dart';
 import 'package:chat_app/core/utils/user_model.dart';
 import 'package:chat_app/features/group/data/model/group_model.dart';
@@ -78,11 +76,12 @@ class HomeRemoteFirebaseRepository extends HomeRemoteRepository {
       for (var doc in value.docs) {
         if (doc.id == '${currentUser.uId}-${anotherUser.uId}' ||
             doc.id == '${anotherUser.uId}-${currentUser.uId}') {
-          return null;
+          return ChatModel(participantsUId: [], chatId: '', newMessages: {});
         }
       }
     }).catchError((error) {
-      print(error.toString());
+      debugPrint(error.toString());
+      return null;
     });
 
     currentUser.addedChats ??= [];
@@ -110,7 +109,7 @@ class HomeRemoteFirebaseRepository extends HomeRemoteRepository {
         .doc('${currentUser.uId}-${anotherUser.uId}')
         .set(chat.toMap())
         .catchError((error) {
-      print(error.toString());
+      debugPrint(error.toString());
     });
 
     // update the two users
@@ -119,7 +118,7 @@ class HomeRemoteFirebaseRepository extends HomeRemoteRepository {
         .doc(currentUser.uId)
         .set(currentUser.toMap())
         .catchError((error) {
-      print(error.toString());
+      debugPrint(error.toString());
     });
 
     await firebaseFirestore
@@ -127,7 +126,7 @@ class HomeRemoteFirebaseRepository extends HomeRemoteRepository {
         .doc(anotherUser.uId)
         .set(anotherUser.toMap())
         .catchError((error) {
-      print(error.toString());
+      debugPrint(error.toString());
     });
     // return the new chat
     return chat;

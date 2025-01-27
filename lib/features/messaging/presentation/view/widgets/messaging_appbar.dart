@@ -3,14 +3,11 @@ import 'package:chat_app/core/utils/user_model.dart';
 import 'package:chat_app/features/group/data/model/group_model.dart';
 import 'package:chat_app/features/group/presentation/view/group_members_view.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/image_field.dart';
-import 'package:chat_app/features/home/presentation/view_model/cubit.dart';
 import 'package:chat_app/features/messaging/presentation/view_model/cubit.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:chat_app/features/home/presentation/view_model/home_injection_container.dart'
-    as home_di;
 import 'package:chat_app/features/messaging/presentation/view_model/messaging_injection_container.dart'
     as messaging_di;
 
@@ -35,39 +32,58 @@ class MessagingAppbar extends StatelessWidget {
       scrolledUnderElevation: 0,
       //______________________
       backgroundColor: ColorApp.appBackgroundColor,
+      titleSpacing: 0,
       toolbarHeight: 55.h,
-      leadingWidth: 30.w,
-      leading: IconButton(
-        icon: Icon(Icons.arrow_back),
-        onPressed: () async {
-          await messaging_di.sl<MessagingViewModel>().messagesIsSeen();
-          Navigator.pop(context);
-        },
-      ),
-      title: MaterialButton(
-        onPressed: () {
-          if (cubit.chat is GroupModel) {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => GroupMembersView(
-                          groupModel: (cubit.chat as GroupModel),
-                        )));
-          }
-        },
-        child: Row(
-          children: [
-            ImageField(
-              image: cubit.chat is GroupModel
-                  ? (cubit.chat as GroupModel).groupImageUrl
-                  : anotherUser!.image,
-              borderColor: Colors.transparent,
-              size: 40,
+      leadingWidth: 0,
+      leading: Container(),
+      title: Row(
+        children: [
+          SizedBox(
+            height: 30,
+            width: 30,
+            child: IconButton(
+              padding: EdgeInsets.zero,
+              iconSize: 20,
+              icon: Icon(Icons.arrow_back),
+              onPressed: () async {
+                await messaging_di.sl<MessagingViewModel>().messagesIsSeen();
+                Navigator.pop(context);
+              },
             ),
-            Text(
-                '${cubit.chat is GroupModel ? (cubit.chat as GroupModel).groupName : anotherUser!.name}')
-          ],
-        ),
+          ),
+          Expanded(
+            child: MaterialButton(
+              padding: EdgeInsets.zero,
+              onPressed: () {
+                if (cubit.chat is GroupModel) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => GroupMembersView(
+                                groupModel: (cubit.chat as GroupModel),
+                              )));
+                }
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  ImageField(
+                    image: cubit.chat is GroupModel
+                        ? (cubit.chat as GroupModel).groupImageUrl
+                        : anotherUser!.image,
+                    borderColor: Colors.transparent,
+                    size: 40,
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                      '${cubit.chat is GroupModel ? (cubit.chat as GroupModel).groupName : anotherUser!.name}'),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

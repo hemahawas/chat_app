@@ -18,7 +18,7 @@ class ChatModelAdapter extends TypeAdapter<ChatModel> {
     };
     return ChatModel(
       newMessages: {},
-      participantsUId: null,
+      participantsUId: [],
       lastMessage: fields[2] as MessageModel?,
       messages: (fields[1] as List?)?.cast<MessageModel>(),
       participants: (fields[0] as List?)?.cast<UserModel>(),

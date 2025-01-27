@@ -1,7 +1,4 @@
-import 'dart:io';
-
 import 'package:chat_app/core/shared_widgets/show_toast.dart';
-import 'package:chat_app/core/utils/cloudinary_service.dart';
 import 'package:chat_app/core/utils/network_info.dart';
 import 'package:chat_app/core/utils/user_model.dart';
 import 'package:chat_app/features/group/data/model/group_model.dart';
@@ -9,15 +6,12 @@ import 'package:chat_app/features/home/data/model/call_Model.dart';
 import 'package:chat_app/features/home/data/model/chat_model.dart';
 import 'package:chat_app/features/home/data/model/status_model.dart';
 import 'package:chat_app/features/home/data/repo/home_local_reopsitory.dart';
-import 'package:chat_app/features/home/data/repo/home_remote_firebase_repository.dart';
 import 'package:chat_app/features/home/data/repo/home_remote_repository.dart';
-import 'package:chat_app/features/home/data/repo/home_local_hive_repository.dart';
 import 'package:chat_app/features/home/presentation/view_model/states.dart';
 import 'package:chat_app/features/messaging/data/model/message_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 
 import 'package:chat_app/features/home/presentation/view_model/home_injection_container.dart'
     as home_di;
@@ -65,8 +59,7 @@ class HomeViewModel extends Cubit<HomeStates> {
 
       emit(GetUsersFromFirebaseSuccessState());
     }).catchError((error) {
-      debugPrint(error.toString());
-      emit(GetUsersFromFirebaseErrorState());
+      _handleError(error, GetUsersFromFirebaseErrorState());
     });
   }
 
@@ -92,8 +85,7 @@ class HomeViewModel extends Cubit<HomeStates> {
         emit(GetChatsFromFirebaseSuccessState());
         await localHomeRepository.putChats(chats);
       }).catchError((error) {
-        debugPrint(error.toString());
-        emit(GetChatsFromFirebaseErrorState());
+        _handleError(error, GetChatsFromFirebaseErrorState());
       });
     } else {
       emit(GetChatsFromLocalLoadingState());
@@ -102,8 +94,7 @@ class HomeViewModel extends Cubit<HomeStates> {
 
         emit(GetChatsFromLocalSuccessState());
       }).catchError((error) {
-        debugPrint(error.toString());
-        emit(GetChatsFromLocalErrorState());
+        _handleError(error, GetChatsFromLocalErrorState);
       });
     }
   }
@@ -134,8 +125,7 @@ class HomeViewModel extends Cubit<HomeStates> {
         await notifyUserChange(anotherUser);
       }
     }).catchError((error) {
-      debugPrint(error.toString());
-      emit(AddUserToChatErrorState());
+      _handleError(error, AddUserToChatErrorState());
     });
   }
 
@@ -149,7 +139,7 @@ class HomeViewModel extends Cubit<HomeStates> {
         localHomeRepository.putUserInfo(currentUser!);
         emit(GetUserInfoSuccessState());
       }).catchError((error) {
-        emit(GetUserInfoErrorState());
+        _handleError(error, GetUserInfoErrorState());
       });
     } else {
       emit(GetUserInfoLoadingState());
@@ -157,8 +147,7 @@ class HomeViewModel extends Cubit<HomeStates> {
         currentUser = value;
         emit(GetUserInfoSuccessState());
       }).catchError((error) {
-        debugPrint(error.toString());
-        emit(GetUserInfoErrorState());
+        _handleError(error, GetUserInfoErrorState());
       });
     }
   }
@@ -180,7 +169,9 @@ class HomeViewModel extends Cubit<HomeStates> {
   }
 
   Stream<QuerySnapshot<Map<String, dynamic>>> getChatsInRealTime() async* {
-    yield* firebaseHomeRepository.getChatsInRealTime();
+    yield* firebaseHomeRepository.getChatsInRealTime().handleError((error) {
+      _handleError(error, GetChatsFromFirebaseErrorState());
+    });
   }
 
   Future<void> setChats(snapShot) async {
@@ -217,7 +208,7 @@ class HomeViewModel extends Cubit<HomeStates> {
     // Add new user if there is new chat, and remove it from non added users
 
     // Sort the chats by the last message
-    // sort : O(n^2)
+    // sort : O(n log(n))
     localChats.sort(
       (a, b) {
         a.lastMessage ??= MessageModel(sendingTime: DateTime(0));
@@ -266,7 +257,7 @@ class HomeViewModel extends Cubit<HomeStates> {
     await firebaseHomeRepository.createGroup(group).then((value) {
       emit(CreateGroupSuccessState());
     }).catchError((error) {
-      emit(CreateGroupErrorState());
+      _handleError(error, CreateGroupErrorState());
     });
   }
 
@@ -278,21 +269,13 @@ class HomeViewModel extends Cubit<HomeStates> {
       emit(UpdateUserImageSuccessState());
       notifyUserChange(currentUser!);
     }).catchError((error) {
-      debugPrint(error.toString());
-      emit(UpdateUserImageErrorState());
+      _handleError(error, UpdateUserImageErrorState());
     });
   }
 
-  /*Future<void> chatIsSeen(ChatModel chat) async {
-    emit(ChatIsSeenLoadingState());
-    // the user saw the messages
-    chat.newMessages[currentUser!.uId!] = 0;
-
-    await firebaseHomeRepository.chatIsSeen(chat).then((_) {
-      emit(ChatIsSeenSuccessState());
-    }).catchError((error) {
-      debugPrint('chatIsSeen error: ${error.toString()}');
-      emit(ChatIsSeenErrorState());
-    });
-  }*/
+  _handleError(error, state) {
+    debugPrint(error.toString());
+    showToast(msg: error.toString());
+    emit(state);
+  }
 }

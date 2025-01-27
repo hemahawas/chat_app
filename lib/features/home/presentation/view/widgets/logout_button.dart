@@ -1,4 +1,4 @@
-import 'package:chat_app/config/routes.dart';
+import 'package:chat_app/core/config/routes.dart';
 import 'package:chat_app/core/shared_widgets/default_text_button.dart';
 import 'package:chat_app/core/shared_widgets/show_toast.dart';
 import 'package:chat_app/features/auth/presentation/view_model/cubit.dart';

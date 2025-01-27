@@ -1,8 +1,5 @@
-import 'package:chat_app/core/constants/asset_images.dart';
 import 'package:chat_app/core/themes/color_app.dart';
 import 'package:chat_app/core/themes/styles.dart';
-import 'package:chat_app/core/utils/user_model.dart';
-import 'package:chat_app/features/home/presentation/view/widgets/image_field.dart';
 import 'package:chat_app/features/messaging/data/model/message_model.dart';
 import 'package:chat_app/features/messaging/presentation/view/widgets/date_title.dart';
 import 'package:chat_app/features/messaging/presentation/view_model/cubit.dart';
@@ -37,12 +34,18 @@ class MessageItem extends StatelessWidget {
             : Container(),
         Container(
           width: double.infinity,
-          padding: EdgeInsets.all(5),
+          padding: EdgeInsets.all(10),
           margin: currentUserUId == message.messageSenderId
               ? EdgeInsets.only(
-                  left: MediaQuery.of(context).size.width * 0.25, right: 5)
+                  top: 3,
+                  bottom: 3,
+                  left: MediaQuery.of(context).size.width * 0.25,
+                  right: 5)
               : EdgeInsets.only(
-                  right: MediaQuery.of(context).size.width * 0.25, left: 5),
+                  top: 3,
+                  bottom: 3,
+                  right: MediaQuery.of(context).size.width * 0.25,
+                  left: 5),
           alignment: Alignment.topRight,
           decoration: BoxDecoration(
               borderRadius: currentUserUId == message.messageSenderId
@@ -62,13 +65,11 @@ class MessageItem extends StatelessWidget {
                         style: Styles.textStyle15,
                       ),
                     )
-                  : Container(
-                      child: null,
-                    ),
+                  : Container(),
               Container(
-                child: message.image != null
+                child: message.image != '' && message.image != null
                     ? Image.network(message.image!)
-                    : null,
+                    : SizedBox(),
               ),
               Text(
                 message.body == null

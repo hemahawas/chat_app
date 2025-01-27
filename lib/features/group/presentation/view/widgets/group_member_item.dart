@@ -1,7 +1,6 @@
 import 'package:chat_app/core/themes/styles.dart';
 import 'package:chat_app/core/utils/user_model.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/image_field.dart';
-import 'package:chat_app/features/home/presentation/view/widgets/user_item.dart';
 import 'package:flutter/material.dart';
 
 class GroupMemberItem extends StatelessWidget {

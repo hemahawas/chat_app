@@ -19,10 +19,10 @@ class ResponsiveSizedBox extends StatelessWidget {
     return SizedBox(
       height: hasHeight
           ? MediaQuery.of(sizedBoxContext).size.height / heightFraction
-          : null,
+          : 0,
       width: hasWidth
           ? MediaQuery.of(sizedBoxContext).size.width / widthFraction
-          : null,
+          : 0,
     );
   }
 }

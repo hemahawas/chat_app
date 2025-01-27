@@ -1,9 +1,7 @@
 import 'package:chat_app/core/shared_widgets/default_formfield.dart';
-import 'package:chat_app/core/shared_widgets/icon_item_button.dart';
 import 'package:chat_app/core/themes/color_app.dart';
 import 'package:chat_app/features/messaging/presentation/view/widgets/attachment_items.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

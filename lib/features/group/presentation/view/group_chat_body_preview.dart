@@ -1,7 +1,5 @@
 import 'package:chat_app/core/themes/styles.dart';
-import 'package:chat_app/core/utils/user_model.dart';
 import 'package:chat_app/features/group/presentation/view/widgets/group_users_body.dart';
-import 'package:chat_app/features/home/data/model/chat_model.dart';
 import 'package:chat_app/features/home/presentation/view_model/cubit.dart';
 import 'package:chat_app/features/home/presentation/view_model/states.dart';
 import 'package:flutter/material.dart';

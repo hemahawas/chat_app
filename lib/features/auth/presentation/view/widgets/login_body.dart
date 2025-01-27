@@ -1,4 +1,4 @@
-import 'package:chat_app/config/routes.dart';
+import 'package:chat_app/core/config/routes.dart';
 import 'package:chat_app/core/shared_widgets/responsive_sizedbox.dart';
 import 'package:chat_app/core/shared_widgets/show_toast.dart';
 import 'package:chat_app/features/auth/presentation/view/widgets/email_field.dart';
@@ -16,9 +16,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class LoginBody extends StatelessWidget {
   LoginBody({super.key});
 
-  TextEditingController emailController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
 
-  TextEditingController passwordController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   //var formKey = GlobalKey<FormState>();
 

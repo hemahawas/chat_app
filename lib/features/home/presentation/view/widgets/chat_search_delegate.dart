@@ -1,13 +1,8 @@
-import 'package:chat_app/core/utils/user_model.dart';
 import 'package:chat_app/features/group/data/model/group_model.dart';
-import 'package:chat_app/features/home/data/model/chat_model.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/chat_item.dart';
 import 'package:chat_app/features/home/presentation/view_model/cubit.dart';
 import 'package:chat_app/features/home/presentation/view_model/states.dart';
 import 'package:flutter/material.dart';
-
-import 'package:chat_app/features/home/presentation/view_model/home_injection_container.dart'
-    as home_di;
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ChatSearchDelegate extends SearchDelegate {

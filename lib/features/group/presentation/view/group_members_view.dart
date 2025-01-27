@@ -1,16 +1,8 @@
-import 'package:chat_app/core/constants/app_sizes.dart';
 import 'package:chat_app/core/themes/styles.dart';
-import 'package:chat_app/core/utils/user_model.dart';
 import 'package:chat_app/features/group/data/model/group_model.dart';
 import 'package:chat_app/features/group/presentation/view/widgets/group_member_item.dart';
-import 'package:chat_app/features/home/presentation/view/widgets/chat_item.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/image_field.dart';
-import 'package:chat_app/features/home/presentation/view/widgets/user_item.dart';
-import 'package:chat_app/features/home/presentation/view_model/cubit.dart';
-import 'package:chat_app/features/messaging/presentation/view_model/cubit.dart';
 import 'package:flutter/material.dart';
-import 'package:chat_app/features/home/presentation/view_model/home_injection_container.dart'
-    as home_di;
 
 class GroupMembersView extends StatelessWidget {
   const GroupMembersView({super.key, required this.groupModel});

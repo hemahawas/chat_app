@@ -1,18 +1,11 @@
 import 'dart:async';
 
-import 'package:chat_app/core/shared_widgets/responsive_sizedbox.dart';
 import 'package:chat_app/features/group/data/model/group_model.dart';
-import 'package:chat_app/features/home/presentation/view_model/cubit.dart';
-import 'package:chat_app/features/messaging/data/model/message_model.dart';
-import 'package:chat_app/features/messaging/presentation/view/messaging_view.dart';
 import 'package:chat_app/features/messaging/presentation/view/widgets/message_item.dart';
 import 'package:chat_app/features/messaging/presentation/view_model/cubit.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:chat_app/features/home/presentation/view_model/home_injection_container.dart'
-    as home_di;
 import 'package:chat_app/features/messaging/presentation/view_model/messaging_injection_container.dart'
     as messaging_di;
 
@@ -71,15 +64,9 @@ class _MessagesState extends State<Messages> {
                               .chat!
                               .messages!
                               .isNotEmpty
-                          ? ListView.separated(
+                          ? ListView.builder(
                               shrinkWrap: true,
                               reverse: true,
-                              separatorBuilder: (context, index) =>
-                                  ResponsiveSizedBox(
-                                sizedBoxContext: context,
-                                hasHeight: true,
-                                heightFraction: 90,
-                              ),
                               itemCount: messaging_di
                                   .sl<MessagingViewModel>()
                                   .chat!

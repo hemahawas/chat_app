@@ -6,7 +6,6 @@ import 'package:chat_app/features/messaging/data/model/message_model.dart';
 import 'package:chat_app/features/messaging/presentation/view_model/cubit.dart';
 import 'package:chat_app/features/messaging/presentation/view_model/states.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chat_app/features/messaging/presentation/view_model/messaging_injection_container.dart'
     as messaging_di;
@@ -24,12 +23,12 @@ class GalleryView extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.black,
       ),
-      body: Container(
+      body: SizedBox(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         child: Stack(
           children: [
-            Container(
+            SizedBox(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height - 150,
               child: Image.file(

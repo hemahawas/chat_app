@@ -1,4 +1,4 @@
-import 'package:chat_app/config/routes.dart';
+import 'package:chat_app/core/config/routes.dart';
 import 'package:chat_app/core/shared_widgets/responsive_sizedbox.dart';
 import 'package:chat_app/core/shared_widgets/show_toast.dart';
 import 'package:chat_app/core/utils/user_model.dart';

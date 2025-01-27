@@ -1,7 +1,6 @@
-import 'package:chat_app/config/routes.dart';
+import 'package:chat_app/core/config/routes.dart';
 import 'package:chat_app/core/shared_widgets/default_text_button.dart';
 import 'package:chat_app/core/themes/styles.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class LostConnectionScreen extends StatelessWidget {

@@ -1,4 +1,3 @@
-import 'package:chat_app/core/shared_widgets/icon_item_button.dart';
 import 'package:chat_app/features/messaging/presentation/view/widgets/gallery_attachment_item.dart';
 import 'package:flutter/material.dart';
 

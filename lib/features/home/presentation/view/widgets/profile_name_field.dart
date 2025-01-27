@@ -3,9 +3,10 @@ import 'package:chat_app/core/themes/color_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ProfileNameField extends StatelessWidget {
-  final TextEditingController nameController;
-  const ProfileNameField({super.key, required this.nameController});
+class ProfileInputField extends StatelessWidget {
+  final TextEditingController inputController;
+
+  const ProfileInputField({super.key, required this.inputController});
 
   @override
   Widget build(BuildContext context) {
@@ -14,10 +15,10 @@ class ProfileNameField extends StatelessWidget {
       shadowColor: Colors.grey,
       borderRadius: BorderRadius.circular(30.sp),
       child: defaultFormField(
-          controller: nameController,
+          controller: inputController,
           type: TextInputType.number,
           validate: (value) {},
-          label: nameController.text,
+          label: inputController.text,
           decoration: InputDecoration(
               floatingLabelStyle: const TextStyle(color: ColorApp.primaryColor),
               border: OutlineInputBorder(

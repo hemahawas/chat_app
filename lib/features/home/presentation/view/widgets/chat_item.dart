@@ -1,24 +1,16 @@
-import 'package:chat_app/config/routes.dart';
+import 'package:chat_app/core/config/routes.dart';
 import 'package:chat_app/core/shared_widgets/responsive_sizedbox.dart';
 import 'package:chat_app/core/themes/color_app.dart';
 import 'package:chat_app/core/themes/styles.dart';
 import 'package:chat_app/core/utils/user_model.dart';
 import 'package:chat_app/features/group/data/model/group_model.dart';
 import 'package:chat_app/features/home/data/model/chat_model.dart';
-import 'package:chat_app/features/home/presentation/view/widgets/chat_search_delegate.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/image_field.dart';
 import 'package:chat_app/features/home/presentation/view_model/cubit.dart';
-import 'package:chat_app/features/messaging/data/repo/messaging_firebase_remote_repository.dart';
-import 'package:chat_app/features/messaging/data/repo/messaging_remote_repository.dart';
-import 'package:chat_app/features/messaging/presentation/view/messaging_view.dart';
-import 'package:chat_app/features/messaging/presentation/view_model/cubit.dart';
 import 'package:chat_app/features/messaging/presentation/view_model/messaging_arguments.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:chat_app/features/home/presentation/view_model/home_injection_container.dart'
-    as home_di;
 import 'package:intl/intl.dart';
 
 class ChatItem extends StatelessWidget {
@@ -45,7 +37,7 @@ class ChatItem extends StatelessWidget {
     /*
     if (widget.chatModel.messages != null &&
         widget.chatModel.messages!.isNotEmpty) {
-      print("chatModel.messages: ${widget.chatModel.messages!.length}");
+   debugPrint("chatModel.messages: ${widget.chatModel.messages!.length}");
       for (var message in widget.chatModel.messages!) {
         if (message.isSeenBy.contains(cubit.currentUser!.uId)) {
           break;
@@ -59,6 +51,7 @@ class ChatItem extends StatelessWidget {
     }*/
 
     return MaterialButton(
+      padding: EdgeInsets.all(5),
       onPressed: () {
         // if This chat is searched, close the search,
         // so that when you press back arrow, you will back to home view
@@ -91,85 +84,85 @@ class ChatItem extends StatelessWidget {
             widthFraction: 20,
           ),
           Expanded(
-            child: SizedBox(
-              width: double.infinity,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    chatModel is GroupModel
-                        ? (chatModel as GroupModel).groupName
-                        : anotherUser!.name!,
-                    style: Styles.textStyle15
-                        .copyWith(fontSize: 18.sp, color: Colors.black),
-                  ),
-                  ResponsiveSizedBox(
-                    sizedBoxContext: context,
-                    hasHeight: true,
-                    heightFraction: 70,
-                  ),
-                  Text(
-                    // chat last message
-                    // If the last message sender is the current user, show 'you: '
-                    '${chatModel.lastMessage?.messageSenderId == cubit.currentUser?.uId ? 'you: ' : ''}'
-                    // If the message has only image, show 'Photo.' , else show message body
-                    '${chatModel.lastMessage?.body ?? 'Hey There, I\'m using chat app'}',
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    softWrap: true,
-                    style: Styles.textStyle15.copyWith(
-                        color: (chatModel.newMessages[cubit.currentUser!.uId] ??
-                                    0) ==
-                                0
-                            ? Colors.grey
-                            : ColorApp.primaryColor),
-                  ),
-                ],
-              ),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      chatModel is GroupModel
+                          ? (chatModel as GroupModel).groupName
+                          : anotherUser!.name!,
+                      style: Styles.textStyle15
+                          .copyWith(fontSize: 18.sp, color: Colors.black),
+                    ),
+                    Spacer(),
+                    Text(
+                      // Sending time
+                      chatModel.lastMessage != null &&
+                              chatModel.lastMessage!.sendingTime != null &&
+                              chatModel.lastMessage!.sendingTime!.year != 0
+                          ? DateFormat.jm()
+                              .format(chatModel.lastMessage!.sendingTime!)
+                          : '',
+                      style: Styles.textStyle15.copyWith(
+                          color:
+                              (chatModel.newMessages[cubit.currentUser!.uId] ??
+                                          0) ==
+                                      0
+                                  ? Colors.black87
+                                  : ColorApp.primaryColor),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      // chat last message
+                      // If the last message sender is the current user, show 'you: '
+                      '${chatModel.lastMessage?.messageSenderId == cubit.currentUser?.uId ? 'you: ' : ''}'
+                      // If the message has only image, show 'Photo.' , else show message body
+                      '${chatModel.lastMessage?.body ?? 'Hey There, I\'m using chat app'}',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      softWrap: true,
+                      style: Styles.textStyle15.copyWith(
+                          color:
+                              (chatModel.newMessages[cubit.currentUser!.uId] ??
+                                          0) ==
+                                      0
+                                  ? Colors.grey
+                                  : ColorApp.primaryColor),
+                    ),
+                    Spacer(),
+
+                    // Number of new messages
+                    (chatModel.newMessages[cubit.currentUser!.uId] ?? 0) == 0
+                        ? const SizedBox()
+                        : Align(
+                            alignment: Alignment.centerLeft,
+                            child: Container(
+                              alignment: Alignment.center,
+                              height: 20.0.h,
+                              width: 20.0.w,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(50.0),
+                                  color: ColorApp.primaryColor),
+                              child: Text(
+                                // Number of new messages
+                                chatModel.newMessages[cubit.currentUser!.uId]
+                                    .toString(),
+                                style: TextStyle(
+                                    color: ColorApp.appBackgroundColor),
+                              ),
+                            ),
+                          )
+                  ],
+                )
+              ],
             ),
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(
-                // Sending time
-                chatModel.lastMessage != null &&
-                        chatModel.lastMessage!.sendingTime != null &&
-                        chatModel.lastMessage!.sendingTime!.year != 0
-                    ? DateFormat.jm()
-                        .format(chatModel.lastMessage!.sendingTime!)
-                    : '',
-                style: Styles.textStyle15.copyWith(
-                    color:
-                        (chatModel.newMessages[cubit.currentUser!.uId] ?? 0) ==
-                                0
-                            ? Colors.black87
-                            : ColorApp.primaryColor),
-              ),
-              ResponsiveSizedBox(
-                sizedBoxContext: context,
-                hasHeight: true,
-                heightFraction: 70,
-              ),
-              // Number of new messages
-              (chatModel.newMessages[cubit.currentUser!.uId] ?? 0) == 0
-                  ? const SizedBox()
-                  : Container(
-                      alignment: Alignment.center,
-                      height: 20.0.h,
-                      width: 20.0.w,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(50.0),
-                          color: ColorApp.primaryColor),
-                      child: Text(
-                        // Number of new messages
-                        chatModel.newMessages[cubit.currentUser!.uId]
-                            .toString(),
-                        style: TextStyle(color: ColorApp.appBackgroundColor),
-                      ),
-                    )
-            ],
-          )
         ],
       ),
     );

@@ -1,24 +1,41 @@
 import 'package:chat_app/core/constants/app_sizes.dart';
 import 'package:chat_app/core/shared_widgets/responsive_sizedbox.dart';
 import 'package:chat_app/core/themes/styles.dart';
-import 'package:chat_app/core/utils/user_model.dart';
-
 import 'package:chat_app/features/home/presentation/view/widgets/profile_appbar.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/profile_button.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/profile_image_and_modify.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/profile_name_field.dart';
-import 'package:chat_app/features/home/presentation/view/widgets/profile_phone_field.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/separating_line.dart';
 import 'package:chat_app/features/home/presentation/view_model/cubit.dart';
 import 'package:chat_app/features/home/presentation/view_model/states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:chat_app/features/home/presentation/view_model/home_injection_container.dart'
-    as home_di;
 
-class ProfileView extends StatelessWidget {
+class ProfileView extends StatefulWidget {
   const ProfileView({super.key});
+
+  @override
+  State<ProfileView> createState() => _ProfileViewState();
+}
+
+class _ProfileViewState extends State<ProfileView> {
+  late TextEditingController nameController;
+  late TextEditingController phoneController;
+
+  @override
+  void initState() {
+    nameController = TextEditingController();
+    phoneController = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    phoneController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,18 +43,13 @@ class ProfileView extends StatelessWidget {
     TextEditingController phoneController = TextEditingController();
     var homeAppBarContext =
         ModalRoute.of(context)!.settings.arguments as BuildContext;
+    final cubit = BlocProvider.of<HomeViewModel>(homeAppBarContext);
     return BlocProvider.value(
-      value: BlocProvider.of<HomeViewModel>(homeAppBarContext),
+      value: cubit,
       child: BlocBuilder<HomeViewModel, HomeStates>(
         builder: (context, state) {
-          nameController.text =
-              BlocProvider.of<HomeViewModel>(homeAppBarContext)
-                  .currentUser!
-                  .name!;
-          phoneController.text =
-              BlocProvider.of<HomeViewModel>(homeAppBarContext)
-                  .currentUser!
-                  .phone!;
+          nameController.text = cubit.currentUser!.name!;
+          phoneController.text = cubit.currentUser!.phone!;
 
           return Scaffold(
             appBar: PreferredSize(
@@ -54,10 +66,7 @@ class ProfileView extends StatelessWidget {
                   ),
                   Center(
                     child: ProfileImageAndModify(
-                      userProfileImage:
-                          BlocProvider.of<HomeViewModel>(homeAppBarContext)
-                              .currentUser!
-                              .image,
+                      userProfileImage: cubit.currentUser!.image,
                     ),
                   ),
                   ResponsiveSizedBox(
@@ -75,7 +84,7 @@ class ProfileView extends StatelessWidget {
                       color: Colors.grey[600],
                     ),
                   ),
-                  ProfileNameField(nameController: nameController),
+                  ProfileInputField(inputController: nameController),
                   ResponsiveSizedBox(
                     sizedBoxContext: context,
                     hasHeight: true,
@@ -86,7 +95,7 @@ class ProfileView extends StatelessWidget {
                       color: Colors.grey[600],
                     ),
                   ),
-                  ProfilePhoneField(phoneController: phoneController),
+                  ProfileInputField(inputController: phoneController),
                   ResponsiveSizedBox(
                     sizedBoxContext: context,
                     hasHeight: true,

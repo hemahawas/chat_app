@@ -1,4 +1,3 @@
-import 'package:chat_app/core/constants/asset_images.dart';
 import 'package:chat_app/core/shared_widgets/responsive_sizedbox.dart';
 import 'package:chat_app/core/themes/styles.dart';
 import 'package:chat_app/core/utils/user_model.dart';
@@ -8,8 +7,6 @@ import 'package:chat_app/features/home/presentation/view_model/cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:chat_app/features/home/presentation/view_model/home_injection_container.dart'
-    as home_di;
 
 class UserStatusItem extends StatelessWidget {
   const UserStatusItem({super.key});

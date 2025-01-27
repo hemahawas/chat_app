@@ -1,11 +1,6 @@
-import 'dart:io';
-
-import 'package:chat_app/core/constants/asset_images.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/image_field.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/modify_profile_icon.dart';
-import 'package:chat_app/features/home/presentation/view_model/cubit.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 
 class ProfileImageAndModify extends StatelessWidget {
   final String? userProfileImage;

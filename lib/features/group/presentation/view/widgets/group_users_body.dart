@@ -5,15 +5,11 @@ import 'package:chat_app/features/group/presentation/view/group_info_body_previe
 import 'package:chat_app/features/home/presentation/view/widgets/image_field.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/user_item.dart';
 import 'package:chat_app/features/home/presentation/view_model/cubit.dart';
-import 'package:chat_app/features/home/presentation/view_model/states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:chat_app/features/home/presentation/view_model/home_injection_container.dart'
-    as home_di;
-
 class GroupUsersBody extends StatefulWidget {
-  GroupUsersBody({super.key});
+  const GroupUsersBody({super.key});
 
   @override
   State<GroupUsersBody> createState() => _GroupUsersBodyState();

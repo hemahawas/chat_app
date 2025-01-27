@@ -3,9 +3,6 @@ import 'package:chat_app/core/utils/hive_helper.dart';
 import 'package:chat_app/core/utils/user_model.dart';
 import 'package:chat_app/features/auth/data/repo/auth_repository.dart';
 import 'package:chat_app/features/auth/presentation/view_model/states.dart';
-import 'package:chat_app/features/home/presentation/view_model/cubit.dart';
-import 'package:chat_app/features/home/presentation/view_model/home_injection_container.dart'
-    as home_di;
 
 class AuthViewModel extends Cubit<AuthStates> {
   final AuthRepository authRepository;

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:chat_app/core/utils/hive_helper.dart';
 import 'package:chat_app/core/utils/user_model.dart';
 import 'package:chat_app/features/messaging/data/model/message_model.dart';

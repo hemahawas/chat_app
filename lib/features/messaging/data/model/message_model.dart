@@ -1,6 +1,4 @@
 import 'package:chat_app/core/utils/hive_helper.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 part 'message_model.g.dart';

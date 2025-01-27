@@ -5,22 +5,18 @@ import 'package:chat_app/features/home/presentation/view/widgets/home_bottom_nav
 import 'package:chat_app/features/home/presentation/view/widgets/home_floating_action_button.dart';
 import 'package:chat_app/features/home/presentation/view_model/cubit.dart';
 import 'package:chat_app/features/home/presentation/view_model/states.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import 'package:chat_app/features/home/presentation/view_model/home_injection_container.dart'
-    as home_di;
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<HomeViewModel, HomeStates>(
-      listener: (context, state) {},
+    return BlocBuilder<HomeViewModel, HomeStates>(
       builder: (context, state) {
+        final cubit = BlocProvider.of<HomeViewModel>(context);
         return Scaffold(
           appBar: PreferredSize(
               preferredSize: Size.fromHeight(AppSizes.toolBarHieght.h),
@@ -28,20 +24,15 @@ class HomeView extends StatelessWidget {
                 homeAppBarContext: context,
               )),
           body: HomeBody(
-            currentIndex:
-                BlocProvider.of<HomeViewModel>(context).navBarCurrentIndex,
+            currentIndex: cubit.navBarCurrentIndex,
           ),
           bottomNavigationBar: HomeBottomNavigationBar(
-            currentIndex:
-                BlocProvider.of<HomeViewModel>(context).navBarCurrentIndex,
-            onTap: (index) => {
-              BlocProvider.of<HomeViewModel>(context).changeNavBarIndex(index)
-            },
+            currentIndex: cubit.navBarCurrentIndex,
+            onTap: (index) => {cubit.changeNavBarIndex(index)},
           ),
-          floatingActionButton:
-              BlocProvider.of<HomeViewModel>(context).navBarCurrentIndex == 0
-                  ? const HomeFloatingActionButton()
-                  : null,
+          floatingActionButton: cubit.navBarCurrentIndex == 0
+              ? const HomeFloatingActionButton()
+              : Container(),
         );
       },
     );

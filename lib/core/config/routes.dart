@@ -1,20 +1,16 @@
 import 'package:chat_app/core/constants/app_strings.dart';
-import 'package:chat_app/core/utils/network_info.dart';
 import 'package:chat_app/features/auth/presentation/view/login_view.dart';
 import 'package:chat_app/features/auth/presentation/view/register_view.dart';
 import 'package:chat_app/features/auth/presentation/view_model/cubit.dart';
-import 'package:chat_app/features/home/data/repo/home_local_reopsitory.dart';
-import 'package:chat_app/features/home/data/repo/home_remote_repository.dart';
 import 'package:chat_app/features/home/presentation/view/home_view.dart';
 import 'package:chat_app/features/home/presentation/view/profile_view.dart';
+
 import 'package:chat_app/features/home/presentation/view/settings_view.dart';
-import 'package:chat_app/features/home/presentation/view/widgets/chat_search_delegate.dart';
 import 'package:chat_app/features/home/presentation/view_model/cubit.dart';
 import 'package:chat_app/features/messaging/presentation/view/messaging_view.dart';
 import 'package:chat_app/features/messaging/presentation/view_model/cubit.dart';
 import 'package:chat_app/features/messaging/presentation/view_model/messaging_arguments.dart';
 import 'package:chat_app/features/splash_screen/splash_screen.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chat_app/features/auth/presentation/view_model/auth_injection_container.dart'

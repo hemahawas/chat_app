@@ -16,8 +16,6 @@ class EmailField extends StatelessWidget {
         validate: (value) {
           if (value.toString().isEmpty) {
             return 'Email is required';
-          } else {
-            return null;
           }
         },
         prefix: Icons.email_outlined);

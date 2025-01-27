@@ -1,6 +1,6 @@
 import 'package:chat_app/core/shared_widgets/icon_item_button.dart';
 import 'package:chat_app/features/messaging/presentation/view/gallery_view.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 

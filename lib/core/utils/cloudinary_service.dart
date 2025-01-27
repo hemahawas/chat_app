@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:chat_app/core/api/end_points.dart';
 import 'package:chat_app/core/api/status_code.dart';

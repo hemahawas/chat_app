@@ -1,8 +1,6 @@
-import 'package:chat_app/core/utils/network_info.dart';
 import 'package:chat_app/core/utils/user_model.dart';
 import 'package:chat_app/features/home/data/model/chat_model.dart';
 import 'package:chat_app/features/home/data/repo/home_local_reopsitory.dart';
-import 'package:chat_app/features/home/data/repo/home_remote_repository.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class HomeLocalHiveRepository extends HomeLocalReopsitory {

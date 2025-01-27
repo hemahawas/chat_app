@@ -9,10 +9,10 @@ class GroupImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(pickedImage.toString());
+    debugPrint(pickedImage.toString());
     return Container(
-      height: 100,
-      width: 100,
+      height: 75,
+      width: 75,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(50),
       ),
