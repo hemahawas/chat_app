@@ -18,7 +18,7 @@ A modern, feature-rich chat application built with **Flutter**, designed to prov
 
 **4. Search**
 * Create and manage group chats with multiple participants.
-* Group admins can add or remove members and manage group settings.
+
 
 ## Technologies Used
 * Frontend: Flutter (Dart)
