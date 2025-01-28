@@ -10,6 +10,7 @@ class HomeAppbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      scrolledUnderElevation: 0,
       leading: SizedBox.shrink(),
       leadingWidth: 0,
       title: Padding(

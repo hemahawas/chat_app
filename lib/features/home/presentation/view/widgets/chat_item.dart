@@ -88,14 +88,15 @@ class ChatItem extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text(
-                      chatModel is GroupModel
-                          ? (chatModel as GroupModel).groupName
-                          : anotherUser!.name!,
-                      style: Styles.textStyle15
-                          .copyWith(fontSize: 18, color: Colors.black),
+                    Expanded(
+                      child: Text(
+                        chatModel is GroupModel
+                            ? (chatModel as GroupModel).groupName
+                            : anotherUser!.name!,
+                        style: Styles.textStyle15
+                            .copyWith(fontSize: 18, color: Colors.black),
+                      ),
                     ),
-                    Spacer(),
                     Text(
                       // Sending time
                       chatModel.lastMessage != null &&
@@ -117,24 +118,25 @@ class ChatItem extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text(
-                      // chat last message
-                      // If the last message sender is the current user, show 'you: '
-                      '${chatModel.lastMessage?.messageSenderId == cubit.currentUser?.uId ? 'you: ' : ''}'
-                      // If the message has only image, show 'Photo.' , else show message body
-                      '${chatModel.lastMessage?.body ?? 'Hey There, I\'m using chat app'}',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      softWrap: true,
-                      style: Styles.textStyle15.copyWith(
-                          color:
-                              (chatModel.newMessages[cubit.currentUser!.uId] ??
-                                          0) ==
-                                      0
-                                  ? Colors.grey
-                                  : ColorApp.primaryColor),
+                    Expanded(
+                      child: Text(
+                        // chat last message
+                        // If the last message sender is the current user, show 'you: '
+                        '${chatModel.lastMessage?.messageSenderId == cubit.currentUser?.uId ? 'you: ' : ''}'
+                        // If the message has only image, show 'Photo.' , else show message body
+                        '${chatModel.lastMessage?.body ?? 'Hey There, I\'m using chat app'}',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        softWrap: true,
+                        style: Styles.textStyle15.copyWith(
+                            color: (chatModel.newMessages[
+                                            cubit.currentUser!.uId] ??
+                                        0) ==
+                                    0
+                                ? Colors.grey
+                                : ColorApp.primaryColor),
+                      ),
                     ),
-                    Spacer(),
 
                     // Number of new messages
                     (chatModel.newMessages[cubit.currentUser!.uId] ?? 0) == 0

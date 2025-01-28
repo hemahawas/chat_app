@@ -7,6 +7,7 @@ import 'package:chat_app/features/auth/presentation/view_model/cubit.dart';
 import 'package:chat_app/features/home/presentation/view/home_view.dart';
 import 'package:chat_app/features/home/presentation/view/profile_view.dart';
 import 'package:chat_app/features/home/presentation/view/settings_view.dart';
+import 'package:chat_app/features/home/presentation/view/widgets/unadded_users.dart';
 import 'package:chat_app/features/home/presentation/view_model/cubit.dart';
 import 'package:chat_app/features/home/presentation/view_model/home_injection_container.dart'
     as home_di;
@@ -28,6 +29,7 @@ class Routes {
   static const String profileRoute = '/profileRoute';
   static const String messagingRoute = '/messagingRoute';
   static const String chatSearch = '/chatSearch';
+  static const String addUsersRoute = '/addUsersRoute';
 }
 
 class AppRoutes {
@@ -85,7 +87,12 @@ class AppRoutes {
             child: const MessagingView(),
           );
         });
-
+      case Routes.addUsersRoute:
+        return MaterialPageRoute(
+            builder: (context) {
+              return const UnAddedUsers();
+            },
+            settings: RouteSettings(arguments: routeSettings.arguments));
       default:
         return undefinedRoute();
     }

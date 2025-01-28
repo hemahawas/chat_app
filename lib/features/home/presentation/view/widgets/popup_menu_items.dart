@@ -45,6 +45,13 @@ class PopupMenuItems extends StatelessWidget {
                       Navigator.pushNamed(context, Routes.settingsRoute);
                     },
                   ),
+                  PopupMenuItem(
+                    child: const Text('Add Users'),
+                    onTap: () {
+                      Navigator.pushNamed(context, Routes.addUsersRoute,
+                          arguments: homeAppBarContext);
+                    },
+                  ),
                 ]));
   }
 }
