@@ -40,7 +40,7 @@ class _ProfileViewState extends State<ProfileView> {
   Widget build(BuildContext context) {
     TextEditingController nameController = TextEditingController();
     TextEditingController phoneController = TextEditingController();
-    var homeAppBarContext =
+    final homeAppBarContext =
         ModalRoute.of(context)!.settings.arguments as BuildContext;
     final cubit = BlocProvider.of<HomeViewModel>(homeAppBarContext);
     return BlocProvider.value(

@@ -23,49 +23,7 @@ class _UsersAdderState extends State<UsersAdder> {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton.icon(
-      onPressed: () {
-        showModalBottomSheet(
-            context: context,
-            builder: (context) => Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: BlocProvider.value(
-                    value: BlocProvider.of<HomeViewModel>(widget.blocContext),
-                    child: BlocConsumer<HomeViewModel, HomeStates>(
-                      listener: (context, state) {
-                        if (state is NewUserIsAddedState) {
-                          BlocProvider.of<HomeViewModel>(context)
-                              .addedUsers
-                              .add(state.newUser);
-                          BlocProvider.of<HomeViewModel>(context)
-                              .nonAddedUsers
-                              .remove(state.newUser);
-                        }
-                      },
-                      builder: (context, state) {
-                        return ConditionalBuilder(
-                          fallback: (context) => Center(
-                            child: Center(
-                              child: Text('Wait For Coming Users'),
-                            ),
-                          ),
-                          condition: BlocProvider.of<HomeViewModel>(context)
-                              .nonAddedUsers
-                              .isNotEmpty,
-                          builder: (context) => ListView.builder(
-                            itemBuilder: (context, index) => UserItem(
-                              model: BlocProvider.of<HomeViewModel>(context)
-                                  .nonAddedUsers[index],
-                            ),
-                            itemCount: BlocProvider.of<HomeViewModel>(context)
-                                .nonAddedUsers
-                                .length,
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ));
-      },
+      onPressed: () {},
       icon: Icon(Icons.add),
       label: Text('Add New Users'),
     );

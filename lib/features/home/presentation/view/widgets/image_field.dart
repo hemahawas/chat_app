@@ -33,6 +33,8 @@ class ImageField extends StatelessWidget {
               )
             : Image.asset(
                 AssetImages.userImage,
+                cacheHeight: 120,
+                cacheWidth: 120,
                 fit: BoxFit.cover,
               ),
       ),
