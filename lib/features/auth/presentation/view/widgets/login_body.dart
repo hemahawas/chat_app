@@ -1,5 +1,4 @@
 import 'package:chat_app/core/config/routes.dart';
-import 'package:chat_app/core/shared_widgets/responsive_sizedbox.dart';
 import 'package:chat_app/core/shared_widgets/show_toast.dart';
 import 'package:chat_app/features/auth/presentation/view/widgets/email_field.dart';
 import 'package:chat_app/features/auth/presentation/view/widgets/login_button.dart';
@@ -35,49 +34,44 @@ class LoginBody extends StatelessWidget {
       builder: (context, state) => SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(20.0),
-          child: Column(
-            children: [
-              const LogoWidget(),
-              ResponsiveSizedBox(
-                sizedBoxContext: context,
-                hasHeight: true,
-              ),
-              const LoginTitle(),
-              ResponsiveSizedBox(
-                sizedBoxContext: context,
-                hasHeight: true,
-              ),
-              EmailField(emailController: emailController),
-              //EmailField(emailController: emailController),
-              ResponsiveSizedBox(
-                sizedBoxContext: context,
-                hasHeight: true,
-              ),
-              PasswordField(
-                  passwordController: passwordController,
-                  changeVisibility: () {
-                    BlocProvider.of<AuthViewModel>(context).changeVisibility();
-                  },
-                  isPasswordVisible: BlocProvider.of<AuthViewModel>(context)
-                      .isPasswordVisible),
-              ResponsiveSizedBox(
-                sizedBoxContext: context,
-                hasHeight: true,
-              ),
-              LoginButton(
-                emailController: emailController,
-                passwordController: passwordController,
-                onSuccess: () async {
-                  await BlocProvider.of<AuthViewModel>(context)
-                      .logIn(emailController.text, passwordController.text);
-                },
-              ),
-              ResponsiveSizedBox(
-                sizedBoxContext: context,
-                hasHeight: true,
-              ),
-              const NvigatingToRegisterView(),
-            ],
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height,
+            child: Column(
+              spacing: 15,
+              children: [
+                Expanded(flex: 4, child: const LogoWidget()),
+                Expanded(
+                  flex: 1,
+                  child: const LoginTitle(),
+                ),
+                Expanded(
+                    flex: 1,
+                    child: EmailField(emailController: emailController)),
+                Expanded(
+                  flex: 1,
+                  child: PasswordField(
+                      passwordController: passwordController,
+                      changeVisibility: () {
+                        BlocProvider.of<AuthViewModel>(context)
+                            .changeVisibility();
+                      },
+                      isPasswordVisible: BlocProvider.of<AuthViewModel>(context)
+                          .isPasswordVisible),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: LoginButton(
+                    emailController: emailController,
+                    passwordController: passwordController,
+                    onSuccess: () async {
+                      await BlocProvider.of<AuthViewModel>(context)
+                          .logIn(emailController.text, passwordController.text);
+                    },
+                  ),
+                ),
+                Expanded(flex: 3, child: const NvigatingToRegisterView()),
+              ],
+            ),
           ),
         ),
       ),

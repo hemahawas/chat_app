@@ -13,13 +13,14 @@ class DefaultTextButton extends StatelessWidget {
     return Center(
       child: SizedBox(
         width: double.infinity,
+        height: 60,
         child: ElevatedButton(
           onPressed: onPressed,
           style: ElevatedButton.styleFrom(
               backgroundColor: ColorApp.primaryColor,
               padding: EdgeInsets.symmetric(horizontal: 48, vertical: 12),
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(24))),
+                  borderRadius: BorderRadius.circular(30))),
           child: Text(
             text.toUpperCase(),
             style: Styles.textStyle24.copyWith(color: Colors.black),

@@ -6,8 +6,8 @@ class LogoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.topCenter,
+    return SizedBox(
+      height: 200,
       child: Image.asset(
         AssetImages.splashImage,
         height: 200,

@@ -7,23 +7,26 @@ class NvigatingToRegisterView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          'Don’t have an account?',
-          style: Styles.textStyle15.copyWith(color: Colors.black),
-        ),
-        TextButton(
-          onPressed: () {
-            Navigator.pushReplacementNamed(context, Routes.registerRoute);
-          },
-          child: Text(
-            'Register here',
-            style: Styles.textStyle15,
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 100),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'Don’t have an account?',
+            style: Styles.textStyle15.copyWith(color: Colors.black),
           ),
-        )
-      ],
+          TextButton(
+            onPressed: () {
+              Navigator.pushReplacementNamed(context, Routes.registerRoute);
+            },
+            child: Text(
+              'Register here',
+              style: Styles.textStyle15,
+            ),
+          )
+        ],
+      ),
     );
   }
 }

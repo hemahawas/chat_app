@@ -1,5 +1,4 @@
 import 'package:chat_app/core/config/routes.dart';
-import 'package:chat_app/core/shared_widgets/responsive_sizedbox.dart';
 import 'package:chat_app/core/shared_widgets/show_toast.dart';
 import 'package:chat_app/core/utils/user_model.dart';
 import 'package:chat_app/features/auth/presentation/view/widgets/email_field.dart';
@@ -44,68 +43,57 @@ class RegisterBody extends StatelessWidget {
         child: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const LogoWidget(),
-                ResponsiveSizedBox(
-                  sizedBoxContext: context,
-                  hasHeight: true,
-                ),
-                const RegisterTitle(),
-                ResponsiveSizedBox(
-                  sizedBoxContext: context,
-                  hasHeight: true,
-                ),
-                NameField(nameController: nameController),
-                ResponsiveSizedBox(
-                  sizedBoxContext: context,
-                  hasHeight: true,
-                ),
-                EmailField(emailController: emailController),
-                ResponsiveSizedBox(
-                  sizedBoxContext: context,
-                  hasHeight: true,
-                ),
-                PhoneField(phoneController: phoneController),
-                ResponsiveSizedBox(
-                  sizedBoxContext: context,
-                  hasHeight: true,
-                ),
-                PasswordField(
-                    passwordController: passwordController,
-                    changeVisibility: () {
-                      BlocProvider.of<AuthViewModel>(context)
-                          .changeVisibility();
-                    },
-                    isPasswordVisible: BlocProvider.of<AuthViewModel>(context)
-                        .isPasswordVisible),
-                ResponsiveSizedBox(
-                  sizedBoxContext: context,
-                  hasHeight: true,
-                ),
-                state is RegisterLoadingState
-                    ? const CircularProgressIndicator()
-                    : RegisterButton(
-                        emailController: emailController,
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height,
+              child: Column(
+                spacing: 15,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(flex: 4, child: const LogoWidget()),
+                  Expanded(flex: 1, child: const RegisterTitle()),
+                  Expanded(
+                      flex: 1,
+                      child: NameField(nameController: nameController)),
+                  Expanded(
+                      flex: 1,
+                      child: EmailField(emailController: emailController)),
+                  Expanded(
+                      flex: 1,
+                      child: PhoneField(phoneController: phoneController)),
+                  Expanded(
+                    flex: 1,
+                    child: PasswordField(
                         passwordController: passwordController,
-                        onSuccess: () async {
-                          UserModel userModel = UserModel(
-                              email: emailController.text,
-                              name: nameController.text,
-                              phone: phoneController.text);
-                          await BlocProvider.of<AuthViewModel>(context)
-                              .register(userModel, passwordController.text);
-                          Navigator.pushReplacementNamed(
-                              context, Routes.homeRoute);
-                        }),
-                ResponsiveSizedBox(
-                  sizedBoxContext: context,
-                  hasHeight: true,
-                ),
-                const NavigatingToLoginView(),
-              ],
+                        changeVisibility: () {
+                          BlocProvider.of<AuthViewModel>(context)
+                              .changeVisibility();
+                        },
+                        isPasswordVisible:
+                            BlocProvider.of<AuthViewModel>(context)
+                                .isPasswordVisible),
+                  ),
+                  Expanded(
+                      flex: 1,
+                      child: state is RegisterLoadingState
+                          ? const CircularProgressIndicator()
+                          : RegisterButton(
+                              emailController: emailController,
+                              passwordController: passwordController,
+                              onSuccess: () async {
+                                UserModel userModel = UserModel(
+                                    email: emailController.text,
+                                    name: nameController.text,
+                                    phone: phoneController.text);
+                                await BlocProvider.of<AuthViewModel>(context)
+                                    .register(
+                                        userModel, passwordController.text);
+                                Navigator.pushReplacementNamed(
+                                    context, Routes.homeRoute);
+                              })),
+                  Expanded(flex: 1, child: const NavigatingToLoginView()),
+                ],
+              ),
             ),
           ),
         ),
