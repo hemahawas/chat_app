@@ -44,6 +44,7 @@ class MyApp extends StatelessWidget {
     debugInvertOversizedImages = true;
 
     return MaterialApp(
+      //showPerformanceOverlay: true,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: ColorApp.primaryColor),

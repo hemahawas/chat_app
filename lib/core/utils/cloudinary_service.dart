@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:chat_app/core/api/end_points.dart';
 import 'package:chat_app/core/api/status_code.dart';
-
 import 'package:http/http.dart' as http;
 
 class CloudinaryService {

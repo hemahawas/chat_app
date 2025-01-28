@@ -48,6 +48,7 @@ class LoginBody extends StatelessWidget {
                 hasHeight: true,
               ),
               EmailField(emailController: emailController),
+              //EmailField(emailController: emailController),
               ResponsiveSizedBox(
                 sizedBoxContext: context,
                 hasHeight: true,

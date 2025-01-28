@@ -57,7 +57,7 @@ Widget defaultFormField(
                         suffix,
                       ),
                     )
-                  : Container(),
+                  : SizedBox.shrink(),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(30.0),
               ),
