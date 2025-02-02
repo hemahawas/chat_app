@@ -43,14 +43,16 @@ class UnAddedUsers extends StatelessWidget {
                 condition: BlocProvider.of<HomeViewModel>(context)
                     .nonAddedUsers
                     .isNotEmpty,
-                builder: (context) => ListView.builder(
-                  itemBuilder: (context, index) => UserItem(
-                    model: BlocProvider.of<HomeViewModel>(context)
-                        .nonAddedUsers[index],
+                builder: (context) => RepaintBoundary(
+                  child: ListView.builder(
+                    itemBuilder: (context, index) => UserItem(
+                      model: BlocProvider.of<HomeViewModel>(context)
+                          .nonAddedUsers[index],
+                    ),
+                    itemCount: BlocProvider.of<HomeViewModel>(context)
+                        .nonAddedUsers
+                        .length,
                   ),
-                  itemCount: BlocProvider.of<HomeViewModel>(context)
-                      .nonAddedUsers
-                      .length,
                 ),
               );
             },

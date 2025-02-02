@@ -38,62 +38,56 @@ class RegisterBody extends StatelessWidget {
             showToast(msg: (state as RegisterErrorState).message);
         }
       },
-      builder: (context, state) => Form(
-        key: key,
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.0),
-            child: SizedBox(
-              height: MediaQuery.of(context).size.height,
-              child: Column(
-                spacing: 15,
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Expanded(flex: 4, child: const LogoWidget()),
-                  Expanded(flex: 1, child: const RegisterTitle()),
-                  Expanded(
-                      flex: 1,
-                      child: NameField(nameController: nameController)),
-                  Expanded(
-                      flex: 1,
-                      child: EmailField(emailController: emailController)),
-                  Expanded(
-                      flex: 1,
-                      child: PhoneField(phoneController: phoneController)),
-                  Expanded(
+      builder: (context, state) => SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20.0),
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height,
+            child: Column(
+              spacing: 15,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(flex: 4, child: const LogoWidget()),
+                Expanded(flex: 1, child: const RegisterTitle()),
+                Expanded(
+                    flex: 1, child: NameField(nameController: nameController)),
+                Expanded(
                     flex: 1,
-                    child: PasswordField(
-                        passwordController: passwordController,
-                        changeVisibility: () {
-                          BlocProvider.of<AuthViewModel>(context)
-                              .changeVisibility();
-                        },
-                        isPasswordVisible:
-                            BlocProvider.of<AuthViewModel>(context)
-                                .isPasswordVisible),
-                  ),
-                  Expanded(
-                      flex: 1,
-                      child: state is RegisterLoadingState
-                          ? const CircularProgressIndicator()
-                          : RegisterButton(
-                              emailController: emailController,
-                              passwordController: passwordController,
-                              onSuccess: () async {
-                                UserModel userModel = UserModel(
-                                    email: emailController.text,
-                                    name: nameController.text,
-                                    phone: phoneController.text);
-                                await BlocProvider.of<AuthViewModel>(context)
-                                    .register(
-                                        userModel, passwordController.text);
-                                Navigator.pushReplacementNamed(
-                                    context, Routes.homeRoute);
-                              })),
-                  Expanded(flex: 1, child: const NavigatingToLoginView()),
-                ],
-              ),
+                    child: EmailField(emailController: emailController)),
+                Expanded(
+                    flex: 1,
+                    child: PhoneField(phoneController: phoneController)),
+                Expanded(
+                  flex: 1,
+                  child: PasswordField(
+                      passwordController: passwordController,
+                      changeVisibility: () {
+                        BlocProvider.of<AuthViewModel>(context)
+                            .changeVisibility();
+                      },
+                      isPasswordVisible: BlocProvider.of<AuthViewModel>(context)
+                          .isPasswordVisible),
+                ),
+                Expanded(
+                    flex: 1,
+                    child: state is RegisterLoadingState
+                        ? const CircularProgressIndicator()
+                        : RegisterButton(
+                            emailController: emailController,
+                            passwordController: passwordController,
+                            onSuccess: () async {
+                              UserModel userModel = UserModel(
+                                  email: emailController.text,
+                                  name: nameController.text,
+                                  phone: phoneController.text);
+                              await BlocProvider.of<AuthViewModel>(context)
+                                  .register(userModel, passwordController.text);
+                              Navigator.pushReplacementNamed(
+                                  context, Routes.homeRoute);
+                            })),
+                Expanded(flex: 1, child: const NavigatingToLoginView()),
+              ],
             ),
           ),
         ),

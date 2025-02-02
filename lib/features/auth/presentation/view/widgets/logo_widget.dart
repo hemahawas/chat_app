@@ -8,11 +8,13 @@ class LogoWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 200,
-      child: Image.asset(
-        AssetImages.splashImage,
-        height: 200,
-        width: 250,
-        fit: BoxFit.cover,
+      child: RepaintBoundary(
+        child: Image.asset(
+          AssetImages.splashImage,
+          height: 200,
+          width: 250,
+          fit: BoxFit.cover,
+        ),
       ),
     );
   }

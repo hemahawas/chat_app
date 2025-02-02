@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:chat_app/core/constants/app_strings.dart';
 import 'package:chat_app/core/themes/styles.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/chat_item.dart';
@@ -16,15 +18,18 @@ class ChatBody extends StatefulWidget {
 
 class _ChatBodyState extends State<ChatBody> {
   Stream<QuerySnapshot<Map<String, dynamic>>>? _chatSnapshots;
+  late StreamController _controller;
   @override
   void initState() {
     _chatSnapshots =
         BlocProvider.of<HomeViewModel>(context).getChatsInRealTime();
+    _controller = StreamController();
     super.initState();
   }
 
   @override
   void dispose() {
+    _controller.close();
     super.dispose();
   }
 
@@ -58,17 +63,20 @@ class _ChatBodyState extends State<ChatBody> {
                     return BlocProvider.of<HomeViewModel>(context)
                             .chats
                             .isNotEmpty
-                        ? ListView.builder(
-                            shrinkWrap: true,
-                            physics: AlwaysScrollableScrollPhysics(),
-                            itemBuilder: (context, index) => ChatItem(
-                              isSearched: false,
-                              chatModel: BlocProvider.of<HomeViewModel>(context)
-                                  .chats[index],
+                        ? RepaintBoundary(
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              physics: AlwaysScrollableScrollPhysics(),
+                              itemBuilder: (context, index) => ChatItem(
+                                isSearched: false,
+                                chatModel:
+                                    BlocProvider.of<HomeViewModel>(context)
+                                        .chats[index],
+                              ),
+                              itemCount: BlocProvider.of<HomeViewModel>(context)
+                                  .chats
+                                  .length,
                             ),
-                            itemCount: BlocProvider.of<HomeViewModel>(context)
-                                .chats
-                                .length,
                           )
                         : Align(
                             alignment: Alignment.center,

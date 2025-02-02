@@ -20,13 +20,22 @@ class MessagingView extends StatelessWidget {
               image: DecorationImage(
                   fit: BoxFit.fill,
                   image: AssetImage(AssetImages.messagingBackground))),
-          child: Scaffold(
-            resizeToAvoidBottomInset: true,
-            backgroundColor: Colors.transparent,
-            appBar: PreferredSize(
-                preferredSize: Size.fromHeight(AppSizes.toolBarHieght),
-                child: MessagingAppbar()),
-            body: MessagingBody(),
+          child: PopScope(
+            canPop: true,
+            onPopInvokedWithResult: (didPop, result) async {
+              if (didPop) {
+                await BlocProvider.of<MessagingViewModel>(context)
+                    .messagesIsSeen();
+              }
+            },
+            child: Scaffold(
+              resizeToAvoidBottomInset: true,
+              backgroundColor: Colors.transparent,
+              appBar: PreferredSize(
+                  preferredSize: Size.fromHeight(AppSizes.toolBarHieght),
+                  child: MessagingAppbar()),
+              body: MessagingBody(),
+            ),
           ),
         );
       },

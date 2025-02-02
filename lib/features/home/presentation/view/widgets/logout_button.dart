@@ -20,6 +20,7 @@ class LogoutButton extends StatelessWidget {
       builder: (context, state) => Center(
           child: DefaultTextButton(
         onPressed: () async {
+          await BlocProvider.of<AuthViewModel>(context).logOut();
           // remove all screens
           Navigator.pushNamedAndRemoveUntil(
             context,

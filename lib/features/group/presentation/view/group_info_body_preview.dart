@@ -80,6 +80,9 @@ class _GroupInfoBodyPreviewState extends State<GroupInfoBodyPreview> {
               return FloatingActionButton(
                 backgroundColor: ColorApp.primaryColor,
                 onPressed: () async {
+                  if (state is CreateGroupLoadingState) {
+                    return;
+                  }
                   Map<String, int> newMessages = {};
                   for (var user in widget.addedUsers) {
                     newMessages[user.uId!] = 0;
@@ -96,10 +99,17 @@ class _GroupInfoBodyPreviewState extends State<GroupInfoBodyPreview> {
                       .createGroup(group);
                   Navigator.popUntil(context, (route) => route.isFirst);
                 },
-                child: const Icon(
-                  Icons.done,
-                  size: 30,
-                ),
+                child: state is CreateGroupLoadingState
+                    ? RepaintBoundary(
+                        child: CircularProgressIndicator(
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.black),
+                        ),
+                      )
+                    : const Icon(
+                        Icons.done,
+                        size: 30,
+                      ),
               );
             },
           ),

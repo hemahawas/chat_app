@@ -39,10 +39,13 @@ class LoginBody extends StatelessWidget {
             child: Column(
               spacing: 15,
               children: [
-                Expanded(flex: 4, child: const LogoWidget()),
+                Expanded(flex: 5, child: const LogoWidget()),
                 Expanded(
                   flex: 1,
-                  child: const LoginTitle(),
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 20.0),
+                    child: const LoginTitle(),
+                  ),
                 ),
                 Expanded(
                     flex: 1,

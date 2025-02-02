@@ -49,13 +49,15 @@ class GroupMembersView extends StatelessWidget {
                       style: Styles.textStyle24,
                     ),
                   ),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) => GroupMemberItem(
-                      model: groupModel.participants![index],
+                  RepaintBoundary(
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) => GroupMemberItem(
+                        model: groupModel.participants![index],
+                      ),
+                      itemCount: groupModel.participants!.length,
                     ),
-                    itemCount: groupModel.participants!.length,
                   ),
                 ],
               ),

@@ -50,31 +50,33 @@ class _GroupUsersBodyState extends State<GroupUsersBody> {
             _addedGroupUsers.isNotEmpty
                 ? SizedBox(
                     height: 100,
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      physics: const BouncingScrollPhysics(),
-                      itemCount: _addedGroupUsers.length,
-                      itemBuilder: (context, index) => Column(
-                        children: [
-                          Stack(alignment: Alignment.bottomRight, children: [
-                            ImageField(
-                                borderColor: Colors.transparent,
-                                image: _addedGroupUsers[index].image),
-                            IconItemButton(
-                              icon: Icon(Icons.close),
-                              size: 20,
-                              onPressed: () {
-                                setState(() {
-                                  _groupUsers.add(_addedGroupUsers[index]);
-                                  _addedGroupUsers
-                                      .remove(_addedGroupUsers[index]);
-                                });
-                              },
-                            ),
-                          ]),
-                          Text(_addedGroupUsers[index].name!),
-                        ],
+                    child: RepaintBoundary(
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        physics: const BouncingScrollPhysics(),
+                        itemCount: _addedGroupUsers.length,
+                        itemBuilder: (context, index) => Column(
+                          children: [
+                            Stack(alignment: Alignment.bottomRight, children: [
+                              ImageField(
+                                  borderColor: Colors.transparent,
+                                  image: _addedGroupUsers[index].image),
+                              IconItemButton(
+                                icon: Icon(Icons.close),
+                                size: 20,
+                                onPressed: () {
+                                  setState(() {
+                                    _groupUsers.add(_addedGroupUsers[index]);
+                                    _addedGroupUsers
+                                        .remove(_addedGroupUsers[index]);
+                                  });
+                                },
+                              ),
+                            ]),
+                            Text(_addedGroupUsers[index].name!),
+                          ],
+                        ),
                       ),
                     ),
                   )
@@ -87,18 +89,20 @@ class _GroupUsersBodyState extends State<GroupUsersBody> {
                 color: Colors.grey,
               ),
             ),
-            ListView.builder(
-              physics: AlwaysScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: _groupUsers.length,
-              itemBuilder: (context, index) => UserItem(
-                model: _groupUsers[index],
-                onTap: () {
-                  setState(() {
-                    _addedGroupUsers.add(_groupUsers[index]);
-                    _groupUsers.remove(_groupUsers[index]);
-                  });
-                },
+            RepaintBoundary(
+              child: ListView.builder(
+                physics: AlwaysScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: _groupUsers.length,
+                itemBuilder: (context, index) => UserItem(
+                  model: _groupUsers[index],
+                  onTap: () {
+                    setState(() {
+                      _addedGroupUsers.add(_groupUsers[index]);
+                      _groupUsers.remove(_groupUsers[index]);
+                    });
+                  },
+                ),
               ),
             ),
           ],

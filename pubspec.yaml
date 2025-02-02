@@ -44,6 +44,7 @@ dependencies:
     sdk: flutter
   flutter_bloc: ^9.0.0
   flutter_local_notifications: ^18.0.1
+  fluttertoast: ^8.2.10
   get_it: ^8.0.2
   hive: null
   hive_flutter: ^1.1.0
