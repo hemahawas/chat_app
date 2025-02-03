@@ -101,21 +101,20 @@ class ChatItem extends StatelessWidget {
                               .copyWith(fontSize: 18, color: Colors.black),
                         ),
                       ),
-                      Text(
-                        // Sending time
-                        chatModel.lastMessage != null &&
-                                chatModel.lastMessage!.sendingTime != null &&
-                                chatModel.lastMessage!.sendingTime!.year != 0
-                            ? DateFormat.jm()
-                                .format(chatModel.lastMessage!.sendingTime!)
-                            : '',
-                        style: Styles.textStyle15.copyWith(
-                            color: (chatModel.newMessages[
-                                            cubit.currentUser!.uId] ??
-                                        0) ==
-                                    0
-                                ? Colors.black87
-                                : ColorApp.primaryColor),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 5),
+                        child: Text(
+                          // Sending time
+                          _getTime(),
+                          style: Styles.textStyle15.copyWith(
+                              color: (chatModel.newMessages[
+                                              cubit.currentUser!.uId] ??
+                                          0) ==
+                                      0
+                                  ? Colors.black87
+                                  : ColorApp.primaryColor,
+                              fontSize: 12),
+                        ),
                       ),
                     ],
                   ),
@@ -172,5 +171,22 @@ class ChatItem extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _getTime() {
+    if (chatModel.lastMessage == null ||
+        chatModel.lastMessage!.sendingTime == null ||
+        chatModel.lastMessage!.sendingTime!.year == 0) {
+      return '';
+    }
+
+    if (chatModel.lastMessage!.sendingTime!.day == DateTime.now().day) {
+      return DateFormat.jm().format(chatModel.lastMessage!.sendingTime!);
+    }
+    if (chatModel.lastMessage!.sendingTime!.day ==
+        DateTime.now().subtract(Duration(days: 1)).day) {
+      return 'Yesterday';
+    }
+    return DateFormat('dd/MM/yyyy').format(chatModel.lastMessage!.sendingTime!);
   }
 }

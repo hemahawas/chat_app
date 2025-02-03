@@ -42,7 +42,6 @@ class _MessagesState extends State<Messages> {
               return Expanded(
                 child: const SizedBox(),
               );
-
             case ConnectionState.active:
             case ConnectionState.done:
               if (snapShot.hasData) {
@@ -66,13 +65,17 @@ class _MessagesState extends State<Messages> {
                                   participantNames: names,
                                   isGroup: cubit.chat is GroupModel,
                                   message: cubit.chat!.messages![index],
-                                  // the date will not shown if the tow consecutive messages has the same day
+                                  // the date will not shown if the two consecutive messages has the same day
                                   dateIsShown:
                                       index < cubit.chat!.messages!.length - 1
                                           ? (cubit.chat!.messages![index]
-                                                  .sendingTime!.day !=
-                                              cubit.chat!.messages![index + 1]
-                                                  .sendingTime!.day)
+                                                  .sendingTime!
+                                                  .difference(cubit
+                                                      .chat!
+                                                      .messages![index + 1]
+                                                      .sendingTime!)
+                                                  .inDays >
+                                              0)
                                           : true,
                                 ),
                               ),
