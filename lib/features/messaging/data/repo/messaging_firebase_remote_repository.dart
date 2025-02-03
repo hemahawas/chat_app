@@ -21,6 +21,7 @@ class MessagingFirebaseRemoteRepository extends MessagingRemoteRepository {
     throw UnimplementedError();
   }
 
+  // O(1)
   @override
   Future<void> sendTextMessage(ChatModel chat, MessageModel message) async {
     // add message on firestore
@@ -56,6 +57,7 @@ class MessagingFirebaseRemoteRepository extends MessagingRemoteRepository {
         .snapshots();
   }
 
+  // O(1)
   @override
   Future<void> sendImageMessage(ChatModel chat, MessageModel message) async {
     // Note: the image field contains the path, then it will contain the url
@@ -90,6 +92,7 @@ class MessagingFirebaseRemoteRepository extends MessagingRemoteRepository {
         .set(chat.toMap());
   }
 
+  // O(1)
   @override
   Future<void> messagesIsSeen(String chatId, String currentUserId) async {
     await firebaseFirestore
@@ -108,7 +111,10 @@ class MessagingFirebaseRemoteRepository extends MessagingRemoteRepository {
       await firebaseFirestore
           .collection('chats')
           .doc(chatId)
-          .set(localChat.toMap());
+          .set(localChat.toMap())
+          .then((value) {
+        return;
+      });
     });
   }
 }

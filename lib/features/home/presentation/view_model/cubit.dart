@@ -1,4 +1,4 @@
-import 'package:chat_app/core/shared_widgets/show_toast.dart';
+import 'package:chat_app/core/shared_widgets/shared_functions.dart';
 import 'package:chat_app/core/utils/network_info.dart';
 import 'package:chat_app/core/utils/user_model.dart';
 import 'package:chat_app/features/group/data/model/group_model.dart';
@@ -7,14 +7,13 @@ import 'package:chat_app/features/home/data/model/chat_model.dart';
 import 'package:chat_app/features/home/data/model/status_model.dart';
 import 'package:chat_app/features/home/data/repo/home_local_reopsitory.dart';
 import 'package:chat_app/features/home/data/repo/home_remote_repository.dart';
+import 'package:chat_app/features/home/presentation/view_model/home_injection_container.dart'
+    as home_di;
 import 'package:chat_app/features/home/presentation/view_model/states.dart';
 import 'package:chat_app/features/messaging/data/model/message_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'package:chat_app/features/home/presentation/view_model/home_injection_container.dart'
-    as home_di;
 
 class HomeViewModel extends Cubit<HomeStates> {
   HomeViewModel() : super(InitialHomeStates());
@@ -180,7 +179,7 @@ class HomeViewModel extends Cubit<HomeStates> {
       return;
     }
     int oldChatsLength = chats.length;
-    chats = [];
+
     List<ChatModel> localChats = [];
     if (snapShot.data != null) {
       //For loop O(n)

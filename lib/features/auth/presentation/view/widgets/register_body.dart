@@ -1,5 +1,5 @@
 import 'package:chat_app/core/config/routes.dart';
-import 'package:chat_app/core/shared_widgets/show_toast.dart';
+import 'package:chat_app/core/shared_widgets/shared_functions.dart';
 import 'package:chat_app/core/utils/user_model.dart';
 import 'package:chat_app/features/auth/presentation/view/widgets/email_field.dart';
 import 'package:chat_app/features/auth/presentation/view/widgets/logo_widget.dart';

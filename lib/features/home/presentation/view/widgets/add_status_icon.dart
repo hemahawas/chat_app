@@ -8,7 +8,7 @@ class AddStatusIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconItemButton(
       icon: Icon(Icons.add_circle_outlined),
-      size: 30,
+      size: 25,
       onPressed: () {},
     );
   }

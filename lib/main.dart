@@ -6,6 +6,7 @@ import 'package:chat_app/core/utils/hive_helper.dart';
 import 'package:chat_app/features/splash_screen/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -31,6 +32,9 @@ void main() async {
   // Hive config
   await Hive.initFlutter();
   HiveHelper.init();
+
+  // Restrict the orientation
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
   // Run App
   runApp(const MyApp());

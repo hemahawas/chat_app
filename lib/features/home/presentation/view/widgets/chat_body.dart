@@ -1,8 +1,7 @@
 import 'dart:async';
 
-import 'package:chat_app/core/constants/app_strings.dart';
-import 'package:chat_app/core/themes/styles.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/chat_item.dart';
+import 'package:chat_app/features/home/presentation/view/widgets/empty_chat_body.dart';
 import 'package:chat_app/features/home/presentation/view_model/cubit.dart';
 import 'package:chat_app/features/home/presentation/view_model/states.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -18,23 +17,23 @@ class ChatBody extends StatefulWidget {
 
 class _ChatBodyState extends State<ChatBody> {
   Stream<QuerySnapshot<Map<String, dynamic>>>? _chatSnapshots;
-  late StreamController _controller;
+
   @override
   void initState() {
     _chatSnapshots =
         BlocProvider.of<HomeViewModel>(context).getChatsInRealTime();
-    _controller = StreamController();
+
     super.initState();
   }
 
   @override
   void dispose() {
-    _controller.close();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final cubit = BlocProvider.of<HomeViewModel>(context);
     return BlocConsumer<HomeViewModel, HomeStates>(
       listener: (context, state) {},
       builder: (context, state) {
@@ -46,45 +45,27 @@ class _ChatBodyState extends State<ChatBody> {
               switch (snapShot.connectionState) {
                 case ConnectionState.none:
                 case ConnectionState.waiting:
-                  return Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      AppStrings.addNewConnectionsForYourChat,
-                      style: Styles.textStyle15.copyWith(color: Colors.grey),
-                    ),
-                  );
+                  return EmptyChatBody();
                 case ConnectionState.active:
                 case ConnectionState.done:
                   // Before building the listview, we shoul check about
                   // 1. current user is not null
                   // 2. All users exists
                   if (snapShot.hasData) {
-                    BlocProvider.of<HomeViewModel>(context).setChats(snapShot);
-                    return BlocProvider.of<HomeViewModel>(context)
-                            .chats
-                            .isNotEmpty
+                    cubit.setChats(snapShot);
+                    return cubit.chats.isNotEmpty
                         ? RepaintBoundary(
                             child: ListView.builder(
                               shrinkWrap: true,
                               physics: AlwaysScrollableScrollPhysics(),
                               itemBuilder: (context, index) => ChatItem(
                                 isSearched: false,
-                                chatModel:
-                                    BlocProvider.of<HomeViewModel>(context)
-                                        .chats[index],
+                                chatModel: cubit.chats[index],
                               ),
-                              itemCount: BlocProvider.of<HomeViewModel>(context)
-                                  .chats
-                                  .length,
+                              itemCount: cubit.chats.length,
                             ),
                           )
-                        : Align(
-                            alignment: Alignment.center,
-                            child: Text(
-                              AppStrings.addNewConnectionsForYourChat,
-                              style: Styles.textStyle15
-                                  .copyWith(color: Colors.grey),
-                            ));
+                        : EmptyChatBody();
                   } else {
                     return const Center(
                       child: CircularProgressIndicator(),

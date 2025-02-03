@@ -14,17 +14,15 @@ class ImageField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      clipBehavior: Clip.antiAlias,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(30),
-        border: Border.all(color: borderColor, width: 3),
-      ),
-      child: SizedBox(
-        width: size!,
-        height: size!,
+    return SizedBox(
+      width: size!,
+      height: size!,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(30),
+          border: Border.all(color: borderColor, width: 3),
+        ),
         child: ClipOval(
-          clipBehavior: Clip.antiAlias,
           child: image != null
               ? Image.network(
                   image!,

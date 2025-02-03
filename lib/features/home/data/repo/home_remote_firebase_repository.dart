@@ -39,6 +39,7 @@ class HomeRemoteFirebaseRepository extends HomeRemoteRepository {
     return chats;
   }
 
+  // O(1)
   @override
   Future<UserModel> getUserInfo() async {
     UserModel user = UserModel(email: 'email');
@@ -52,6 +53,7 @@ class HomeRemoteFirebaseRepository extends HomeRemoteRepository {
     return user;
   }
 
+  // O(n)
   @override
   Future<List<UserModel>> getUsers() async {
     List<UserModel> users = [];
@@ -68,22 +70,10 @@ class HomeRemoteFirebaseRepository extends HomeRemoteRepository {
     return users;
   }
 
+  // O(n)
   @override
   Future<ChatModel?> addNewChatThenGet(
       UserModel currentUser, UserModel anotherUser) async {
-    // check if the chat between the current and the other exists or not
-    await firebaseFirestore.collection('chats').get().then((value) {
-      for (var doc in value.docs) {
-        if (doc.id == '${currentUser.uId}-${anotherUser.uId}' ||
-            doc.id == '${anotherUser.uId}-${currentUser.uId}') {
-          return ChatModel(participantsUId: [], chatId: '', newMessages: {});
-        }
-      }
-    }).catchError((error) {
-      debugPrint(error.toString());
-      return null;
-    });
-
     currentUser.addedChats ??= [];
     anotherUser.addedChats ??= [];
     // add user id in added chats for both
@@ -138,6 +128,7 @@ class HomeRemoteFirebaseRepository extends HomeRemoteRepository {
     yield* firebaseFirestore.collection('chats').snapshots();
   }
 
+  // O(n)
   // Create group
   @override
   Future<void> createGroup(GroupModel group) async {
@@ -171,6 +162,7 @@ class HomeRemoteFirebaseRepository extends HomeRemoteRepository {
     });
   }
 
+  // O(1)
   @override
   Future<void> uploadUserImage(UserModel user, String image) async {
     // upload to cloudinary then put the url in user image
@@ -179,6 +171,7 @@ class HomeRemoteFirebaseRepository extends HomeRemoteRepository {
     await firebaseFirestore.collection('users').doc(user.uId).set(user.toMap());
   }
 
+  // O(n^2)
   @override
   Future<void> notifyUserChange(UserModel user) async {
     //1. Get the chats that the user is in
@@ -218,6 +211,7 @@ class HomeRemoteFirebaseRepository extends HomeRemoteRepository {
     });
   }
 
+  // O(1)
   @override
   Future<void> chatIsSeen(ChatModel chat) async {
     await firebaseFirestore
