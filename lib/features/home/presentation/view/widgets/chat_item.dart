@@ -12,10 +12,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 class ChatItem extends StatelessWidget {
-  ChatModel chatModel;
+  final ChatModel chatModel;
   final bool isSearched;
 
-  ChatItem({super.key, required this.chatModel, required this.isSearched});
+  const ChatItem(
+      {super.key, required this.chatModel, required this.isSearched});
 
   @override
   Widget build(BuildContext context) {
@@ -37,11 +38,6 @@ class ChatItem extends StatelessWidget {
         // so that when you press back arrow, you will back to home view
         if (isSearched) {
           Navigator.pop(context);
-        }
-
-        // To ensure that the chat is seen
-        if (chatModel.lastMessage != null) {
-          //cubit.chatIsSeen(chatModel);
         }
 
         // Give the Required args from chat view model to messaging view model while routing

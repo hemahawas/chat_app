@@ -253,8 +253,9 @@ class HomeViewModel extends Cubit<HomeStates> {
     group.participantsUId!.add(currentUser!.uId!);
     group.newMessages[currentUser!.uId!] = 0;
     emit(CreateGroupLoadingState());
-    await firebaseHomeRepository.createGroup(group).then((value) {
+    await firebaseHomeRepository.createGroup(group).then((value) async {
       emit(CreateGroupSuccessState());
+      await firebaseHomeRepository.notifyGroupMembers(group);
     }).catchError((error) {
       _handleError(error, CreateGroupErrorState());
     });

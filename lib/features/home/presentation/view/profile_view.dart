@@ -2,7 +2,6 @@ import 'package:chat_app/core/constants/app_sizes.dart';
 import 'package:chat_app/core/shared_widgets/responsive_sizedbox.dart';
 import 'package:chat_app/core/themes/styles.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/profile_appbar.dart';
-import 'package:chat_app/features/home/presentation/view/widgets/profile_button.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/profile_image_and_modify.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/profile_name_field.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/separating_line.dart';
@@ -99,7 +98,6 @@ class _ProfileViewState extends State<ProfileView> {
                     sizedBoxContext: context,
                     hasHeight: true,
                   ),
-                  const ProfileButton(),
                 ],
               ),
             ),

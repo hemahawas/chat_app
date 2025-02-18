@@ -114,26 +114,8 @@ class MessagingFirebaseRemoteRepository extends MessagingRemoteRepository {
   // O(1)
   @override
   Future<void> messagesIsSeen(String chatId, String currentUserId) async {
-    await firebaseFirestore
-        .collection('chats')
-        .doc(chatId)
-        .get()
-        .then((value) async {
-      ChatModel localChat;
-      if (value.data()!['groupName'] == null) {
-        localChat = ChatModel.fromJson(value.data());
-      } else {
-        localChat = GroupModel.fromJson(value.data());
-      }
-
-      localChat.newMessages[currentUserId] = 0;
-      await firebaseFirestore
-          .collection('chats')
-          .doc(chatId)
-          .set(localChat.toMap())
-          .then((value) {
-        return;
-      });
+    await firebaseFirestore.collection('chats').doc(chatId).update({
+      'newMessages.$currentUserId': 0,
     });
   }
 }

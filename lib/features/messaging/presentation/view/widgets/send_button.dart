@@ -22,10 +22,10 @@ class SendButton extends StatelessWidget {
             body: sendController.text,
             image: '',
             messageSenderId:
-                messaging_di.sl<MessagingViewModel>().currentUser.uId,
+                messaging_di.sl<MessagingViewModel>().currentUser!.uId,
             sendingTime: DateTime.now().toLocal());
         await messaging_di.sl<MessagingViewModel>().sendTextMessage(
-            messaging_di.sl<MessagingViewModel>().chat, message);
+            messaging_di.sl<MessagingViewModel>().chat!, message);
       },
     );
   }
