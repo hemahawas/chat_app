@@ -4,16 +4,16 @@ import 'package:chat_app/features/home/data/model/chat_model.dart';
 import 'package:chat_app/features/messaging/data/model/message_model.dart';
 import 'package:chat_app/features/messaging/data/repo/messaging_remote_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class MessagingFirebaseRemoteRepository extends MessagingRemoteRepository {
   final FirebaseFirestore firebaseFirestore;
-  final FirebaseStorage firebaseStorage;
+  final FirebaseAuth firebaseAuth;
   final CloudinaryService cloudinaryService;
 
   MessagingFirebaseRemoteRepository(
-      {required this.cloudinaryService,
-      required this.firebaseStorage,
+      {required this.firebaseAuth,
+      required this.cloudinaryService,
       required this.firebaseFirestore});
 
   @override
@@ -39,11 +39,33 @@ class MessagingFirebaseRemoteRepository extends MessagingRemoteRepository {
     chat.lastMessage = message;
     chat.messages!.insert(0, message);
 
-    // modify the chat last message in firestore
+    _updateChat(chat);
+  }
+
+  _updateChat(ChatModel chat) async {
+    // update the last message field and new messages field in the chat
     await firebaseFirestore
         .collection('chats')
         .doc(chat.chatId)
-        .set(chat.toMap());
+        .update({'lastMessage': chat.lastMessage!.toMap()});
+
+    if (chat is GroupModel) {
+      for (var id in chat.participantsUId!) {
+        if (id != chat.lastMessage!.messageSenderId) {
+          // modify the chat last message in firestore
+          await firebaseFirestore
+              .collection('chats')
+              .doc(chat.chatId)
+              .update({'newMessages.$id': FieldValue.increment(1)});
+        }
+      }
+    } else {
+      // modify the chat last message in firestore
+      await firebaseFirestore.collection('chats').doc(chat.chatId).update({
+        'newMessages.${chat.participantsUId!.firstWhere((id) => id != chat.lastMessage!.messageSenderId)}':
+            FieldValue.increment(1)
+      });
+    }
   }
 
   @override
@@ -86,10 +108,7 @@ class MessagingFirebaseRemoteRepository extends MessagingRemoteRepository {
     chat.messages!.insert(0, message);
 
     // modify the chat last message in firestore
-    await firebaseFirestore
-        .collection('chats')
-        .doc(chat.chatId)
-        .set(chat.toMap());
+    _updateChat(chat);
   }
 
   // O(1)
