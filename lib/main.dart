@@ -1,10 +1,11 @@
 import 'package:chat_app/core/config/routes.dart';
 import 'package:chat_app/core/themes/color_app.dart';
 import 'package:chat_app/core/utils/app_observer.dart';
-import 'package:chat_app/core/utils/firebase_notification.dart';
 import 'package:chat_app/core/utils/hive_helper.dart';
+import 'package:chat_app/core/utils/messaging_config.dart';
 import 'package:chat_app/features/splash_screen/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,6 +13,8 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 import 'firebase_options.dart';
 import 'injection_container.dart' as di;
+
+final navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,7 +30,9 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  NotificationService.instance.initialize();
+  // Messaging Config
+  MessagingConfig.initFirebaseMessaging();
+  FirebaseMessaging.onBackgroundMessage(MessagingConfig.messageHandler);
 
   // Hive config
   await Hive.initFlutter();

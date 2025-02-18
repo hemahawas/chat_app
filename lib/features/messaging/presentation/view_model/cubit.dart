@@ -16,13 +16,15 @@ class MessagingViewModel extends Cubit<MessagingStates> {
 
   final MessagingRemoteRepository messagingFirebaseRemoteRepository;
 
-  ChatModel? chat;
-  UserModel? currentUser;
+  late ChatModel? chat;
+  late UserModel? currentUser;
 
   // Here we got the arguments and now the view model is ready to work
-  Future<void> getMessagingArguments(MessagingArguments arguments) async {
-    chat = arguments.chatModel;
-    currentUser = arguments.currentUser;
+  Future<void> getMessagingArguments(
+      MessagingArguments messagingArguments) async {
+    chat = messagingArguments.chatModel;
+
+    currentUser = messagingArguments.currentUser!;
     emit(GetMessagingArgumentsSuccessState());
   }
 
@@ -30,7 +32,8 @@ class MessagingViewModel extends Cubit<MessagingStates> {
     return messagingFirebaseRemoteRepository.getMessagesInRealTime(chat!);
   }
 
-  void setMessages(snapShot) {
+  Future<void> setMessages(
+      AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapShot) async {
     chat!.messages = [];
     if (snapShot.data != null) {
       for (var doc in snapShot.data!.docs) {
@@ -42,12 +45,7 @@ class MessagingViewModel extends Cubit<MessagingStates> {
   // Send message
   Future<void> sendTextMessage(ChatModel chat, MessageModel message) async {
     emit(SendMessageLoadingState());
-    // increment number of new messages for each key
-    chat.newMessages.forEach((k, v) {
-      chat.newMessages[k] = ++v;
-    });
-    // Of course the sender saw his message
-    chat.newMessages[currentUser!.uId!] = 0;
+
     await messagingFirebaseRemoteRepository
         .sendTextMessage(chat, message)
         .then((_) {
@@ -60,10 +58,6 @@ class MessagingViewModel extends Cubit<MessagingStates> {
 
   Future<void> sendImageMessage(ChatModel chat, MessageModel message) async {
     emit(SendMessageLoadingState());
-    // increment number of new messages for each key
-    chat.newMessages.forEach((k, v) {
-      v++;
-    });
     await messagingFirebaseRemoteRepository
         .sendImageMessage(chat, message)
         .then((_) {
@@ -77,13 +71,11 @@ class MessagingViewModel extends Cubit<MessagingStates> {
   // This stream is used to reset the new messages
   //becuase the user is already inside chat and see the messages
   Future<void> messagesIsSeen() async {
-    if (chat != null) {
-      chat!.newMessages[currentUser!.uId!] = 0;
-      await messagingFirebaseRemoteRepository
-          .messagesIsSeen(chat!.chatId!, currentUser!.uId!)
-          .catchError((error) {
-        debugPrint(error.toString());
-      });
-    }
+    chat!.newMessages[currentUser!.uId!] = 0;
+    await messagingFirebaseRemoteRepository
+        .messagesIsSeen(chat!.chatId!, currentUser!.uId!)
+        .catchError((error) {
+      debugPrint(error.toString());
+    });
   }
 }

@@ -30,7 +30,6 @@ environment:
 dependencies:
   bloc: ^9.0.0
   bloc_provider: ^1.0.0
-  
   cloud_firestore: ^5.5.0
   cloudinary: ^1.2.0
   conditional_builder_null_safety: ^0.0.6
@@ -44,8 +43,10 @@ dependencies:
     sdk: flutter
   flutter_bloc: ^9.0.0
   flutter_local_notifications: ^18.0.1
+  flutter_secure_storage: ^9.2.4
   fluttertoast: ^8.2.10
   get_it: ^8.0.2
+  googleapis_auth: ^1.6.0
   hive: null
   hive_flutter: ^1.1.0
   http: ^1.2.2
@@ -81,6 +82,7 @@ flutter:
     - assets/images/splash.png
     - assets/images/user_image.webP
     - assets/images/messaging_background.png
+    - assets/keys/chat-app-e5cb1-8d448f79f16a.json
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

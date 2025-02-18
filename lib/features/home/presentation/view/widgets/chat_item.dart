@@ -31,41 +31,21 @@ class ChatItem extends StatelessWidget {
       }
     }
 
-    // Get the number of new messages
-    /*
-    if (widget.chatModel.messages != null &&
-        widget.chatModel.messages!.isNotEmpty) {
-   debugPrint("chatModel.messages: ${widget.chatModel.messages!.length}");
-      for (var message in widget.chatModel.messages!) {
-        if (message.isSeenBy.contains(cubit.currentUser!.uId)) {
-          break;
-        } else {
-          setState(() {
-            newMessages++;
-          });
-        }
-
-      }
-    }*/
-
     return MaterialButton(
       padding: EdgeInsets.all(5),
-      onPressed: () {
+      onPressed: () async {
         // if This chat is searched, close the search,
         // so that when you press back arrow, you will back to home view
         if (isSearched) {
           Navigator.pop(context);
         }
 
-        // To ensure that the chat is seen
-        if (chatModel.lastMessage != null) {
-          //cubit.chatIsSeen(chatModel);
-        }
         // Give the Required args from chat view model to messaging view model while routing
         // See the routes.dart file
+
         Navigator.pushNamed(context, Routes.messagingRoute,
             arguments: MessagingArguments(
-                chatModel: chatModel, currentUser: cubit.currentUser!));
+                chatModel: chatModel, currentUser: cubit.currentUser));
       },
       child: SizedBox(
         height: 60,

@@ -15,10 +15,10 @@ class MessagingAppbar extends StatelessWidget {
     var cubit = BlocProvider.of<MessagingViewModel>(context);
     UserModel? anotherUser;
     if (cubit.chat is! GroupModel) {
-      if (cubit.chat?.participants?[0].uId == cubit.currentUser?.uId) {
-        anotherUser = cubit.chat?.participants?[1];
+      if (cubit.chat!.participants?[0].uId == cubit.currentUser!.uId) {
+        anotherUser = cubit.chat!.participants?[1];
       } else {
-        anotherUser = cubit.chat?.participants?[0];
+        anotherUser = cubit.chat!.participants?[0];
       }
     }
 
@@ -43,7 +43,7 @@ class MessagingAppbar extends StatelessWidget {
               icon: Icon(Icons.arrow_back),
               onPressed: () async {
                 await cubit.messagesIsSeen();
-                Navigator.pop(context);
+                Navigator.pop(context, cubit.chat);
               },
             ),
           ),

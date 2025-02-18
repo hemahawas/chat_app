@@ -142,24 +142,6 @@ class HomeRemoteFirebaseRepository extends HomeRemoteRepository {
         .collection('chats')
         .doc(group.chatId)
         .set((group).toMap());
-
-    // Add the new group to users
-    await firebaseFirestore
-        .collection('users')
-        .where('uId', whereIn: group.participantsUId)
-        .get()
-        .then((users) async {
-      for (var user in users.docs) {
-        UserModel userModel = UserModel.fromJson(user.data());
-        userModel.addedChats ??= [];
-        userModel.addedChats!.add(group.chatId!);
-        // Update users
-        await firebaseFirestore
-            .collection('users')
-            .doc(userModel.uId)
-            .set(userModel.toMap());
-      }
-    });
   }
 
   // O(1)
@@ -218,5 +200,26 @@ class HomeRemoteFirebaseRepository extends HomeRemoteRepository {
         .collection('chats')
         .doc(chat.chatId)
         .set(chat.toMap());
+  }
+
+  @override
+  Future<void> notifyGroupMembers(GroupModel group) async {
+    // Add the new group to users
+    await firebaseFirestore
+        .collection('users')
+        .where('uId', whereIn: group.participantsUId)
+        .get()
+        .then((users) async {
+      for (var user in users.docs) {
+        UserModel userModel = UserModel.fromJson(user.data());
+        userModel.addedChats ??= [];
+        userModel.addedChats!.add(group.chatId!);
+        // Update users
+        await firebaseFirestore
+            .collection('users')
+            .doc(userModel.uId)
+            .set(userModel.toMap());
+      }
+    });
   }
 }
