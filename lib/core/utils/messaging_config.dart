@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:chat_app/core/utils/send_notification_services.dart';
 import 'package:chat_app/core/utils/token_service.dart';
-import 'package:chat_app/main.dart';
+import 'package:chat_app/main_development.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
