@@ -14,19 +14,41 @@ import 'package:chat_app/features/auth/presentation/view_model/states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class RegisterBody extends StatelessWidget {
+class RegisterBody extends StatefulWidget {
   RegisterBody({super.key});
 
-  final TextEditingController emailController = TextEditingController();
+  @override
+  State<RegisterBody> createState() => _RegisterBodyState();
+}
 
-  final TextEditingController passwordController = TextEditingController();
+class _RegisterBodyState extends State<RegisterBody> {
+  late final TextEditingController emailController;
 
-  final TextEditingController nameController = TextEditingController();
+  late final TextEditingController passwordController;
 
-  final TextEditingController phoneController = TextEditingController();
+  late final TextEditingController nameController;
+
+  late final TextEditingController phoneController;
+
+  @override
+  void initState() {
+    emailController = TextEditingController();
+    passwordController = TextEditingController();
+    nameController = TextEditingController();
+    phoneController = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    nameController.dispose();
+    phoneController.dispose();
+    super.dispose();
+  }
 
   //var key = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthViewModel, AuthStates>(

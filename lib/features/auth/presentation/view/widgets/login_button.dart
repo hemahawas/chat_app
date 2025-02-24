@@ -2,7 +2,7 @@ import 'package:chat_app/core/shared_widgets/default_text_button.dart';
 import 'package:chat_app/core/shared_widgets/shared_functions.dart';
 import 'package:flutter/material.dart';
 
-class LoginButton extends StatelessWidget {
+class LoginButton extends StatefulWidget {
   final TextEditingController emailController;
   final TextEditingController passwordController;
   final VoidCallback onSuccess;
@@ -14,18 +14,30 @@ class LoginButton extends StatelessWidget {
       required this.onSuccess});
 
   @override
+  State<LoginButton> createState() => _LoginButtonState();
+}
+
+class _LoginButtonState extends State<LoginButton> {
+  @override
+  dispose() {
+    widget.emailController.dispose();
+    widget.passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return DefaultTextButton(
         onPressed: () {
-          if (!(emailController.text.contains('@'))) {
+          if (!(widget.emailController.text.contains('@'))) {
             showToast(msg: 'Email must contain @');
           }
-          if (passwordController.text.length < 8) {
+          if (widget.passwordController.text.length < 8) {
             showToast(msg: 'Password is too short');
           }
-          if (emailController.text.contains('@') &&
-              passwordController.text.length >= 8) {
-            onSuccess();
+          if (widget.emailController.text.contains('@') &&
+              widget.passwordController.text.length >= 8) {
+            widget.onSuccess();
           }
         },
         text: 'login');
