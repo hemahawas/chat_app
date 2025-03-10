@@ -122,6 +122,9 @@ class HomeViewModel extends Cubit<HomeStates> {
           anotherUser.addedChats!.add(currentUser.uId!);
         }
 
+        nonAddedUsers.remove(anotherUser);
+        addedUsers.add(anotherUser);
+
         emit(AddUserToChatSuccessState());
         await notifyUserChange(currentUser);
         await notifyUserChange(anotherUser);
@@ -129,6 +132,12 @@ class HomeViewModel extends Cubit<HomeStates> {
     }).catchError((error) {
       _handleError(error, AddUserToChatErrorState());
     });
+  }
+
+  void addNewUser(newUser) {
+    nonAddedUsers.remove(newUser);
+    addedUsers.add(newUser);
+    emit(NewUserIsAddedState());
   }
 
   // Get current user
@@ -182,6 +191,7 @@ class HomeViewModel extends Cubit<HomeStates> {
     if (currentUser == null) {
       return;
     }
+    var oldLength = chatMapping.length;
 
     if (snapShot.data != null) {
       //For loop O(n)
@@ -196,6 +206,14 @@ class HomeViewModel extends Cubit<HomeStates> {
 
         switch (docChange.type) {
           case DocumentChangeType.added:
+            chatMapping[chat.chatId!] = chat;
+            var newLength = chatMapping.length;
+            if (oldLength > 0 && oldLength != newLength) {
+              UserModel newUser = chat.participants!
+                  .firstWhere((user) => user.uId != currentUserUId);
+              addNewUser(newUser);
+            }
+            break;
           case DocumentChangeType.modified:
             chatMapping[chat.chatId!] = chat;
             break;

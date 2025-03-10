@@ -1,7 +1,9 @@
 import 'package:chat_app/core/config/routes.dart';
 import 'package:chat_app/core/themes/color_app.dart';
 import 'package:chat_app/features/group/presentation/view/group_chat_body_preview.dart';
+import 'package:chat_app/features/home/presentation/view_model/cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PopupMenuItems extends StatelessWidget {
   final BuildContext homeAppBarContext;
@@ -49,7 +51,7 @@ class PopupMenuItems extends StatelessWidget {
                     child: const Text('Add Users'),
                     onTap: () {
                       Navigator.pushNamed(context, Routes.addUsersRoute,
-                          arguments: homeAppBarContext);
+                          arguments: BlocProvider.of<HomeViewModel>(context));
                     },
                   ),
                 ]));

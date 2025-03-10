@@ -3,6 +3,7 @@ import 'package:chat_app/core/themes/styles.dart';
 import 'package:chat_app/core/utils/user_model.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/image_field.dart';
 import 'package:chat_app/features/home/presentation/view_model/cubit.dart';
+import 'package:chat_app/features/home/presentation/view_model/states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -18,8 +19,6 @@ class UserItem extends StatefulWidget {
 class _UserItemState extends State<UserItem> {
   @override
   Widget build(BuildContext context) {
-    bool isAdded = false;
-
     return Row(
       children: [
         ImageField(
@@ -42,18 +41,21 @@ class _UserItemState extends State<UserItem> {
           ],
         ),
         Spacer(),
-        IconButton(
-            onPressed: widget.onTap ??
-                () async {
-                  if (!isAdded) {
-                    var cubit = BlocProvider.of<HomeViewModel>(context);
-                    setState(() {
-                      isAdded = true;
-                    });
-                    await cubit.addNewChat(cubit.currentUser!, widget.model);
-                  }
-                },
-            icon: isAdded ? Icon(Icons.done) : Icon(Icons.add))
+        BlocBuilder<HomeViewModel, HomeStates>(
+          builder: (context, state) => AbsorbPointer(
+            absorbing: state is AddUserToChatLoadingState,
+            child: IconButton(
+                onPressed: widget.onTap ??
+                    () async {
+                      var cubit = BlocProvider.of<HomeViewModel>(context);
+
+                      await cubit.addNewChat(cubit.currentUser!, widget.model);
+                    },
+                icon: state is AddUserToChatLoadingState
+                    ? Icon(Icons.done)
+                    : Icon(Icons.add)),
+          ),
+        )
       ],
     );
   }

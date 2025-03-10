@@ -88,10 +88,11 @@ class AppRoutes {
         });
       case Routes.addUsersRoute:
         return MaterialPageRoute(
-            builder: (context) {
-              return const UnAddedUsers();
-            },
-            settings: RouteSettings(arguments: routeSettings.arguments));
+          builder: (_) => BlocProvider.value(
+            value: routeSettings.arguments as HomeViewModel,
+            child: UnAddedUsers(),
+          ),
+        );
       default:
         return undefinedRoute();
     }
