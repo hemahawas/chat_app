@@ -2,12 +2,12 @@ import 'package:chat_app/core/utils/cloudinary_service.dart';
 import 'package:chat_app/core/utils/user_model.dart';
 import 'package:chat_app/features/group/data/model/group_model.dart';
 import 'package:chat_app/features/home/data/model/chat_model.dart';
-import 'package:chat_app/features/home/data/repo/home_remote_repository.dart';
+import 'package:chat_app/features/messaging/data/model/message_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class HomeRemoteFirebaseRepository extends HomeRemoteRepository {
+class HomeRemoteFirebaseRepository {
   final FirebaseAuth firebaseAuth;
   final FirebaseFirestore firebaseFirestore;
   final CloudinaryService cloudinaryService;
@@ -17,7 +17,6 @@ class HomeRemoteFirebaseRepository extends HomeRemoteRepository {
       required this.firebaseAuth,
       required this.firebaseFirestore});
 
-  @override
   Future<List<ChatModel>> getChats() async {
     List<ChatModel> chats = [];
 
@@ -40,7 +39,7 @@ class HomeRemoteFirebaseRepository extends HomeRemoteRepository {
   }
 
   // O(1)
-  @override
+
   Future<UserModel> getUserInfo() async {
     UserModel user = UserModel(email: 'email');
     await firebaseFirestore
@@ -54,7 +53,7 @@ class HomeRemoteFirebaseRepository extends HomeRemoteRepository {
   }
 
   // O(n)
-  @override
+
   Future<List<UserModel>> getUsers() async {
     List<UserModel> users = [];
     await firebaseFirestore.collection('users').get().then((value) {
@@ -71,7 +70,7 @@ class HomeRemoteFirebaseRepository extends HomeRemoteRepository {
   }
 
   // O(n)
-  @override
+
   Future<ChatModel?> addNewChatThenGet(
       UserModel currentUser, UserModel anotherUser) async {
     currentUser.addedChats ??= [];
@@ -91,7 +90,8 @@ class HomeRemoteFirebaseRepository extends HomeRemoteRepository {
         chatId: '${currentUser.uId}-${anotherUser.uId}',
         messages: [],
         newMessages: {currentUser.uId!: 0, anotherUser.uId!: 0},
-        lastMessage: null);
+        lastMessage: MessageModel(
+            body: 'Hey There, I\'m using chat app', sendingTime: DateTime(0)));
 
     // Add the new chat to firestore
     await firebaseFirestore
@@ -122,15 +122,17 @@ class HomeRemoteFirebaseRepository extends HomeRemoteRepository {
     return chat;
   }
 
-  @override
   Stream<QuerySnapshot<Map<String, dynamic>>> getChatsInRealTime() async* {
     // get chat snapshots from firebase
-    yield* firebaseFirestore.collection('chats').snapshots();
+    yield* firebaseFirestore
+        .collection('chats')
+        .where('participantsUId', arrayContains: firebaseAuth.currentUser!.uid)
+        .snapshots();
   }
 
   // O(n)
   // Create group
-  @override
+
   Future<void> createGroup(GroupModel group) async {
     // upload the image then assign it
     if (group.groupImageUrl != null) {
@@ -145,7 +147,7 @@ class HomeRemoteFirebaseRepository extends HomeRemoteRepository {
   }
 
   // O(1)
-  @override
+
   Future<void> uploadUserImage(UserModel user, String image) async {
     // upload to cloudinary then put the url in user image
     user.image = await cloudinaryService.uploadImageThenGet(image);
@@ -154,7 +156,7 @@ class HomeRemoteFirebaseRepository extends HomeRemoteRepository {
   }
 
   // O(n^2)
-  @override
+
   Future<void> notifyUserChange(UserModel user) async {
     //1. Get the chats that the user is in
     await firebaseFirestore
@@ -194,7 +196,7 @@ class HomeRemoteFirebaseRepository extends HomeRemoteRepository {
   }
 
   // O(1)
-  @override
+
   Future<void> chatIsSeen(ChatModel chat) async {
     await firebaseFirestore
         .collection('chats')
@@ -202,7 +204,6 @@ class HomeRemoteFirebaseRepository extends HomeRemoteRepository {
         .set(chat.toMap());
   }
 
-  @override
   Future<void> notifyGroupMembers(GroupModel group) async {
     // Add the new group to users
     await firebaseFirestore

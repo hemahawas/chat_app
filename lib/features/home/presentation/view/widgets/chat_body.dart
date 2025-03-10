@@ -27,11 +27,6 @@ class _ChatBodyState extends State<ChatBody> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final cubit = BlocProvider.of<HomeViewModel>(context);
     return BlocConsumer<HomeViewModel, HomeStates>(

@@ -60,5 +60,6 @@ flutter:
     - assets/images/splash.png
     - assets/images/user_image.webP
     - assets/images/messaging_background.png
+    - assets/images/wifi_off.gif
     - assets/keys/chat-app-e5cb1-8d448f79f16a.json
   

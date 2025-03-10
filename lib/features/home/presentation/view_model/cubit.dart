@@ -5,8 +5,8 @@ import 'package:chat_app/features/group/data/model/group_model.dart';
 import 'package:chat_app/features/home/data/model/call_Model.dart';
 import 'package:chat_app/features/home/data/model/chat_model.dart';
 import 'package:chat_app/features/home/data/model/status_model.dart';
-import 'package:chat_app/features/home/data/repo/home_local_reopsitory.dart';
-import 'package:chat_app/features/home/data/repo/home_remote_repository.dart';
+import 'package:chat_app/features/home/data/repo/home_local_hive_repository.dart';
+import 'package:chat_app/features/home/data/repo/home_remote_firebase_repository.dart';
 import 'package:chat_app/features/home/presentation/view_model/home_injection_container.dart'
     as home_di;
 import 'package:chat_app/features/home/presentation/view_model/states.dart';
@@ -18,10 +18,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class HomeViewModel extends Cubit<HomeStates> {
   HomeViewModel() : super(InitialHomeStates());
 
-  final HomeRemoteRepository firebaseHomeRepository =
-      home_di.sl<HomeRemoteRepository>();
-  final HomeLocalReopsitory localHomeRepository =
-      home_di.sl<HomeLocalReopsitory>();
+  final HomeRemoteFirebaseRepository firebaseHomeRepository =
+      home_di.sl<HomeRemoteFirebaseRepository>();
+  final HomeLocalHiveRepository localHomeRepository =
+      home_di.sl<HomeLocalHiveRepository>();
   final NetworkInfo networkInfo = home_di.sl<NetworkInfo>();
 
   // To change the bottom nav bar
@@ -178,7 +178,6 @@ class HomeViewModel extends Cubit<HomeStates> {
     if (currentUser == null) {
       return;
     }
-    int oldChatsLength = chats.length;
 
     List<ChatModel> localChats = [];
     if (snapShot.data != null) {
@@ -192,22 +191,9 @@ class HomeViewModel extends Cubit<HomeStates> {
           chat = GroupModel.fromJson(doc.data());
         }
 
-        // Add the chat that has connection to the current user
-        if (chat.chatId!
-            // ignore: collection_methods_unrelated_type
-            .contains(currentUser!.uId.toString())) {
-          localChats.add(chat);
-        } // For group
-        else if ((chat is GroupModel) &&
-            chat.participantsUId!.contains(currentUser!.uId)) {
-          localChats.add(chat);
-        }
+        localChats.add(chat);
       }
     }
-    // Add new user if there is new chat, and remove it from non added users
-
-    // Sort the chats by the last message
-    // sort : O(n log(n))
     localChats.sort(
       (a, b) {
         a.lastMessage ??= MessageModel(sendingTime: DateTime(0));
@@ -219,32 +205,6 @@ class HomeViewModel extends Cubit<HomeStates> {
       },
     );
     chats = localChats;
-    int newChatsLength = chats.length;
-    debugPrint('#####################out if');
-    // A new chat is added
-    if (oldChatsLength != newChatsLength) {
-      debugPrint('#####################in if');
-      // Get the new user
-      var newUser;
-      // get chats, then get the new user in one chat
-      // O(n^2)
-      for (var chat in chats) {
-        for (var user in nonAddedUsers) {
-          // if the non added user id is in the chat, then this is the new chat
-          if (chat.participantsUId!.contains(user.uId)) {
-            debugPrint('#####################22222222222');
-            newUser = user;
-            break;
-          }
-        }
-      }
-      // Update the users in application
-      if (newUser != null) {
-        debugPrint('#####################in new user');
-        emit(NewUserIsAddedState(newUser: newUser));
-        showToast(msg: 'You got a new connection');
-      }
-    }
   }
 
   Future<void> createGroup(GroupModel group) async {

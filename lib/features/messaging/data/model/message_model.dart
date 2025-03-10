@@ -24,7 +24,7 @@ class MessageModel {
     image = json?['image'];
     sendingTime = json?['sendingTime'] != null
         ? DateTime.parse(json!['sendingTime'])
-        : null;
+        : DateTime(0);
     messageSenderId = json?['messageSenderId'];
     messageId = json?['messageId'];
     isSeenBy =
@@ -35,7 +35,7 @@ class MessageModel {
     return {
       'body': body,
       'image': image,
-      'sendingTime': sendingTime?.toString(),
+      'sendingTime': sendingTime == null ? DateTime(0) : sendingTime.toString(),
       'messageSenderId': messageSenderId,
       'messageId': messageId,
       'isSeenBy': isSeenBy.toList(),
