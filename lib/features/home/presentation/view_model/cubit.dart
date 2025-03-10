@@ -12,7 +12,7 @@ import 'package:chat_app/features/home/presentation/view_model/home_injection_co
 import 'package:chat_app/features/home/presentation/view_model/states.dart';
 import 'package:chat_app/features/messaging/data/model/message_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeViewModel extends Cubit<HomeStates> {
@@ -26,6 +26,8 @@ class HomeViewModel extends Cubit<HomeStates> {
 
   // To change the bottom nav bar
   int navBarCurrentIndex = 0;
+
+  String get currentUserUId => firebaseHomeRepository.getCurrentUserUId();
 
   void changeNavBarIndex(index) {
     navBarCurrentIndex = index;
@@ -74,12 +76,13 @@ class HomeViewModel extends Cubit<HomeStates> {
   List<StatusModel> viewedStatus = [];
 
   List<ChatModel> chats = [];
+  Map<String, ChatModel> chatMapping = {};
   // get Chats of current user
   Future<void> getChats() async {
     if (await networkInfo.isConnected) {
       emit(GetChatsFromFirebaseLoadingState());
       await firebaseHomeRepository.getChats().then((value) async {
-        chats = value;
+        //chats = value;
         //debugPrint('################### chats ${chats.length}');
         emit(GetChatsFromFirebaseSuccessState());
         await localHomeRepository.putChats(chats);
@@ -89,7 +92,7 @@ class HomeViewModel extends Cubit<HomeStates> {
     } else {
       emit(GetChatsFromLocalLoadingState());
       await localHomeRepository.getChats().then((value) {
-        chats = value;
+        //chats = value;
 
         emit(GetChatsFromLocalSuccessState());
       }).catchError((error) {
@@ -173,28 +176,38 @@ class HomeViewModel extends Cubit<HomeStates> {
     });
   }
 
-  Future<void> setChats(snapShot) async {
+  Future<void> setChats(
+      AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapShot) async {
     // Ensure that all users exist
     if (currentUser == null) {
       return;
     }
 
-    List<ChatModel> localChats = [];
     if (snapShot.data != null) {
       //For loop O(n)
-      for (var doc in snapShot.data!.docs) {
+      for (var docChange in snapShot.data!.docChanges) {
         // Check if it is group or chat
         ChatModel chat;
-        if (doc.data()['groupName'] == null) {
-          chat = ChatModel.fromJson(doc.data());
+        if (docChange.doc.data()!['groupName'] == null) {
+          chat = ChatModel.fromJson(docChange.doc.data());
         } else {
-          chat = GroupModel.fromJson(doc.data());
+          chat = GroupModel.fromJson(docChange.doc.data());
         }
 
-        localChats.add(chat);
+        switch (docChange.type) {
+          case DocumentChangeType.added:
+          case DocumentChangeType.modified:
+            chatMapping[chat.chatId!] = chat;
+            break;
+          case DocumentChangeType.removed:
+            // Handle the case where a document is removed
+            break;
+        }
       }
     }
-    localChats.sort(
+    // O(n log(n))
+    var localChatList = chatMapping.values.toList();
+    localChatList.sort(
       (a, b) {
         a.lastMessage ??= MessageModel(sendingTime: DateTime(0));
         b.lastMessage ??= MessageModel(sendingTime: DateTime(0));
@@ -204,7 +217,7 @@ class HomeViewModel extends Cubit<HomeStates> {
             .compareTo(a.lastMessage!.sendingTime!);
       },
     );
-    chats = localChats;
+    chats = localChatList;
   }
 
   Future<void> createGroup(GroupModel group) async {

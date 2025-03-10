@@ -18,8 +18,10 @@ class SendButton extends StatelessWidget {
       ),
       size: 50,
       onPressed: () async {
+        var body = sendController.text;
+        sendController.clear();
         MessageModel message = MessageModel(
-            body: sendController.text,
+            body: body,
             image: '',
             messageSenderId:
                 messaging_di.sl<MessagingViewModel>().currentUser!.uId,

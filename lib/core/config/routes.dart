@@ -55,10 +55,9 @@ class AppRoutes {
       case Routes.homeRoute:
         return MaterialPageRoute(builder: ((context) {
           return BlocProvider<HomeViewModel>(
-            // This invokation order may be critical
             create: (context) => home_di.sl<HomeViewModel>()
-              ..getUsers()
-              ..getCurrentUser(),
+              ..getCurrentUser()
+              ..getUsers(),
             child: HomeView(),
           );
         }));

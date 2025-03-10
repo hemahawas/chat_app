@@ -17,6 +17,10 @@ class HomeRemoteFirebaseRepository {
       required this.firebaseAuth,
       required this.firebaseFirestore});
 
+  String getCurrentUserUId() {
+    return firebaseAuth.currentUser!.uid;
+  }
+
   Future<List<ChatModel>> getChats() async {
     List<ChatModel> chats = [];
 

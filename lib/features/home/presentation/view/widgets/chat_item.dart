@@ -24,7 +24,7 @@ class ChatItem extends StatelessWidget {
     var cubit = BlocProvider.of<HomeViewModel>(context);
     UserModel? anotherUser;
     if (chatModel is! GroupModel) {
-      if (chatModel.participants?[0].uId == cubit.currentUser?.uId) {
+      if (chatModel.participants?[0].uId == cubit.currentUserUId) {
         anotherUser = chatModel.participants?[1];
       } else {
         anotherUser = chatModel.participants?[0];
@@ -88,7 +88,7 @@ class ChatItem extends StatelessWidget {
                           _getTime(),
                           style: Styles.textStyle15.copyWith(
                               color: (chatModel.newMessages[
-                                              cubit.currentUser!.uId] ??
+                                              cubit.currentUserUId] ??
                                           0) ==
                                       0
                                   ? Colors.black87
@@ -105,7 +105,7 @@ class ChatItem extends StatelessWidget {
                         child: Text(
                           // chat last message
                           // If the last message sender is the current user, show 'you: '
-                          '${chatModel.lastMessage?.messageSenderId == cubit.currentUser?.uId ? 'you: ' : ''}'
+                          '${chatModel.lastMessage?.messageSenderId == cubit.currentUserUId ? 'you: ' : ''}'
                           // If the message has only image, show 'Photo.' , else show message body
                           '${chatModel.lastMessage?.body ?? 'Hey There, I\'m using chat app'}',
                           maxLines: 1,
@@ -113,7 +113,7 @@ class ChatItem extends StatelessWidget {
                           softWrap: true,
                           style: Styles.textStyle15.copyWith(
                               color: (chatModel.newMessages[
-                                              cubit.currentUser!.uId] ??
+                                              cubit.currentUserUId] ??
                                           0) ==
                                       0
                                   ? Colors.grey
@@ -122,7 +122,7 @@ class ChatItem extends StatelessWidget {
                       ),
 
                       // Number of new messages
-                      (chatModel.newMessages[cubit.currentUser!.uId] ?? 0) == 0
+                      (chatModel.newMessages[cubit.currentUserUId] ?? 0) == 0
                           ? const SizedBox()
                           : Align(
                               alignment: Alignment.centerLeft,
@@ -135,7 +135,7 @@ class ChatItem extends StatelessWidget {
                                     color: ColorApp.primaryColor),
                                 child: Text(
                                   // Number of new messages
-                                  chatModel.newMessages[cubit.currentUser!.uId]
+                                  chatModel.newMessages[cubit.currentUserUId]
                                       .toString(),
                                   style: TextStyle(
                                       color: ColorApp.appBackgroundColor),
