@@ -17,46 +17,58 @@ class UserItem extends StatefulWidget {
 }
 
 class _UserItemState extends State<UserItem> {
+  bool isPressed = false;
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        ImageField(
-          image: widget.model.image,
-          borderColor: Colors.transparent,
-        ),
-        ResponsiveSizedBox(
-          sizedBoxContext: context,
-          hasWidth: true,
-          widthFraction: 20,
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    return BlocConsumer<HomeViewModel, HomeStates>(
+      listener: (context, state) {
+        if (state is AddUserToChatSuccessState) {
+          setState(() {
+            isPressed = false;
+          });
+        }
+      },
+      builder: (context, state) {
+        return Row(
           children: [
-            Text(
-              widget.model.name!,
-              style: Styles.textStyle15
-                  .copyWith(fontSize: 18, color: Colors.black87),
+            ImageField(
+              image: widget.model.image,
+              borderColor: Colors.transparent,
+            ),
+            ResponsiveSizedBox(
+              sizedBoxContext: context,
+              hasWidth: true,
+              widthFraction: 20,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  widget.model.name!,
+                  style: Styles.textStyle15
+                      .copyWith(fontSize: 18, color: Colors.black87),
+                ),
+              ],
+            ),
+            Spacer(),
+            AbsorbPointer(
+              absorbing: isPressed,
+              child: IconButton(
+                  onPressed: widget.onTap ??
+                      () async {
+                        setState(() {
+                          isPressed = true;
+                        });
+
+                        var cubit = BlocProvider.of<HomeViewModel>(context);
+                        await cubit.addNewChat(
+                            cubit.currentUser!, widget.model);
+                      },
+                  icon: isPressed ? Icon(Icons.done) : Icon(Icons.add)),
             ),
           ],
-        ),
-        Spacer(),
-        BlocBuilder<HomeViewModel, HomeStates>(
-          builder: (context, state) => AbsorbPointer(
-            absorbing: state is AddUserToChatLoadingState,
-            child: IconButton(
-                onPressed: widget.onTap ??
-                    () async {
-                      var cubit = BlocProvider.of<HomeViewModel>(context);
-
-                      await cubit.addNewChat(cubit.currentUser!, widget.model);
-                    },
-                icon: state is AddUserToChatLoadingState
-                    ? Icon(Icons.done)
-                    : Icon(Icons.add)),
-          ),
-        )
-      ],
+        );
+      },
     );
   }
 }

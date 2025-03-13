@@ -20,6 +20,14 @@ class UnAddedUsers extends StatelessWidget {
         padding: EdgeInsets.all(10.0),
         child: BlocConsumer<HomeViewModel, HomeStates>(
           listener: (context, state) {
+            if (state is NewUserIsAddedState) {
+              BlocProvider.of<HomeViewModel>(context)
+                  .nonAddedUsers
+                  .remove(state.newUser);
+              BlocProvider.of<HomeViewModel>(context)
+                  .addedUsers
+                  .add(state.newUser);
+            }
             if (state is AddUserToChatLoadingState) {
               CustomSnackbar.show('Loading', context);
             }

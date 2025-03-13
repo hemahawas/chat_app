@@ -89,7 +89,7 @@ class AppRoutes {
       case Routes.addUsersRoute:
         return MaterialPageRoute(
           builder: (_) => BlocProvider.value(
-            value: routeSettings.arguments as HomeViewModel,
+            value: home_di.sl<HomeViewModel>(),
             child: UnAddedUsers(),
           ),
         );

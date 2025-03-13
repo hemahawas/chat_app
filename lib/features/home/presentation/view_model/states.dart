@@ -69,4 +69,8 @@ class ChatIsSeenSuccessState extends HomeStates {}
 class ChatIsSeenErrorState extends HomeStates {}
 
 // New user is added
-class NewUserIsAddedState extends HomeStates {}
+class NewUserIsAddedState extends HomeStates {
+  final UserModel newUser;
+
+  NewUserIsAddedState({required this.newUser});
+}

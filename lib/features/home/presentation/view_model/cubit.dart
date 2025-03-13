@@ -137,7 +137,6 @@ class HomeViewModel extends Cubit<HomeStates> {
   void addNewUser(newUser) {
     nonAddedUsers.remove(newUser);
     addedUsers.add(newUser);
-    emit(NewUserIsAddedState());
   }
 
   // Get current user
@@ -211,7 +210,7 @@ class HomeViewModel extends Cubit<HomeStates> {
             if (oldLength > 0 && oldLength != newLength) {
               UserModel newUser = chat.participants!
                   .firstWhere((user) => user.uId != currentUserUId);
-              addNewUser(newUser);
+              emit(NewUserIsAddedState(newUser: newUser));
             }
             break;
           case DocumentChangeType.modified:
