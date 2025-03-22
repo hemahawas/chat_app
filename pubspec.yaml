@@ -1,8 +1,7 @@
 name: chat_app
 description: "A new chat app Flutter project."
 
-publish_to: 'none' 
-
+publish_to: 'none'
 
 version: 1.0.0+1
 
@@ -35,6 +34,7 @@ dependencies:
   image_picker: ^1.1.2
   internet_connection_checker: ^3.0.1
   intl: ^0.20.2
+  provider: ^6.1.2
 
 dev_dependencies:
   build_runner: ^2.4.13
@@ -50,16 +50,13 @@ flutter_launcher_icons:
   image_path: "assets/images/chat_icon.png"
   min_sdk_android: 21
 
-
 flutter:
 
-
   uses-material-design: true
- 
+
   assets:
     - assets/images/splash.png
     - assets/images/user_image.webP
     - assets/images/messaging_background.png
     - assets/images/wifi_off.gif
     - assets/keys/chat-app-e5cb1-8d448f79f16a.json
-  

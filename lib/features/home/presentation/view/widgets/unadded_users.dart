@@ -1,3 +1,4 @@
+import 'package:chat_app/core/shared_widgets/custom_snackbar.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/user_item.dart';
 import 'package:chat_app/features/home/presentation/view_model/cubit.dart';
 import 'package:chat_app/features/home/presentation/view_model/states.dart';
@@ -10,9 +11,6 @@ class UnAddedUsers extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final blocContext =
-        ModalRoute.settingsOf(context)!.arguments as BuildContext;
-    final cubit = BlocProvider.of<HomeViewModel>(blocContext);
     return Scaffold(
       appBar: AppBar(
         scrolledUnderElevation: 0,
@@ -20,43 +18,33 @@ class UnAddedUsers extends StatelessWidget {
       ),
       body: Padding(
         padding: EdgeInsets.all(10.0),
-        child: BlocProvider.value(
-          value: cubit,
-          child: BlocConsumer<HomeViewModel, HomeStates>(
-            listener: (context, state) {
-              if (state is NewUserIsAddedState) {
-                BlocProvider.of<HomeViewModel>(context)
-                    .addedUsers
-                    .add(state.newUser);
-                BlocProvider.of<HomeViewModel>(context)
-                    .nonAddedUsers
-                    .remove(state.newUser);
-              }
-            },
-            builder: (context, state) {
-              return ConditionalBuilder(
-                fallback: (context) => Center(
-                  child: Center(
-                    child: Text('Wait For Coming Users'),
+        child: BlocConsumer<HomeViewModel, HomeStates>(
+          listener: (context, state) {
+            if (state is AddUserToChatLoadingState) {
+              CustomSnackbar.show('Loading', context);
+            }
+            if (state is AddUserToChatSuccessState) {
+              CustomSnackbar.show('User Added Successfully', context);
+            }
+          },
+          builder: (context, state) {
+            var unAddedUsers =
+                BlocProvider.of<HomeViewModel>(context).nonAddedUsers;
+            return ConditionalBuilder(
+              fallback: (context) => Center(
+                child: Text('Wait For Coming Users'),
+              ),
+              condition: unAddedUsers.isNotEmpty,
+              builder: (context) => RepaintBoundary(
+                child: ListView.builder(
+                  itemBuilder: (context, index) => UserItem(
+                    model: unAddedUsers[index],
                   ),
+                  itemCount: unAddedUsers.length,
                 ),
-                condition: BlocProvider.of<HomeViewModel>(context)
-                    .nonAddedUsers
-                    .isNotEmpty,
-                builder: (context) => RepaintBoundary(
-                  child: ListView.builder(
-                    itemBuilder: (context, index) => UserItem(
-                      model: BlocProvider.of<HomeViewModel>(context)
-                          .nonAddedUsers[index],
-                    ),
-                    itemCount: BlocProvider.of<HomeViewModel>(context)
-                        .nonAddedUsers
-                        .length,
-                  ),
-                ),
-              );
-            },
-          ),
+              ),
+            );
+          },
         ),
       ),
     );

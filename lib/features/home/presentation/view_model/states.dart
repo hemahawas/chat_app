@@ -1,4 +1,5 @@
 import 'package:chat_app/core/utils/user_model.dart';
+import 'package:chat_app/features/home/data/model/chat_model.dart';
 
 abstract class HomeStates {}
 
@@ -73,4 +74,10 @@ class NewUserIsAddedState extends HomeStates {
   final UserModel newUser;
 
   NewUserIsAddedState({required this.newUser});
+}
+
+class NewMessage extends HomeStates {
+  final ChatModel chat;
+
+  NewMessage({required this.chat});
 }

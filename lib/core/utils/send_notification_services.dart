@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:chat_app/core/utils/token_service.dart';
 import 'package:flutter/material.dart';
@@ -27,8 +28,14 @@ Future<void> sendNotification(
   final String accessToken = await getAccessToken();
   final String fcmUrl =
       'https://fcm.googleapis.com/v1/projects/chat-app-e5cb1/messages:send';
+  String token = '';
+  try {
+    token = await TokenService.getToken();
+  } on TokenException catch (e) {
+    log(e.toString());
+    return;
+  }
 
-  String token = await TokenService.getToken() ?? '';
   final response = await http.post(
     Uri.parse(fcmUrl),
     headers: <String, String>{
