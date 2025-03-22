@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:chat_app/core/shared_widgets/shared_functions.dart';
 import 'package:chat_app/core/utils/network_info.dart';
 import 'package:chat_app/core/utils/user_model.dart';
@@ -7,8 +9,6 @@ import 'package:chat_app/features/home/data/model/chat_model.dart';
 import 'package:chat_app/features/home/data/model/status_model.dart';
 import 'package:chat_app/features/home/data/repo/home_local_hive_repository.dart';
 import 'package:chat_app/features/home/data/repo/home_remote_firebase_repository.dart';
-import 'package:chat_app/features/home/presentation/view_model/home_injection_container.dart'
-    as home_di;
 import 'package:chat_app/features/home/presentation/view_model/states.dart';
 import 'package:chat_app/features/messaging/data/model/message_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -16,18 +16,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeViewModel extends Cubit<HomeStates> {
-  HomeViewModel() : super(InitialHomeStates());
+  late String _currentUserUId;
+  HomeViewModel(
+      {required this.firebaseHomeRepository,
+      required this.localHomeRepository,
+      required this.networkInfo})
+      : super(InitialHomeStates()) {
+    _currentUserUId = firebaseHomeRepository.getCurrentUserUId();
+  }
 
-  final HomeRemoteFirebaseRepository firebaseHomeRepository =
-      home_di.sl<HomeRemoteFirebaseRepository>();
-  final HomeLocalHiveRepository localHomeRepository =
-      home_di.sl<HomeLocalHiveRepository>();
-  final NetworkInfo networkInfo = home_di.sl<NetworkInfo>();
+  final HomeRemoteFirebaseRepository firebaseHomeRepository;
+  final HomeLocalHiveRepository localHomeRepository;
+  final NetworkInfo networkInfo;
 
   // To change the bottom nav bar
   int navBarCurrentIndex = 0;
 
-  String get currentUserUId => firebaseHomeRepository.getCurrentUserUId();
+  String get currentUserUId => _currentUserUId;
 
   void changeNavBarIndex(index) {
     navBarCurrentIndex = index;
@@ -38,7 +43,6 @@ class HomeViewModel extends Cubit<HomeStates> {
   // The nonAddedUsers used for non Added users shown in bottomSheet
   List<UserModel> nonAddedUsers = [];
   List<UserModel> addedUsers = [];
-
   // Get users to add new chats
   Future<void> getUsers() async {
     addedUsers = [];
@@ -134,9 +138,11 @@ class HomeViewModel extends Cubit<HomeStates> {
     });
   }
 
-  void addNewUser(newUser) {
-    nonAddedUsers.remove(newUser);
+  void addNewUser(UserModel newUser) {
+    //nonAddedUsers.remove(newUser)
+    nonAddedUsers.removeWhere((e) => e.uId == newUser.uId);
     addedUsers.add(newUser);
+    emit(NewUserIsAddedState(newUser: newUser));
   }
 
   // Get current user
@@ -190,7 +196,7 @@ class HomeViewModel extends Cubit<HomeStates> {
     if (currentUser == null) {
       return;
     }
-    var oldLength = chatMapping.length;
+    final int oldLength = chatMapping.length;
 
     if (snapShot.data != null) {
       //For loop O(n)
@@ -208,13 +214,15 @@ class HomeViewModel extends Cubit<HomeStates> {
             chatMapping[chat.chatId!] = chat;
             var newLength = chatMapping.length;
             if (oldLength > 0 && oldLength != newLength) {
+              debugPrint("######Added into If");
               UserModel newUser = chat.participants!
                   .firstWhere((user) => user.uId != currentUserUId);
-              emit(NewUserIsAddedState(newUser: newUser));
+              addNewUser(newUser);
             }
             break;
           case DocumentChangeType.modified:
             chatMapping[chat.chatId!] = chat;
+            //sendNotification();
             break;
           case DocumentChangeType.removed:
             // Handle the case where a document is removed

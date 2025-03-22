@@ -20,14 +20,6 @@ class UnAddedUsers extends StatelessWidget {
         padding: EdgeInsets.all(10.0),
         child: BlocConsumer<HomeViewModel, HomeStates>(
           listener: (context, state) {
-            if (state is NewUserIsAddedState) {
-              BlocProvider.of<HomeViewModel>(context)
-                  .nonAddedUsers
-                  .remove(state.newUser);
-              BlocProvider.of<HomeViewModel>(context)
-                  .addedUsers
-                  .add(state.newUser);
-            }
             if (state is AddUserToChatLoadingState) {
               CustomSnackbar.show('Loading', context);
             }
@@ -36,24 +28,19 @@ class UnAddedUsers extends StatelessWidget {
             }
           },
           builder: (context, state) {
+            var unAddedUsers =
+                BlocProvider.of<HomeViewModel>(context).nonAddedUsers;
             return ConditionalBuilder(
               fallback: (context) => Center(
-                child: Center(
-                  child: Text('Wait For Coming Users'),
-                ),
+                child: Text('Wait For Coming Users'),
               ),
-              condition: BlocProvider.of<HomeViewModel>(context)
-                  .nonAddedUsers
-                  .isNotEmpty,
+              condition: unAddedUsers.isNotEmpty,
               builder: (context) => RepaintBoundary(
                 child: ListView.builder(
                   itemBuilder: (context, index) => UserItem(
-                    model: BlocProvider.of<HomeViewModel>(context)
-                        .nonAddedUsers[index],
+                    model: unAddedUsers[index],
                   ),
-                  itemCount: BlocProvider.of<HomeViewModel>(context)
-                      .nonAddedUsers
-                      .length,
+                  itemCount: unAddedUsers.length,
                 ),
               ),
             );

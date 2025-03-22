@@ -12,7 +12,10 @@ final sl = GetIt.asNewInstance();
 
 Future<void> initHomeSl() async {
   // Bloc
-  sl.registerCachedFactory(() => HomeViewModel());
+  sl.registerCachedFactory(() => HomeViewModel(
+      firebaseHomeRepository: sl(),
+      localHomeRepository: sl(),
+      networkInfo: sl()));
   // Repositories
   sl.registerLazySingleton<HomeRemoteFirebaseRepository>(() =>
       HomeRemoteFirebaseRepository(

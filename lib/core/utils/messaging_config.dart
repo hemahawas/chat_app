@@ -66,10 +66,10 @@ class MessagingConfig {
 
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
       log('User granted permission');
-      await FirebaseMessaging.instance.getToken().then((token) {
+      await FirebaseMessaging.instance.getToken().then((token) async {
         if (token != null) {
           log('Token: $token');
-          TokenService.setToken(token);
+          await TokenService.setToken(token);
         }
       });
     } else if (settings.authorizationStatus ==
