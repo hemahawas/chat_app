@@ -37,7 +37,6 @@ class MessagingFirebaseRemoteRepository extends MessagingRemoteRepository {
     // add message to chat
     chat.messages ??= [];
     chat.lastMessage = message;
-    chat.messages!.insert(0, message);
 
     _updateChat(chat);
   }
