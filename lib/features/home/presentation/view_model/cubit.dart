@@ -246,6 +246,10 @@ class HomeViewModel extends Cubit<HomeStates> {
   }
 
   Future<void> createGroup(GroupModel group) async {
+    if (!await networkInfo.isConnected) {
+      emit(ConnectionErrorState());
+      return;
+    }
     // Add current user to group
     group.participants!.add(currentUser!);
     group.participantsUId!.add(currentUser!.uId!);
@@ -260,6 +264,9 @@ class HomeViewModel extends Cubit<HomeStates> {
   }
 
   Future<void> updateUserImage(String image) async {
+    if (!await networkInfo.isConnected) {
+      emit(ConnectionErrorState());
+    }
     emit(UpdateUserImageLoadingState());
     return await firebaseHomeRepository
         .uploadUserImage(currentUser!, image)

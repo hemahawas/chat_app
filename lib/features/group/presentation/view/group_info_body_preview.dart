@@ -75,7 +75,15 @@ class _GroupInfoBodyPreviewState extends State<GroupInfoBodyPreview> {
         ),
         floatingActionButton: BlocProvider.value(
           value: BlocProvider.of<HomeViewModel>(blocContext),
-          child: BlocBuilder<HomeViewModel, HomeStates>(
+          child: BlocConsumer<HomeViewModel, HomeStates>(
+            listener: (context, state) {
+              if (state is ConnectionErrorState) {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text('No Internet Connection'),
+                  backgroundColor: Colors.red,
+                ));
+              }
+            },
             builder: (context, state) {
               return FloatingActionButton(
                 backgroundColor: ColorApp.primaryColor,
