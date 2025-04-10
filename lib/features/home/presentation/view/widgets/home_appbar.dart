@@ -16,7 +16,7 @@ class HomeAppbar extends StatelessWidget {
       title: Padding(
         padding: EdgeInsets.only(top: 20.0, left: 20.0),
         child: Text(
-          'WhatsUp',
+          'Kalemni',
           style: Styles.textStyle24,
         ),
       ),

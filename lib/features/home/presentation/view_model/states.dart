@@ -55,6 +55,9 @@ class CreateGroupLoadingState extends HomeStates {}
 
 class CreateGroupErrorState extends HomeStates {}
 
+// Connection Error
+class ConnectionErrorState extends HomeStates {}
+
 // Upload profile image
 class UpdateUserImageLoadingState extends HomeStates {}
 
