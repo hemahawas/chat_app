@@ -130,7 +130,7 @@ class MessagingConfig {
     });
   }
 
-  @pragma('vm:entry-point')
+  @pragma('vm:entry-point') // Required for background execution
   static Future<void> messageHandler(RemoteMessage message) async {
     log('background message ${message.notification!.body}');
   }

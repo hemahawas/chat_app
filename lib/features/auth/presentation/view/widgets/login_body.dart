@@ -11,15 +11,33 @@ import 'package:chat_app/features/auth/presentation/view_model/states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class LoginBody extends StatelessWidget {
+class LoginBody extends StatefulWidget {
   LoginBody({super.key});
 
-  final TextEditingController emailController = TextEditingController();
+  @override
+  State<LoginBody> createState() => _LoginBodyState();
+}
 
-  final TextEditingController passwordController = TextEditingController();
+class _LoginBodyState extends State<LoginBody> {
+  late final TextEditingController emailController;
+
+  late final TextEditingController passwordController;
+
+  @override
+  void initState() {
+    emailController = TextEditingController();
+    passwordController = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
 
   //var formKey = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthViewModel, AuthStates>(

@@ -117,4 +117,9 @@ class MessagingFirebaseRemoteRepository extends MessagingRemoteRepository {
       'newMessages.$currentUserId': 0,
     });
   }
+
+  @override
+  String getCurrentUserUid() {
+    return firebaseAuth.currentUser!.uid;
+  }
 }

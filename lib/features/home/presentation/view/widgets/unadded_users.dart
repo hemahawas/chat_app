@@ -1,4 +1,4 @@
-import 'package:chat_app/core/shared_widgets/custom_snackbar.dart';
+import 'package:chat_app/core/shared_widgets/custom_snack_bar.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/user_item.dart';
 import 'package:chat_app/features/home/presentation/view_model/cubit.dart';
 import 'package:chat_app/features/home/presentation/view_model/states.dart';
@@ -21,10 +21,14 @@ class UnAddedUsers extends StatelessWidget {
         child: BlocConsumer<HomeViewModel, HomeStates>(
           listener: (context, state) {
             if (state is AddUserToChatLoadingState) {
-              CustomSnackbar.show('Loading', context);
+              CustomSnackBar.show(
+                  message: 'Loading', context: context, color: Colors.blueGrey);
             }
             if (state is AddUserToChatSuccessState) {
-              CustomSnackbar.show('User Added Successfully', context);
+              CustomSnackBar.show(
+                  message: 'User Added Successfully',
+                  context: context,
+                  color: Colors.green);
             }
           },
           builder: (context, state) {

@@ -1,4 +1,5 @@
 import 'package:chat_app/core/constants/app_sizes.dart';
+import 'package:chat_app/core/shared_widgets/custom_snack_bar.dart';
 import 'package:chat_app/core/shared_widgets/responsive_sizedbox.dart';
 import 'package:chat_app/core/themes/styles.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/profile_appbar.dart';
@@ -44,7 +45,20 @@ class _ProfileViewState extends State<ProfileView> {
     final cubit = BlocProvider.of<HomeViewModel>(homeAppBarContext);
     return BlocProvider.value(
       value: cubit,
-      child: BlocBuilder<HomeViewModel, HomeStates>(
+      child: BlocConsumer<HomeViewModel, HomeStates>(
+        listener: (context, state) {
+          if (state is DeleteAccountLoadingState) {
+            showDialog(
+                context: context,
+                builder: (context) => CircularProgressIndicator());
+          }
+          if (state is DeleteAccountSuccessState) {
+            CustomSnackBar.show(
+                message: 'Accounted is deleted Successfully',
+                context: context,
+                color: Colors.redAccent);
+          }
+        },
         builder: (context, state) {
           nameController.text = cubit.currentUser!.name!;
           phoneController.text = cubit.currentUser!.phone!;
@@ -53,52 +67,58 @@ class _ProfileViewState extends State<ProfileView> {
             appBar: PreferredSize(
                 preferredSize: Size.fromHeight(AppSizes.toolBarHieght),
                 child: const ProfileAppbar()),
-            body: Padding(
-              padding: EdgeInsets.all(20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ResponsiveSizedBox(
-                    sizedBoxContext: context,
-                    hasHeight: true,
-                  ),
-                  Center(
-                    child: ProfileImageAndModify(
-                      userProfileImage: cubit.currentUser!.image,
+            body: SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.all(20.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ResponsiveSizedBox(
+                      sizedBoxContext: context,
+                      hasHeight: true,
                     ),
-                  ),
-                  ResponsiveSizedBox(
-                    sizedBoxContext: context,
-                    hasHeight: true,
-                  ),
-                  const SeparatingLine(),
-                  ResponsiveSizedBox(
-                    sizedBoxContext: context,
-                    hasHeight: true,
-                  ),
-                  Text(
-                    'Name',
-                    style: Styles.textStyle24.copyWith(
-                      color: Colors.grey[600],
+                    Center(
+                      child: ProfileImageAndModify(
+                        userProfileImage: cubit.currentUser!.image,
+                      ),
                     ),
-                  ),
-                  ProfileInputField(inputController: nameController),
-                  ResponsiveSizedBox(
-                    sizedBoxContext: context,
-                    hasHeight: true,
-                  ),
-                  Text(
-                    'Phone',
-                    style: Styles.textStyle24.copyWith(
-                      color: Colors.grey[600],
+                    ResponsiveSizedBox(
+                      sizedBoxContext: context,
+                      hasHeight: true,
                     ),
-                  ),
-                  ProfileInputField(inputController: phoneController),
-                  ResponsiveSizedBox(
-                    sizedBoxContext: context,
-                    hasHeight: true,
-                  ),
-                ],
+                    const SeparatingLine(),
+                    ResponsiveSizedBox(
+                      sizedBoxContext: context,
+                      hasHeight: true,
+                    ),
+                    Text(
+                      'Name',
+                      style: Styles.textStyle24.copyWith(
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                    AbsorbPointer(
+                        child:
+                            ProfileInputField(inputController: nameController)),
+                    ResponsiveSizedBox(
+                      sizedBoxContext: context,
+                      hasHeight: true,
+                    ),
+                    Text(
+                      'Phone',
+                      style: Styles.textStyle24.copyWith(
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                    AbsorbPointer(
+                        child: ProfileInputField(
+                            inputController: phoneController)),
+                    ResponsiveSizedBox(
+                      sizedBoxContext: context,
+                      hasHeight: true,
+                    ),
+                  ],
+                ),
               ),
             ),
           );

@@ -84,3 +84,11 @@ class NewMessage extends HomeStates {
 
   NewMessage({required this.chat});
 }
+
+// Delete account
+
+class DeleteAccountLoadingState extends HomeStates {}
+
+class DeleteAccountSuccessState extends HomeStates {}
+
+class DeleteAccountErrorState extends HomeStates {}

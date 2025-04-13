@@ -54,9 +54,9 @@ class _RegisterBodyState extends State<RegisterBody> {
     return BlocConsumer<AuthViewModel, AuthStates>(
       listener: (context, state) {
         switch (state.runtimeType) {
-          case RegisterSuccessState:
+          case RegisterSuccessState _:
             showToast(msg: 'Register Successfully');
-          case RegisterErrorState:
+          case RegisterErrorState _:
             showToast(msg: (state as RegisterErrorState).message);
         }
       },
@@ -93,21 +93,19 @@ class _RegisterBodyState extends State<RegisterBody> {
                 ),
                 Expanded(
                     flex: 1,
-                    child: state is RegisterLoadingState
-                        ? const CircularProgressIndicator()
-                        : RegisterButton(
-                            emailController: emailController,
-                            passwordController: passwordController,
-                            onSuccess: () async {
-                              UserModel userModel = UserModel(
-                                  email: emailController.text,
-                                  name: nameController.text,
-                                  phone: phoneController.text);
-                              await BlocProvider.of<AuthViewModel>(context)
-                                  .register(userModel, passwordController.text);
-                              Navigator.pushReplacementNamed(
-                                  context, Routes.homeRoute);
-                            })),
+                    child: RegisterButton(
+                        emailController: emailController,
+                        passwordController: passwordController,
+                        onSuccess: () async {
+                          UserModel userModel = UserModel(
+                              email: emailController.text,
+                              name: nameController.text,
+                              phone: phoneController.text);
+                          await BlocProvider.of<AuthViewModel>(context)
+                              .register(userModel, passwordController.text);
+                          Navigator.pushReplacementNamed(
+                              context, Routes.homeRoute);
+                        })),
                 Expanded(flex: 1, child: const NavigatingToLoginView()),
               ],
             ),

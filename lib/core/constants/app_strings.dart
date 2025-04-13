@@ -4,6 +4,6 @@ abstract class AppStrings {
   static const String noRouteFound = 'No Route Found';
   static const String noCallsYet = 'No Calls Yet';
   static const String addNewConnectionsForYourChat =
-      'Add new connections for your chat';
+      'Add new users for your chat via ⋮ button';
   static const String addCaption = 'Add Caption....';
 }

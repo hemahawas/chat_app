@@ -150,6 +150,32 @@ class HomeRemoteFirebaseRepository {
         .set((group).toMap());
   }
 
+  Future<void> deleteAccount() {
+    // delete the user from firebase auth
+    return firebaseAuth.currentUser!.delete().then((value) async {
+      // delete the user from firestore
+      await firebaseFirestore
+          .collection('users')
+          .doc(firebaseAuth.currentUser!.uid)
+          .delete();
+
+      // delete any chats or groups that related to user from firestore
+      await firebaseFirestore
+          .collection('chats')
+          .where('participantsUId',
+              arrayContains: firebaseAuth.currentUser!.uid)
+          .get()
+          .then((value) async {
+        for (var chat in value.docs) {
+          await firebaseFirestore
+              .collection('chats')
+              .doc(chat.data()['chatId'])
+              .delete();
+        }
+      });
+    });
+  }
+
   // O(1)
 
   Future<void> uploadUserImage(UserModel user, String image) async {

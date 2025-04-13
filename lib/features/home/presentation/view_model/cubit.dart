@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:chat_app/core/shared_widgets/shared_functions.dart';
 import 'package:chat_app/core/utils/network_info.dart';
+import 'package:chat_app/core/utils/send_notification_services.dart';
 import 'package:chat_app/core/utils/user_model.dart';
 import 'package:chat_app/features/group/data/model/group_model.dart';
 import 'package:chat_app/features/home/data/model/call_Model.dart';
@@ -192,7 +193,7 @@ class HomeViewModel extends Cubit<HomeStates> {
 
   Future<void> setChats(
       AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapShot) async {
-    // Ensure that all users exist
+    // Ensure that current user exists
     if (currentUser == null) {
       return;
     }
@@ -221,8 +222,23 @@ class HomeViewModel extends Cubit<HomeStates> {
             }
             break;
           case DocumentChangeType.modified:
+            var newLastMessage = chat.lastMessage!;
+            if (chatMapping[chat.chatId!]!.lastMessage!.messageId !=
+                    newLastMessage.messageId &&
+                chatMapping[chat.chatId!]!
+                    .lastMessage!
+                    .sendingTime!
+                    .isBefore(newLastMessage.sendingTime!)) {
+              sendNotification(
+                  body: newLastMessage.body!,
+                  title: chat.participants!
+                      .firstWhere(
+                          (p) => p.uId == newLastMessage.messageSenderId)
+                      .name!,
+                  data: {});
+            }
             chatMapping[chat.chatId!] = chat;
-            //sendNotification();
+
             break;
           case DocumentChangeType.removed:
             // Handle the case where a document is removed
@@ -243,6 +259,15 @@ class HomeViewModel extends Cubit<HomeStates> {
       },
     );
     chats = localChatList;
+  }
+
+  Future<void> deleteAccount() async {
+    emit(DeleteAccountLoadingState());
+    await firebaseHomeRepository.deleteAccount().then((_) {
+      emit(DeleteAccountSuccessState());
+    }).catchError((error) {
+      emit(DeleteAccountErrorState());
+    });
   }
 
   Future<void> createGroup(GroupModel group) async {

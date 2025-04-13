@@ -19,6 +19,9 @@ class MessagingViewModel extends Cubit<MessagingStates> {
   late ChatModel? chat;
   late UserModel? currentUser;
 
+  String get currentUserUid =>
+      messagingFirebaseRemoteRepository.getCurrentUserUid();
+
   // Here we got the arguments and now the view model is ready to work
   Future<void> getMessagingArguments(
       MessagingArguments messagingArguments) async {
