@@ -85,39 +85,42 @@ class _GroupInfoBodyPreviewState extends State<GroupInfoBodyPreview> {
               }
             },
             builder: (context, state) {
-              return FloatingActionButton(
-                backgroundColor: ColorApp.primaryColor,
-                onPressed: () async {
-                  if (state is CreateGroupLoadingState) {
-                    return;
-                  }
-                  Map<String, int> newMessages = {};
-                  for (var user in widget.addedUsers) {
-                    newMessages[user.uId!] = 0;
-                  }
-                  GroupModel group = GroupModel(
-                      participantsUId: List<String>.from(
-                          widget.addedUsers.map((i) => i.uId.toString())),
-                      participants: widget.addedUsers,
-                      chatId: groupNameGontroller.text,
-                      groupName: groupNameGontroller.text,
-                      groupImageUrl: pickedImage?.path,
-                      newMessages: newMessages);
-                  await BlocProvider.of<HomeViewModel>(context)
-                      .createGroup(group);
-                  Navigator.popUntil(context, (route) => route.isFirst);
-                },
-                child: state is CreateGroupLoadingState
-                    ? RepaintBoundary(
-                        child: CircularProgressIndicator(
-                          valueColor:
-                              AlwaysStoppedAnimation<Color>(Colors.black),
+              return AbsorbPointer(
+                absorbing: state is CreateGroupLoadingState,
+                child: FloatingActionButton(
+                  backgroundColor: ColorApp.primaryColor,
+                  onPressed: () async {
+                    if (state is CreateGroupLoadingState) {
+                      return;
+                    }
+                    Map<String, int> newMessages = {};
+                    for (var user in widget.addedUsers) {
+                      newMessages[user.uId!] = 0;
+                    }
+                    GroupModel group = GroupModel(
+                        participantsUId: List<String>.from(
+                            widget.addedUsers.map((i) => i.uId.toString())),
+                        participants: widget.addedUsers,
+                        chatId: groupNameGontroller.text,
+                        groupName: groupNameGontroller.text,
+                        groupImageUrl: pickedImage?.path,
+                        newMessages: newMessages);
+                    await BlocProvider.of<HomeViewModel>(context)
+                        .createGroup(group);
+                    Navigator.popUntil(context, (route) => route.isFirst);
+                  },
+                  child: state is CreateGroupLoadingState
+                      ? RepaintBoundary(
+                          child: CircularProgressIndicator(
+                            valueColor:
+                                AlwaysStoppedAnimation<Color>(Colors.black),
+                          ),
+                        )
+                      : const Icon(
+                          Icons.done,
+                          size: 30,
                         ),
-                      )
-                    : const Icon(
-                        Icons.done,
-                        size: 30,
-                      ),
+                ),
               );
             },
           ),

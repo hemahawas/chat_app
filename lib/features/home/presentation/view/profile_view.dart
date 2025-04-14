@@ -60,8 +60,8 @@ class _ProfileViewState extends State<ProfileView> {
           }
         },
         builder: (context, state) {
-          nameController.text = cubit.currentUser!.name!;
-          phoneController.text = cubit.currentUser!.phone!;
+          nameController.text = cubit.currentUser.name!;
+          phoneController.text = cubit.currentUser.phone!;
 
           return Scaffold(
             appBar: PreferredSize(
@@ -79,7 +79,7 @@ class _ProfileViewState extends State<ProfileView> {
                     ),
                     Center(
                       child: ProfileImageAndModify(
-                        userProfileImage: cubit.currentUser!.image,
+                        userProfileImage: cubit.currentUser.image,
                       ),
                     ),
                     ResponsiveSizedBox(

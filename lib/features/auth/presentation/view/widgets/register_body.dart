@@ -93,19 +93,26 @@ class _RegisterBodyState extends State<RegisterBody> {
                 ),
                 Expanded(
                     flex: 1,
-                    child: RegisterButton(
-                        emailController: emailController,
-                        passwordController: passwordController,
-                        onSuccess: () async {
-                          UserModel userModel = UserModel(
-                              email: emailController.text,
-                              name: nameController.text,
-                              phone: phoneController.text);
-                          await BlocProvider.of<AuthViewModel>(context)
-                              .register(userModel, passwordController.text);
-                          Navigator.pushReplacementNamed(
-                              context, Routes.homeRoute);
-                        })),
+                    child: state is RegisterLoadingState
+                        ? SizedBox(
+                            height: 30,
+                            child: const Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          )
+                        : RegisterButton(
+                            emailController: emailController,
+                            passwordController: passwordController,
+                            onSuccess: () async {
+                              UserModel userModel = UserModel(
+                                  email: emailController.text,
+                                  name: nameController.text,
+                                  phone: phoneController.text);
+                              await BlocProvider.of<AuthViewModel>(context)
+                                  .register(userModel, passwordController.text);
+                              Navigator.pushReplacementNamed(
+                                  context, Routes.homeRoute);
+                            })),
                 Expanded(flex: 1, child: const NavigatingToLoginView()),
               ],
             ),

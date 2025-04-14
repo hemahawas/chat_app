@@ -1,11 +1,12 @@
 import 'package:chat_app/core/utils/hive_helper.dart';
 import 'package:chat_app/features/home/data/model/status_model.dart';
+import 'package:equatable/equatable.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 part 'user_model.g.dart';
 
 @HiveType(typeId: HiveHelper.userType)
-class UserModel {
+class UserModel extends Equatable {
   @HiveField(HiveHelper.userNameField)
   String? name;
   String? email;
@@ -57,4 +58,8 @@ class UserModel {
       'addedChats': addedChats,
     };
   }
+
+  @override
+  List<Object?> get props =>
+      [name, email, phone, uId, image, isEmailVerified, addedChats, status];
 }

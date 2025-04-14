@@ -52,9 +52,8 @@ class HomeViewModel extends Cubit<HomeStates> {
 
     await firebaseHomeRepository.getUsers().then((value) async {
       for (UserModel user in value) {
-        var currentUser = await firebaseHomeRepository.getUserInfo();
         if (user.addedChats != null &&
-            user.addedChats!.contains(currentUser.uId)) {
+            user.addedChats!.contains(currentUserUId)) {
           addedUsers.add(user);
           //print('This Should be printed twice#######################');
         } else {
@@ -128,7 +127,9 @@ class HomeViewModel extends Cubit<HomeStates> {
         }
 
         nonAddedUsers.remove(anotherUser);
-        addedUsers.add(anotherUser);
+        if (!addedUsers.contains(anotherUser)) {
+          addedUsers.add(anotherUser);
+        }
 
         emit(AddUserToChatSuccessState());
         await notifyUserChange(currentUser);
@@ -141,19 +142,22 @@ class HomeViewModel extends Cubit<HomeStates> {
 
   void addNewUser(UserModel newUser) {
     //nonAddedUsers.remove(newUser)
-    nonAddedUsers.removeWhere((e) => e.uId == newUser.uId);
-    addedUsers.add(newUser);
+    nonAddedUsers.removeWhere((user) => user.uId == newUser.uId);
+
+    if (!addedUsers.contains(newUser)) {
+      addedUsers.add(newUser);
+    }
+
     emit(NewUserIsAddedState(newUser: newUser));
   }
 
   // Get current user
-  UserModel? currentUser = UserModel(email: 'email');
+  UserModel currentUser = UserModel(email: '', name: '', phone: '');
   Future<void> getCurrentUser() async {
     if (await networkInfo.isConnected) {
       emit(GetUserInfoLoadingState());
       await firebaseHomeRepository.getUserInfo().then((value) {
         currentUser = value;
-        localHomeRepository.putUserInfo(currentUser!);
         emit(GetUserInfoSuccessState());
       }).catchError((error) {
         _handleError(error, GetUserInfoErrorState());
@@ -214,7 +218,9 @@ class HomeViewModel extends Cubit<HomeStates> {
           case DocumentChangeType.added:
             chatMapping[chat.chatId!] = chat;
             var newLength = chatMapping.length;
-            if (oldLength > 0 && oldLength != newLength) {
+            if (oldLength > 0 &&
+                oldLength != newLength &&
+                chat is! GroupModel) {
               debugPrint("######Added into If");
               UserModel newUser = chat.participants!
                   .firstWhere((user) => user.uId != currentUserUId);
@@ -276,9 +282,9 @@ class HomeViewModel extends Cubit<HomeStates> {
       return;
     }
     // Add current user to group
-    group.participants!.add(currentUser!);
-    group.participantsUId!.add(currentUser!.uId!);
-    group.newMessages[currentUser!.uId!] = 0;
+    group.participants!.add(currentUser);
+    group.participantsUId!.add(currentUser.uId!);
+    group.newMessages[currentUser.uId!] = 0;
     emit(CreateGroupLoadingState());
     await firebaseHomeRepository.createGroup(group).then((value) async {
       emit(CreateGroupSuccessState());

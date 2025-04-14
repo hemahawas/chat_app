@@ -5,8 +5,9 @@ import 'package:chat_app/features/group/presentation/view/group_info_body_previe
 import 'package:chat_app/features/home/presentation/view/widgets/image_field.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/user_item.dart';
 import 'package:chat_app/features/home/presentation/view_model/cubit.dart';
+import 'package:chat_app/features/home/presentation/view_model/home_injection_container.dart'
+    as home_di;
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class GroupUsersBody extends StatefulWidget {
   const GroupUsersBody({super.key});
@@ -17,7 +18,7 @@ class GroupUsersBody extends StatefulWidget {
 
 class _GroupUsersBodyState extends State<GroupUsersBody> {
   // Get added Users
-  late List<UserModel> _groupUsers;
+  late List<UserModel> _users;
 
   // Then add the users that will be grouped to list of added group users
   final List<UserModel> _addedGroupUsers = [];
@@ -25,8 +26,8 @@ class _GroupUsersBodyState extends State<GroupUsersBody> {
   @override
   void initState() {
     debugPrint("GroupUsersBody: initState");
-    _groupUsers = _getUsers();
-    debugPrint("${_groupUsers.length}");
+    _users = _getUsers();
+    debugPrint("${_users.length}");
     super.initState();
   }
 
@@ -36,7 +37,7 @@ class _GroupUsersBodyState extends State<GroupUsersBody> {
   }
 
   List<UserModel> _getUsers() {
-    return BlocProvider.of<HomeViewModel>(context).addedUsers;
+    return home_di.sl<HomeViewModel>().addedUsers;
   }
 
   @override
@@ -67,7 +68,7 @@ class _GroupUsersBodyState extends State<GroupUsersBody> {
                                 size: 20,
                                 onPressed: () {
                                   setState(() {
-                                    _groupUsers.add(_addedGroupUsers[index]);
+                                    _users.add(_addedGroupUsers[index]);
                                     _addedGroupUsers
                                         .remove(_addedGroupUsers[index]);
                                   });
@@ -93,13 +94,13 @@ class _GroupUsersBodyState extends State<GroupUsersBody> {
               child: ListView.builder(
                 physics: AlwaysScrollableScrollPhysics(),
                 shrinkWrap: true,
-                itemCount: _groupUsers.length,
+                itemCount: _users.length,
                 itemBuilder: (context, index) => UserItem(
-                  model: _groupUsers[index],
+                  model: _users[index],
                   onTap: () {
                     setState(() {
-                      _addedGroupUsers.add(_groupUsers[index]);
-                      _groupUsers.remove(_groupUsers[index]);
+                      _addedGroupUsers.add(_users[index]);
+                      _users.remove(_users[index]);
                     });
                   },
                 ),

@@ -81,14 +81,18 @@ class _LoginBodyState extends State<LoginBody> {
                 ),
                 Expanded(
                   flex: 2,
-                  child: LoginButton(
-                    emailController: emailController,
-                    passwordController: passwordController,
-                    onSuccess: () async {
-                      await BlocProvider.of<AuthViewModel>(context)
-                          .logIn(emailController.text, passwordController.text);
-                    },
-                  ),
+                  child: state is LoginLoadingState
+                      ? SizedBox(
+                          height: 30,
+                          child: Center(child: CircularProgressIndicator()))
+                      : LoginButton(
+                          emailController: emailController,
+                          passwordController: passwordController,
+                          onSuccess: () async {
+                            await BlocProvider.of<AuthViewModel>(context).logIn(
+                                emailController.text, passwordController.text);
+                          },
+                        ),
                 ),
                 Expanded(flex: 3, child: const NvigatingToRegisterView()),
               ],
