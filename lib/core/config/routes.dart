@@ -4,6 +4,9 @@ import 'package:chat_app/features/auth/presentation/view/register_view.dart';
 import 'package:chat_app/features/auth/presentation/view_model/auth_injection_container.dart'
     as auth_di;
 import 'package:chat_app/features/auth/presentation/view_model/cubit.dart';
+import 'package:chat_app/features/group/presentation/view/group_content_preview.dart';
+import 'package:chat_app/features/group/presentation/view_model/cubit.dart';
+import 'package:chat_app/features/group/presentation/view_model/group_arguments.dart';
 import 'package:chat_app/features/home/presentation/view/home_view.dart';
 import 'package:chat_app/features/home/presentation/view/profile_view.dart';
 import 'package:chat_app/features/home/presentation/view/settings_view.dart';
@@ -30,6 +33,7 @@ class Routes {
   static const String messagingRoute = '/messagingRoute';
   static const String chatSearch = '/chatSearch';
   static const String addUsersRoute = '/addUsersRoute';
+  static const String newGroupRoute = '/newGroupRoute';
 }
 
 class AppRoutes {
@@ -93,6 +97,13 @@ class AppRoutes {
             child: UnAddedUsers(),
           ),
         );
+      case Routes.newGroupRoute:
+        return MaterialPageRoute(
+            builder: (context) => BlocProvider(
+                  create: (context) => home_di.sl<GroupViewModel>()
+                    ..getArguments(routeSettings.arguments as GroupArguments),
+                  child: GroupContentPreview(),
+                ));
       default:
         return undefinedRoute();
     }

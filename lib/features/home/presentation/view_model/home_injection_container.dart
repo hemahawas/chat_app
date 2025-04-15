@@ -1,5 +1,6 @@
 import 'package:chat_app/core/utils/cloudinary_service.dart';
 import 'package:chat_app/core/utils/network_info.dart';
+import 'package:chat_app/features/group/presentation/view_model/cubit.dart';
 import 'package:chat_app/features/home/data/repo/home_local_hive_repository.dart';
 import 'package:chat_app/features/home/data/repo/home_remote_firebase_repository.dart';
 import 'package:chat_app/features/home/presentation/view_model/cubit.dart';
@@ -16,6 +17,8 @@ Future<void> initHomeSl() async {
       firebaseHomeRepository: sl(),
       localHomeRepository: sl(),
       networkInfo: sl()));
+
+  sl.registerFactory(() => GroupViewModel());
   // Repositories
   sl.registerLazySingleton<HomeRemoteFirebaseRepository>(() =>
       HomeRemoteFirebaseRepository(
