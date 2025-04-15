@@ -27,103 +27,22 @@ class _GroupInfoBodyPreviewState extends State<GroupInfoBodyPreview> {
 
   @override
   Widget build(BuildContext context) {
-    var blocContext =
-        ModalRoute.of(context)!.settings.arguments as BuildContext;
     return Scaffold(
-        appBar: AppBar(
-            title: Text(
-          'Group Info',
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 20,
-          ),
-        )),
-        body: Padding(
-          padding: const EdgeInsets.all(10.0).copyWith(top: 80),
-          child: Row(
-            children: [
-              Stack(
-                alignment: Alignment.bottomRight,
-                children: [
-                  GroupImage(
-                    pickedImage: pickedImage,
-                  ),
-                  IconItemButton(
-                      icon: Icon(Icons.add),
-                      size: 20,
-                      onPressed: () async {
-                        var imagePicker = await ImagePicker()
-                            .pickImage(source: ImageSource.gallery);
-                        if (imagePicker != null) {
-                          setState(() {
-                            //don't define the pickedImage into build context,
-                            // because it will be initialized to null each set state
-                            pickedImage = File(imagePicker.path);
-                          });
-                        }
-                      })
-                ],
-              ),
-              SizedBox(
-                width: 10,
-              ),
-              Flexible(
-                  child:
-                      GroupNameField(groupNameGontroller: groupNameGontroller))
-            ],
-          ),
-        ),
-        floatingActionButton: BlocProvider.value(
-          value: BlocProvider.of<HomeViewModel>(blocContext),
-          child: BlocConsumer<HomeViewModel, HomeStates>(
-            listener: (context, state) {
-              if (state is ConnectionErrorState) {
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text('No Internet Connection'),
-                  backgroundColor: Colors.red,
-                ));
-              }
-            },
-            builder: (context, state) {
-              return AbsorbPointer(
-                absorbing: state is CreateGroupLoadingState,
-                child: FloatingActionButton(
-                  backgroundColor: ColorApp.primaryColor,
-                  onPressed: () async {
-                    if (state is CreateGroupLoadingState) {
-                      return;
-                    }
-                    Map<String, int> newMessages = {};
-                    for (var user in widget.addedUsers) {
-                      newMessages[user.uId!] = 0;
-                    }
-                    GroupModel group = GroupModel(
-                        participantsUId: List<String>.from(
-                            widget.addedUsers.map((i) => i.uId.toString())),
-                        participants: widget.addedUsers,
-                        chatId: groupNameGontroller.text,
-                        groupName: groupNameGontroller.text,
-                        groupImageUrl: pickedImage?.path,
-                        newMessages: newMessages);
-                    await BlocProvider.of<HomeViewModel>(context)
-                        .createGroup(group);
-                    Navigator.popUntil(context, (route) => route.isFirst);
-                  },
-                  child: state is CreateGroupLoadingState
-                      ? RepaintBoundary(
-                          child: CircularProgressIndicator(
-                            valueColor:
-                                AlwaysStoppedAnimation<Color>(Colors.black),
-                          ),
-                        )
-                      : const Icon(
-                          Icons.done,
-                          size: 30,
-                        ),
+        body: Container(),
+        floatingActionButton: BlocConsumer<HomeViewModel, HomeStates>(
+          listener: (context, state) {},
+          builder: (context, state) {
+            return AbsorbPointer(
+              child: FloatingActionButton(
+                backgroundColor: ColorApp.primaryColor,
+                onPressed: () async {},
+                child: const Icon(
+                  Icons.done,
+                  size: 30,
                 ),
-              );
-            },
-          ),
+              ),
+            );
+          },
         ));
   }
 }

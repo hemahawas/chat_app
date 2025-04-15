@@ -48,13 +48,6 @@ class GetUserInfoLoadingState extends HomeStates {}
 
 class GetUserInfoErrorState extends HomeStates {}
 
-// Create group
-class CreateGroupSuccessState extends HomeStates {}
-
-class CreateGroupLoadingState extends HomeStates {}
-
-class CreateGroupErrorState extends HomeStates {}
-
 // Connection Error
 class ConnectionErrorState extends HomeStates {}
 

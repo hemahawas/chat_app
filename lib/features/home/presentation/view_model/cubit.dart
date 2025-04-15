@@ -154,23 +154,13 @@ class HomeViewModel extends Cubit<HomeStates> {
   // Get current user
   UserModel currentUser = UserModel(email: '', name: '', phone: '');
   Future<void> getCurrentUser() async {
-    if (await networkInfo.isConnected) {
-      emit(GetUserInfoLoadingState());
-      await firebaseHomeRepository.getUserInfo().then((value) {
-        currentUser = value;
-        emit(GetUserInfoSuccessState());
-      }).catchError((error) {
-        _handleError(error, GetUserInfoErrorState());
-      });
-    } else {
-      emit(GetUserInfoLoadingState());
-      await localHomeRepository.getUserInfo().then((value) {
-        currentUser = value;
-        emit(GetUserInfoSuccessState());
-      }).catchError((error) {
-        _handleError(error, GetUserInfoErrorState());
-      });
-    }
+    emit(GetUserInfoLoadingState());
+    await firebaseHomeRepository.getUserInfo().then((value) {
+      currentUser = value;
+      emit(GetUserInfoSuccessState());
+    }).catchError((error) {
+      _handleError(error, GetUserInfoErrorState());
+    });
   }
 
   void notifyChat(ChatModel updatedChat) {
@@ -273,24 +263,6 @@ class HomeViewModel extends Cubit<HomeStates> {
       emit(DeleteAccountSuccessState());
     }).catchError((error) {
       emit(DeleteAccountErrorState());
-    });
-  }
-
-  Future<void> createGroup(GroupModel group) async {
-    if (!await networkInfo.isConnected) {
-      emit(ConnectionErrorState());
-      return;
-    }
-    // Add current user to group
-    group.participants!.add(currentUser);
-    group.participantsUId!.add(currentUser.uId!);
-    group.newMessages[currentUser.uId!] = 0;
-    emit(CreateGroupLoadingState());
-    await firebaseHomeRepository.createGroup(group).then((value) async {
-      emit(CreateGroupSuccessState());
-      await firebaseHomeRepository.notifyGroupMembers(group);
-    }).catchError((error) {
-      _handleError(error, CreateGroupErrorState());
     });
   }
 
