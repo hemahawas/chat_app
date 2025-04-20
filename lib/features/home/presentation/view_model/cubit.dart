@@ -17,13 +17,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeViewModel extends Cubit<HomeStates> {
   late String _currentUserUId;
-  final StreamController<QuerySnapshot<Map<String, dynamic>>> chatController =
-      StreamController.broadcast();
+  late StreamController<QuerySnapshot<Map<String, dynamic>>>? chatController;
   HomeViewModel(
       {required this.firebaseHomeRepository,
       required this.localHomeRepository,
       required this.networkInfo})
       : super(InitialHomeStates()) {
+    chatController = StreamController.broadcast();
     _currentUserUId = firebaseHomeRepository.getCurrentUserUId();
   }
 
@@ -84,7 +84,8 @@ class HomeViewModel extends Cubit<HomeStates> {
 
   @override
   Future<void> close() {
-    chatController.close();
+    chatController!.close();
+    chatController = null;
     return super.close();
   }
 
@@ -164,8 +165,8 @@ class HomeViewModel extends Cubit<HomeStates> {
 
   void getChatsInRealTime() {
     firebaseHomeRepository.getChatsInRealTime().listen(
-        (snapshot) => chatController.add(snapshot),
-        onError: (error) => chatController.addError(error));
+        (snapshot) => chatController!.add(snapshot),
+        onError: (error) => chatController!.addError(error));
   }
 
   Future<void> setChats(

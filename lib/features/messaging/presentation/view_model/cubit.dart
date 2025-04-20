@@ -51,10 +51,6 @@ class MessagingViewModel extends Cubit<MessagingStates> {
 
   // Send message
   Future<void> sendTextMessage(ChatModel chat, MessageModel message) async {
-    if (!await networkInfo.isConnected) {
-      emit(ConnectionErrorState());
-      return;
-    }
     emit(SendMessageLoadingState());
 
     await messagingFirebaseRemoteRepository
@@ -68,10 +64,6 @@ class MessagingViewModel extends Cubit<MessagingStates> {
   }
 
   Future<void> sendImageMessage(ChatModel chat, MessageModel message) async {
-    if (!await networkInfo.isConnected) {
-      emit(ConnectionErrorState());
-      return;
-    }
     emit(SendMessageLoadingState());
     await messagingFirebaseRemoteRepository
         .sendImageMessage(chat, message)

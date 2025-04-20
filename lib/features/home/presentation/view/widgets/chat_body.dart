@@ -28,7 +28,7 @@ class _ChatBodyState extends State<ChatBody> {
         return Padding(
           padding: const EdgeInsets.only(top: 10.0),
           child: StreamBuilder(
-            stream: cubit.chatController.stream,
+            stream: cubit.chatController!.stream,
             builder: (context, snapShot) {
               switch (snapShot.connectionState) {
                 case ConnectionState.none:
