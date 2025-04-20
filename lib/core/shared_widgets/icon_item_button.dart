@@ -5,13 +5,15 @@ class IconItemButton extends StatelessWidget {
   final Icon icon;
   final double size;
   final VoidCallback onPressed;
+
   final Color? color;
-  const IconItemButton(
-      {super.key,
-      required this.icon,
-      required this.size,
-      required this.onPressed,
-      this.color});
+  const IconItemButton({
+    super.key,
+    required this.icon,
+    required this.size,
+    required this.onPressed,
+    this.color,
+  });
 
   @override
   Widget build(BuildContext context) {

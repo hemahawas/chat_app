@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:chat_app/core/utils/network_info.dart';
 import 'package:chat_app/core/utils/user_model.dart';
 import 'package:chat_app/features/home/data/model/chat_model.dart';
 import 'package:chat_app/features/messaging/data/model/message_model.dart';
@@ -11,10 +12,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MessagingViewModel extends Cubit<MessagingStates> {
-  MessagingViewModel({required this.messagingFirebaseRemoteRepository})
+  MessagingViewModel(
+      {required this.networkInfo,
+      required this.messagingFirebaseRemoteRepository})
       : super(MessagingInitialState());
 
   final MessagingRemoteRepository messagingFirebaseRemoteRepository;
+  final NetworkInfo networkInfo;
 
   late ChatModel? chat;
   late UserModel? currentUser;

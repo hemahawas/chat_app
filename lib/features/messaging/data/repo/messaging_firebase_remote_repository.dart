@@ -24,6 +24,9 @@ class MessagingFirebaseRemoteRepository extends MessagingRemoteRepository {
   // O(1)
   @override
   Future<void> sendTextMessage(ChatModel chat, MessageModel message) async {
+    // add message to chat
+    chat.messages ??= [];
+    chat.lastMessage = message;
     // add message on firestore
     await firebaseFirestore
         .collection('chats')
@@ -33,10 +36,6 @@ class MessagingFirebaseRemoteRepository extends MessagingRemoteRepository {
         .then((value) {
       message.messageId = value.id;
     });
-
-    // add message to chat
-    chat.messages ??= [];
-    chat.lastMessage = message;
 
     _updateChat(chat);
   }

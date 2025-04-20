@@ -3,7 +3,6 @@ import 'package:chat_app/features/home/presentation/view/widgets/calls_body.dart
 import 'package:chat_app/features/home/presentation/view/widgets/chat_body.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/home_appbar.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/home_bottom_navigation_bar.dart';
-import 'package:chat_app/features/home/presentation/view/widgets/home_floating_action_button.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/status_body.dart';
 import 'package:chat_app/features/home/presentation/view_model/cubit.dart';
 import 'package:chat_app/features/home/presentation/view_model/states.dart';
@@ -36,9 +35,6 @@ class HomeView extends StatelessWidget {
             currentIndex: cubit.navBarCurrentIndex,
             onTap: (index) => {cubit.changeNavBarIndex(index)},
           ),
-          floatingActionButton: cubit.navBarCurrentIndex == 0
-              ? const HomeFloatingActionButton()
-              : Container(),
         );
       },
     );

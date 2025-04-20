@@ -1,3 +1,10 @@
+import 'package:chat_app/core/utils/cloudinary_service.dart';
+import 'package:chat_app/core/utils/network_info.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get_it/get_it.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
+
 import 'features/auth/presentation/view_model/auth_injection_container.dart'
     as auth_di;
 import 'features/home/presentation/view_model/home_injection_container.dart'

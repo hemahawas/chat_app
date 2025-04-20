@@ -1,5 +1,6 @@
 import 'package:chat_app/core/constants/app_sizes.dart';
 import 'package:chat_app/core/constants/asset_images.dart';
+import 'package:chat_app/core/shared_widgets/custom_snack_bar.dart';
 import 'package:chat_app/features/messaging/presentation/view/widgets/messaging_appbar.dart';
 import 'package:chat_app/features/messaging/presentation/view/widgets/messaging_body.dart';
 import 'package:chat_app/features/messaging/presentation/view_model/cubit.dart';
@@ -13,7 +14,14 @@ class MessagingView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<MessagingViewModel, MessagingStates>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (state is ConnectionErrorState) {
+          CustomSnackBar.show(
+              context: context,
+              message: 'No Internet Connection',
+              color: Colors.red);
+        }
+      },
       builder: (context, state) {
         return Container(
           decoration: BoxDecoration(
