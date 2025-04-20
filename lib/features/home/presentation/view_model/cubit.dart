@@ -18,6 +18,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class HomeViewModel extends Cubit<HomeStates> {
   late String _currentUserUId;
   late StreamController<QuerySnapshot<Map<String, dynamic>>>? chatController;
+  StreamSubscription<QuerySnapshot>? chatSubscription;
   HomeViewModel(
       {required this.firebaseHomeRepository,
       required this.localHomeRepository,

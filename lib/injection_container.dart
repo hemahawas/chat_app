@@ -12,19 +12,9 @@ import 'features/home/presentation/view_model/home_injection_container.dart'
 import 'features/messaging/presentation/view_model/messaging_injection_container.dart'
     as messaging_di;
 
-final sl = GetIt.instance;
-
 // Init the features' service locator
 Future<void> init() async {
   auth_di.initAuthSl();
   home_di.initHomeSl();
   messaging_di.initMessagingSl();
-
-  // External
-  //External
-  sl.registerLazySingleton(() => FirebaseAuth.instance);
-  sl.registerLazySingleton(() => FirebaseFirestore.instance);
-  sl.registerLazySingleton(() => NetworkInfo(internetConnectionChecker: sl()));
-  sl.registerLazySingleton(() => InternetConnectionChecker.createInstance());
-  sl.registerLazySingleton(() => CloudinaryService());
 }
