@@ -1,4 +1,6 @@
 import 'package:chat_app/core/config/routes.dart';
+import 'package:chat_app/core/constants/app_strings.dart';
+import 'package:chat_app/core/shared_widgets/custom_snack_bar.dart';
 import 'package:chat_app/core/shared_widgets/shared_functions.dart';
 import 'package:chat_app/features/auth/presentation/view/widgets/email_field.dart';
 import 'package:chat_app/features/auth/presentation/view/widgets/login_button.dart';
@@ -47,6 +49,12 @@ class _LoginBodyState extends State<LoginBody> {
           Navigator.pushReplacementNamed(context, Routes.homeRoute);
         } else if (state is LoginErrorState) {
           showToast(msg: state.message);
+        }
+        if (state is ConnectionErrorState) {
+          CustomSnackBar.show(
+              context: context,
+              message: AppStrings.noInternetConnection,
+              color: Colors.red);
         }
       },
       builder: (context, state) => SingleChildScrollView(

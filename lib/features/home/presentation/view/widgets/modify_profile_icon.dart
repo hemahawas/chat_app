@@ -1,3 +1,4 @@
+import 'package:chat_app/core/constants/app_strings.dart';
 import 'package:chat_app/core/shared_widgets/icon_item_button.dart';
 import 'package:chat_app/features/home/presentation/view_model/cubit.dart';
 import 'package:chat_app/features/home/presentation/view_model/states.dart';
@@ -14,7 +15,7 @@ class ModifyProfileIcon extends StatelessWidget {
       listener: (context, state) {
         if (state is ConnectionErrorState) {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text('No Internet Connection'),
+            content: Text(AppStrings.noInternetConnection),
             backgroundColor: Colors.red,
           ));
         }

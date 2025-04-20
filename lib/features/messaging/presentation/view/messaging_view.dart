@@ -1,4 +1,5 @@
 import 'package:chat_app/core/constants/app_sizes.dart';
+import 'package:chat_app/core/constants/app_strings.dart';
 import 'package:chat_app/core/constants/asset_images.dart';
 import 'package:chat_app/core/shared_widgets/custom_snack_bar.dart';
 import 'package:chat_app/features/messaging/presentation/view/widgets/messaging_appbar.dart';
@@ -18,7 +19,7 @@ class MessagingView extends StatelessWidget {
         if (state is ConnectionErrorState) {
           CustomSnackBar.show(
               context: context,
-              message: 'No Internet Connection',
+              message: AppStrings.noInternetConnection,
               color: Colors.red);
         }
       },

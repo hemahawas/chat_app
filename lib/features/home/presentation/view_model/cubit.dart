@@ -11,6 +11,7 @@ import 'package:chat_app/features/home/data/repo/home_local_hive_repository.dart
 import 'package:chat_app/features/home/data/repo/home_remote_firebase_repository.dart';
 import 'package:chat_app/features/home/presentation/view_model/states.dart';
 import 'package:chat_app/features/messaging/data/model/message_model.dart';
+import 'package:chat_app/main_development.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -92,6 +93,9 @@ class HomeViewModel extends Cubit<HomeStates> {
 
   // Add new chat
   Future<void> addNewChat(UserModel currentUser, UserModel anotherUser) async {
+    if (!networkMonitor.isOnline.value) {
+      emit(ConnectionErrorState());
+    }
     emit(AddUserToChatLoadingState());
     await firebaseHomeRepository
         .addNewChatThenGet(currentUser, anotherUser)
@@ -231,7 +235,7 @@ class HomeViewModel extends Cubit<HomeStates> {
   }
 
   Future<void> updateUserImage(String image) async {
-    if (!await networkInfo.isConnected) {
+    if (!networkMonitor.isOnline.value) {
       emit(ConnectionErrorState());
     }
     emit(UpdateUserImageLoadingState());

@@ -13,8 +13,6 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'firebase_options.dart';
 import 'injection_container.dart' as di;
 
-final navigatorKey = GlobalKey<NavigatorState>();
-
 NetworkMonitor networkMonitor = NetworkMonitor();
 
 void main() async {

@@ -12,14 +12,15 @@ final sl = GetIt.asNewInstance();
 
 Future<void> initAuthSl() async {
   // Bloc
-  sl.registerFactory(() => AuthViewModel(authRepository: sl()));
+  sl.registerFactory(
+      () => AuthViewModel(authRepository: sl(), networkInfo: sl()));
 
   // Repositories
   sl.registerLazySingleton<AuthRepository>(() =>
       FirebaseAuthRepository(firebaseFirestore: sl(), firebaseAuth: sl()));
 
   //External
-  
+
   sl.registerLazySingleton(() => FirebaseAuth.instance);
   sl.registerLazySingleton(() => FirebaseFirestore.instance);
   sl.registerLazySingleton(() => NetworkInfo(internetConnectionChecker: sl()));

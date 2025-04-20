@@ -4,6 +4,7 @@ import 'package:chat_app/features/group/data/model/group_model.dart';
 import 'package:chat_app/features/group/data/repo/group_repository.dart';
 import 'package:chat_app/features/group/presentation/view_model/group_arguments.dart';
 import 'package:chat_app/features/group/presentation/view_model/states.dart';
+import 'package:chat_app/main_development.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 
@@ -27,7 +28,7 @@ class GroupViewModel extends Cubit<GroupStates> {
   }
 
   Future<void> createGroup(GroupModel group) async {
-    if (!await networkInfo.isConnected) {
+    if (!networkMonitor.isOnline.value) {
       emit(ConnectionErrorState());
       return;
     }

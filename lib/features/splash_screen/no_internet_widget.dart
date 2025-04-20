@@ -16,7 +16,7 @@ class NoInternetWidget extends StatelessWidget {
           children: [
             Image.asset('assets/images/wifi_off.gif'),
             const Text(
-              'App no internet connection please check your network',
+              'App AppStrings.noInternetConnection please check your network',
               textAlign: TextAlign.center,
               style: TextStyle(fontWeight: FontWeight.w800),
             ),

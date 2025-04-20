@@ -1,8 +1,6 @@
 import 'dart:developer';
 
-import 'package:chat_app/core/utils/send_notification_services.dart';
 import 'package:chat_app/core/utils/token_service.dart';
-import 'package:chat_app/main_development.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
@@ -111,7 +109,7 @@ class MessagingConfig {
           ),
         );
 
-        handleNotification(navigatorKey.currentContext!, event.data);
+        //handleNotification(navigatorKey.currentContext!, event.data);
       } catch (err) {
         log(err.toString());
       }
@@ -121,12 +119,12 @@ class MessagingConfig {
         .getInitialMessage()
         .then((RemoteMessage? message) {
       if (message != null) {
-        handleNotification(navigatorKey.currentContext!, message.data);
+        //handleNotification(navigatorKey.currentContext!, message.data);
       }
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      handleNotification(navigatorKey.currentContext!, message.data);
+      //handleNotification(navigatorKey.currentContext!, message.data);
     });
   }
 

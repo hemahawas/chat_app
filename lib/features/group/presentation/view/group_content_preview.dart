@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:chat_app/core/constants/app_strings.dart';
 import 'package:chat_app/core/shared_widgets/custom_appbar.dart';
 import 'package:chat_app/core/themes/color_app.dart';
 import 'package:chat_app/core/utils/user_model.dart';
@@ -48,7 +49,7 @@ class _GroupContentPreviewState extends State<GroupContentPreview> {
       listener: (context, state) {
         if (state is ConnectionErrorState) {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text('No Internet Connection'),
+            content: Text(AppStrings.noInternetConnection),
             backgroundColor: Colors.red,
           ));
         }

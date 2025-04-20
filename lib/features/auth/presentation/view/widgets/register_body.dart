@@ -1,5 +1,6 @@
 import 'package:chat_app/core/config/routes.dart';
-import 'package:chat_app/core/shared_widgets/shared_functions.dart';
+import 'package:chat_app/core/constants/app_strings.dart';
+import 'package:chat_app/core/shared_widgets/custom_snack_bar.dart';
 import 'package:chat_app/core/utils/user_model.dart';
 import 'package:chat_app/features/auth/presentation/view/widgets/email_field.dart';
 import 'package:chat_app/features/auth/presentation/view/widgets/logo_widget.dart';
@@ -53,11 +54,15 @@ class _RegisterBodyState extends State<RegisterBody> {
   Widget build(BuildContext context) {
     return BlocConsumer<AuthViewModel, AuthStates>(
       listener: (context, state) {
-        switch (state.runtimeType) {
-          case RegisterSuccessState _:
-            showToast(msg: 'Register Successfully');
-          case RegisterErrorState _:
-            showToast(msg: (state as RegisterErrorState).message);
+        if (state is RegisterSuccessState) {
+          Navigator.pushReplacementNamed(context, Routes.homeRoute);
+        }
+
+        if (state is ConnectionErrorState) {
+          CustomSnackBar.show(
+              context: context,
+              message: AppStrings.noInternetConnection,
+              color: Colors.red);
         }
       },
       builder: (context, state) => SingleChildScrollView(
@@ -110,8 +115,6 @@ class _RegisterBodyState extends State<RegisterBody> {
                                   phone: phoneController.text);
                               await BlocProvider.of<AuthViewModel>(context)
                                   .register(userModel, passwordController.text);
-                              Navigator.pushReplacementNamed(
-                                  context, Routes.homeRoute);
                             })),
                 Expanded(flex: 1, child: const NavigatingToLoginView()),
               ],

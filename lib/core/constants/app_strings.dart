@@ -6,4 +6,5 @@ abstract class AppStrings {
   static const String addNewConnectionsForYourChat =
       'Add new users for your chat via ⋮ button';
   static const String addCaption = 'Add Caption....';
+  static const String noInternetConnection = 'No Internet Connection';
 }

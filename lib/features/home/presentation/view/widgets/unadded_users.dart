@@ -1,3 +1,4 @@
+import 'package:chat_app/core/constants/app_strings.dart';
 import 'package:chat_app/core/shared_widgets/custom_snack_bar.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/user_item.dart';
 import 'package:chat_app/features/home/presentation/view_model/cubit.dart';
@@ -29,6 +30,12 @@ class UnAddedUsers extends StatelessWidget {
                   message: 'User Added Successfully',
                   context: context,
                   color: Colors.green);
+            }
+            if (state is ConnectionErrorState) {
+              CustomSnackBar.show(
+                  message: AppStrings.noInternetConnection,
+                  context: context,
+                  color: Colors.red);
             }
           },
           builder: (context, state) {
