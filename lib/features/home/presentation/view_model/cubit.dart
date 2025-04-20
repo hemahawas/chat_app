@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:chat_app/core/shared_widgets/shared_functions.dart';
 import 'package:chat_app/core/utils/network_info.dart';
-import 'package:chat_app/core/utils/send_notification_services.dart';
 import 'package:chat_app/core/utils/user_model.dart';
 import 'package:chat_app/features/group/data/model/group_model.dart';
 import 'package:chat_app/features/home/data/model/call_Model.dart';
@@ -18,6 +17,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeViewModel extends Cubit<HomeStates> {
   late String _currentUserUId;
+  final StreamController<QuerySnapshot<Map<String, dynamic>>> chatController =
+      StreamController.broadcast();
   HomeViewModel(
       {required this.firebaseHomeRepository,
       required this.localHomeRepository,
@@ -48,7 +49,6 @@ class HomeViewModel extends Cubit<HomeStates> {
   Future<void> getUsers() async {
     addedUsers = [];
     nonAddedUsers = [];
-    emit(GetUsersFromFirebaseLoadingState());
 
     await firebaseHomeRepository.getUsers().then((value) async {
       for (UserModel user in value) {
@@ -81,28 +81,11 @@ class HomeViewModel extends Cubit<HomeStates> {
 
   List<ChatModel> chats = [];
   Map<String, ChatModel> chatMapping = {};
-  // get Chats of current user
-  Future<void> getChats() async {
-    if (await networkInfo.isConnected) {
-      emit(GetChatsFromFirebaseLoadingState());
-      await firebaseHomeRepository.getChats().then((value) async {
-        //chats = value;
-        //debugPrint('################### chats ${chats.length}');
-        emit(GetChatsFromFirebaseSuccessState());
-        await localHomeRepository.putChats(chats);
-      }).catchError((error) {
-        _handleError(error, GetChatsFromFirebaseErrorState());
-      });
-    } else {
-      emit(GetChatsFromLocalLoadingState());
-      await localHomeRepository.getChats().then((value) {
-        //chats = value;
 
-        emit(GetChatsFromLocalSuccessState());
-      }).catchError((error) {
-        _handleError(error, GetChatsFromLocalErrorState);
-      });
-    }
+  @override
+  Future<void> close() {
+    chatController.close();
+    return super.close();
   }
 
   // Add new chat
@@ -179,18 +162,14 @@ class HomeViewModel extends Cubit<HomeStates> {
     emit(NotifyChatState());
   }
 
-  Stream<QuerySnapshot<Map<String, dynamic>>> getChatsInRealTime() async* {
-    yield* firebaseHomeRepository.getChatsInRealTime().handleError((error) {
-      _handleError(error, GetChatsFromFirebaseErrorState());
-    });
+  void getChatsInRealTime() {
+    firebaseHomeRepository.getChatsInRealTime().listen(
+        (snapshot) => chatController.add(snapshot),
+        onError: (error) => chatController.addError(error));
   }
 
   Future<void> setChats(
       AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapShot) async {
-    // Ensure that current user exists
-    if (currentUser == null) {
-      return;
-    }
     final int oldLength = chatMapping.length;
 
     if (snapShot.data != null) {
@@ -208,9 +187,7 @@ class HomeViewModel extends Cubit<HomeStates> {
           case DocumentChangeType.added:
             chatMapping[chat.chatId!] = chat;
             var newLength = chatMapping.length;
-            if (oldLength > 0 &&
-                oldLength != newLength &&
-                chat is! GroupModel) {
+            if (oldLength > 0 && oldLength != newLength) {
               debugPrint("######Added into If");
               UserModel newUser = chat.participants!
                   .firstWhere((user) => user.uId != currentUserUId);
@@ -218,23 +195,8 @@ class HomeViewModel extends Cubit<HomeStates> {
             }
             break;
           case DocumentChangeType.modified:
-            var newLastMessage = chat.lastMessage!;
-            if (chatMapping[chat.chatId!]!.lastMessage!.messageId !=
-                    newLastMessage.messageId &&
-                chatMapping[chat.chatId!]!
-                    .lastMessage!
-                    .sendingTime!
-                    .isBefore(newLastMessage.sendingTime!)) {
-              sendNotification(
-                  body: newLastMessage.body!,
-                  title: chat.participants!
-                      .firstWhere(
-                          (p) => p.uId == newLastMessage.messageSenderId)
-                      .name!,
-                  data: {});
-            }
             chatMapping[chat.chatId!] = chat;
-
+            //sendNotification();
             break;
           case DocumentChangeType.removed:
             // Handle the case where a document is removed

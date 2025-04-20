@@ -43,7 +43,7 @@ class ChatItem extends StatelessWidget {
         // Give the Required args from chat view model to messaging view model while routing
         // See the routes.dart file
 
-        Navigator.pushNamed(context, Routes.messagingRoute,
+        await Navigator.pushNamed(context, Routes.messagingRoute,
             arguments: MessagingArguments(
                 chatModel: chatModel, currentUser: cubit.currentUser));
       },

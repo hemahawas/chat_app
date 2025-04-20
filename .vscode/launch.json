@@ -39,7 +39,12 @@
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile",
+            "program": "lib/main_development.dart",
             "toolArgs": [
+                "--flavor",
+                "development",
+                "--target",
+                "lib/main_development.dart",
                 "--no-enable-impeller"
             ]
         },

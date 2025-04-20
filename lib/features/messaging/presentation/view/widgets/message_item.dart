@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chat_app/core/themes/color_app.dart';
 import 'package:chat_app/core/themes/styles.dart';
 import 'package:chat_app/features/messaging/data/model/message_model.dart';
@@ -66,7 +67,12 @@ class MessageItem extends StatelessWidget {
                   : Container(),
               Container(
                 child: message.image != '' && message.image != null
-                    ? Image.network(message.image!)
+                    ? CachedNetworkImage(
+                        memCacheHeight: 250,
+                        memCacheWidth: 250,
+                        fit: BoxFit.cover,
+                        imageUrl: message.image!,
+                      )
                     : SizedBox(),
               ),
               Text(

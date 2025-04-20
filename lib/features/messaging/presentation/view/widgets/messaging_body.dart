@@ -5,7 +5,7 @@ import 'package:chat_app/features/messaging/presentation/view/widgets/send_field
 import 'package:flutter/material.dart';
 
 class MessagingBody extends StatefulWidget {
-  MessagingBody({super.key});
+  const MessagingBody({super.key});
 
   @override
   State<MessagingBody> createState() => _MessagingBodyState();

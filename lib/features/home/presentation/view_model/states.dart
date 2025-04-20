@@ -1,5 +1,6 @@
 import 'package:chat_app/core/utils/user_model.dart';
 import 'package:chat_app/features/home/data/model/chat_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 abstract class HomeStates {}
 
@@ -23,7 +24,11 @@ class AddUserToChatLoadingState extends HomeStates {}
 class AddUserToChatErrorState extends HomeStates {}
 
 // Get chats
-class GetChatsFromFirebaseSuccessState extends HomeStates {}
+class GetChatsFromFirebaseSuccessState extends HomeStates {
+  final List<ChatModel> chats;
+
+  GetChatsFromFirebaseSuccessState({required this.chats});
+}
 
 class GetChatsFromFirebaseLoadingState extends HomeStates {}
 

@@ -20,3 +20,5 @@ class SendMessageLoadingState extends MessagingStates {}
 class SendMessageSuccessState extends MessagingStates {}
 
 class SendMessageErrorState extends MessagingStates {}
+
+class ConnectionErrorState extends MessagingStates {}
