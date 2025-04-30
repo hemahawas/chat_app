@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chat_app/core/themes/color_app.dart';
 import 'package:chat_app/core/themes/styles.dart';
 import 'package:chat_app/features/messaging/data/model/message_model.dart';
@@ -21,8 +22,7 @@ class MessageItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String currentUserUId =
-        BlocProvider.of<MessagingViewModel>(context).currentUser!.uId!;
+    var cubit = BlocProvider.of<MessagingViewModel>(context);
     return Column(
       children: [
         // To show th date if the message was sent on another day
@@ -34,7 +34,7 @@ class MessageItem extends StatelessWidget {
         Container(
           width: double.infinity,
           padding: EdgeInsets.all(10),
-          margin: currentUserUId == message.messageSenderId
+          margin: cubit.currentUserUid == message.messageSenderId
               ? EdgeInsets.only(
                   top: 3,
                   bottom: 3,
@@ -47,16 +47,16 @@ class MessageItem extends StatelessWidget {
                   left: 5),
           alignment: Alignment.topRight,
           decoration: BoxDecoration(
-              borderRadius: currentUserUId == message.messageSenderId
+              borderRadius: cubit.currentUserUid == message.messageSenderId
                   ? BorderRadius.circular(10.0).copyWith(topRight: Radius.zero)
                   : BorderRadius.circular(10.0).copyWith(topLeft: Radius.zero),
-              color: currentUserUId == message.messageSenderId
+              color: cubit.currentUserUid == message.messageSenderId
                   ? ColorApp.messageBodyOfCurrentUserColor
                   : ColorApp.messageBodyOfOtherUserColor),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              isGroup && currentUserUId != message.messageSenderId
+              isGroup && cubit.currentUserUid != message.messageSenderId
                   ? Align(
                       alignment: Alignment.topLeft,
                       child: Text(
@@ -67,7 +67,12 @@ class MessageItem extends StatelessWidget {
                   : Container(),
               Container(
                 child: message.image != '' && message.image != null
-                    ? Image.network(message.image!)
+                    ? CachedNetworkImage(
+                        memCacheHeight: 250,
+                        memCacheWidth: 250,
+                        fit: BoxFit.cover,
+                        imageUrl: message.image!,
+                      )
                     : SizedBox(),
               ),
               Text(

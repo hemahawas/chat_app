@@ -12,7 +12,7 @@ class UserStatusItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    UserModel user = BlocProvider.of<HomeViewModel>(context).currentUser!;
+    UserModel user = BlocProvider.of<HomeViewModel>(context).currentUser;
 
     return Row(
       children: [

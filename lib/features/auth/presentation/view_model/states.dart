@@ -38,3 +38,5 @@ class LogoutErrorState extends AuthStates {
 
 // Password visibilty
 class PasswordChangeVisibilityState extends AuthStates {}
+
+class ConnectionErrorState extends AuthStates {}

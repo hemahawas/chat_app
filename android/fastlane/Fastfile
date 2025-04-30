@@ -19,18 +19,17 @@ platform :android do
   desc "Distribution to Firebase"
   # sh : fastlane android firebase_distribute
   lane :firebase_distribute do
-    sh "flutter clean"
-    sh "fl build apk --release  --flavor production --target lib/main_production.dart --no-tree-shake-icons"
+    #sh "flutter clean"
+    #sh "flutter build apk --release  --flavor production --target lib/main_production.dart --no-tree-shake-icons"
     firebase_app_distribution(
       # Should be secured
     app: "1:947610105866:android:4aaee9abc50bebb2cf47f3", 
-    groups: "qa-team, trusted-testers",
     android_artifact_type: "APK",
-    android_artifact_path: "..\build\app\outputs\flutter-apk",
+    android_artifact_path: "..//build//app//outputs//flutter-apk//app-production-release.apk",
     # Should be secured
     firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"],
-    testers: "ibraheem.rizk3@gmail.com",
-    release_notes: "This build was uploaded via fastlane"
+    testers: "ibraheem.rizk3@gmail.com, mouaz.salah05@gmail.com",
+    release_notes: "This build was uploaded via fastlane",
     )
   end
 

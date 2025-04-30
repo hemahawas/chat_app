@@ -1,4 +1,6 @@
 import 'package:chat_app/core/config/routes.dart';
+import 'package:chat_app/core/constants/app_strings.dart';
+import 'package:chat_app/core/shared_widgets/custom_snack_bar.dart';
 import 'package:chat_app/core/shared_widgets/shared_functions.dart';
 import 'package:chat_app/features/auth/presentation/view/widgets/email_field.dart';
 import 'package:chat_app/features/auth/presentation/view/widgets/login_button.dart';
@@ -11,15 +13,33 @@ import 'package:chat_app/features/auth/presentation/view_model/states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class LoginBody extends StatelessWidget {
+class LoginBody extends StatefulWidget {
   LoginBody({super.key});
 
-  final TextEditingController emailController = TextEditingController();
+  @override
+  State<LoginBody> createState() => _LoginBodyState();
+}
 
-  final TextEditingController passwordController = TextEditingController();
+class _LoginBodyState extends State<LoginBody> {
+  late final TextEditingController emailController;
+
+  late final TextEditingController passwordController;
+
+  @override
+  void initState() {
+    emailController = TextEditingController();
+    passwordController = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
 
   //var formKey = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthViewModel, AuthStates>(
@@ -29,6 +49,12 @@ class LoginBody extends StatelessWidget {
           Navigator.pushReplacementNamed(context, Routes.homeRoute);
         } else if (state is LoginErrorState) {
           showToast(msg: state.message);
+        }
+        if (state is ConnectionErrorState) {
+          CustomSnackBar.show(
+              context: context,
+              message: AppStrings.noInternetConnection,
+              color: Colors.red);
         }
       },
       builder: (context, state) => SingleChildScrollView(
@@ -63,14 +89,18 @@ class LoginBody extends StatelessWidget {
                 ),
                 Expanded(
                   flex: 2,
-                  child: LoginButton(
-                    emailController: emailController,
-                    passwordController: passwordController,
-                    onSuccess: () async {
-                      await BlocProvider.of<AuthViewModel>(context)
-                          .logIn(emailController.text, passwordController.text);
-                    },
-                  ),
+                  child: state is LoginLoadingState
+                      ? SizedBox(
+                          height: 30,
+                          child: Center(child: CircularProgressIndicator()))
+                      : LoginButton(
+                          emailController: emailController,
+                          passwordController: passwordController,
+                          onSuccess: () async {
+                            await BlocProvider.of<AuthViewModel>(context).logIn(
+                                emailController.text, passwordController.text);
+                          },
+                        ),
                 ),
                 Expanded(flex: 3, child: const NvigatingToRegisterView()),
               ],

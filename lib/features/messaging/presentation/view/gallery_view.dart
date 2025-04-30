@@ -2,13 +2,14 @@ import 'dart:io';
 
 import 'package:chat_app/core/constants/app_strings.dart';
 import 'package:chat_app/core/themes/color_app.dart';
+import 'package:chat_app/core/utils/global_variables.dart';
 import 'package:chat_app/features/messaging/data/model/message_model.dart';
 import 'package:chat_app/features/messaging/presentation/view_model/cubit.dart';
+import 'package:chat_app/features/messaging/presentation/view_model/messaging_injection_container.dart'
+    as messaging_di;
 import 'package:chat_app/features/messaging/presentation/view_model/states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:chat_app/features/messaging/presentation/view_model/messaging_injection_container.dart'
-    as messaging_di;
 
 class GalleryView extends StatelessWidget {
   final String path;
@@ -32,8 +33,10 @@ class GalleryView extends StatelessWidget {
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height - 150,
               child: Image.file(
+                cacheHeight: (MediaQuery.of(context).size.height * 0.8).toInt(),
+                cacheWidth: (MediaQuery.of(context).size.width * 0.8).toInt(),
                 File(path),
-                fit: BoxFit.cover,
+                fit: BoxFit.contain,
               ),
             ),
             Positioned(
@@ -62,44 +65,52 @@ class GalleryView extends StatelessWidget {
                         color: Colors.white,
                         fontSize: 17,
                       ),
-                      suffixIcon: CircleAvatar(
-                        radius: 27,
-                        backgroundColor: ColorApp.primaryColor,
-                        child: BlocProvider<MessagingViewModel>.value(
-                            value: messaging_di.sl<MessagingViewModel>(),
-                            child: BlocBuilder<MessagingViewModel,
-                                MessagingStates>(
-                              builder: (context, state) {
-                                return IconButton(
-                                  onPressed: () {
-                                    // Create message
-                                    var message = MessageModel(
-                                        body: messageController.text,
-                                        image: path,
-                                        messageSenderId: messaging_di
-                                            .sl<MessagingViewModel>()
-                                            .currentUser!
-                                            .uId,
-                                        sendingTime: DateTime.now().toLocal());
-                                    // Then send the message
-                                    messaging_di
-                                        .sl<MessagingViewModel>()
-                                        .sendImageMessage(
-                                            messaging_di
+                      suffixIcon: ValueListenableBuilder<bool>(
+                        valueListenable: networkMonitor.isOnline,
+                        builder: (context, isConnected, _) => CircleAvatar(
+                          radius: 27,
+                          backgroundColor:
+                              isConnected ? ColorApp.primaryColor : Colors.grey,
+                          child: BlocProvider<MessagingViewModel>.value(
+                              value: messaging_di.sl<MessagingViewModel>(),
+                              child: BlocBuilder<MessagingViewModel,
+                                  MessagingStates>(
+                                builder: (context, state) {
+                                  return AbsorbPointer(
+                                    absorbing: !isConnected,
+                                    child: IconButton(
+                                      onPressed: () {
+                                        // Create message
+                                        var message = MessageModel(
+                                            body: messageController.text,
+                                            image: path,
+                                            messageSenderId: messaging_di
                                                 .sl<MessagingViewModel>()
-                                                .chat!,
-                                            message);
-                                    // Then return to messaging view
-                                    Navigator.pop(context);
-                                  },
-                                  icon: Icon(
-                                    Icons.check,
-                                    color: Colors.white,
-                                    size: 27,
-                                  ),
-                                );
-                              },
-                            )),
+                                                .currentUser!
+                                                .uId,
+                                            sendingTime:
+                                                DateTime.now().toLocal());
+                                        // Then send the message
+                                        messaging_di
+                                            .sl<MessagingViewModel>()
+                                            .sendImageMessage(
+                                                messaging_di
+                                                    .sl<MessagingViewModel>()
+                                                    .chat!,
+                                                message);
+                                        // Then return to messaging view
+                                        Navigator.pop(context);
+                                      },
+                                      icon: Icon(
+                                        Icons.check,
+                                        color: Colors.white,
+                                        size: 27,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              )),
+                        ),
                       )),
                 ),
               ),

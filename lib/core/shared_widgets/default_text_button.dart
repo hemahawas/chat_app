@@ -5,8 +5,13 @@ import 'package:flutter/material.dart';
 class DefaultTextButton extends StatelessWidget {
   final VoidCallback onPressed;
   final String text;
-  const DefaultTextButton(
-      {super.key, required this.onPressed, required this.text});
+  final bool? isConnected;
+  const DefaultTextButton({
+    super.key,
+    required this.onPressed,
+    required this.text,
+    this.isConnected,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -14,16 +19,23 @@ class DefaultTextButton extends StatelessWidget {
       child: SizedBox(
         width: double.infinity,
         height: 60,
-        child: ElevatedButton(
-          onPressed: onPressed,
-          style: ElevatedButton.styleFrom(
-              backgroundColor: ColorApp.primaryColor,
-              padding: EdgeInsets.symmetric(horizontal: 48, vertical: 12),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30))),
-          child: Text(
-            text.toUpperCase(),
-            style: Styles.textStyle24.copyWith(color: Colors.black),
+        child: AbsorbPointer(
+          absorbing: isConnected != null ? !isConnected! : false,
+          child: ElevatedButton(
+            onPressed: () {
+              onPressed();
+            },
+            style: ElevatedButton.styleFrom(
+                backgroundColor: isConnected != null
+                    ? (isConnected! ? ColorApp.primaryColor : Colors.grey)
+                    : ColorApp.primaryColor,
+                padding: EdgeInsets.symmetric(horizontal: 48, vertical: 12),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30))),
+            child: Text(
+              text.toUpperCase(),
+              style: Styles.textStyle24.copyWith(color: Colors.black),
+            ),
           ),
         ),
       ),

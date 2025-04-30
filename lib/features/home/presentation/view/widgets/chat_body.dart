@@ -1,10 +1,7 @@
-import 'dart:async';
-
 import 'package:chat_app/features/home/presentation/view/widgets/chat_item.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/empty_chat_body.dart';
 import 'package:chat_app/features/home/presentation/view_model/cubit.dart';
 import 'package:chat_app/features/home/presentation/view_model/states.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,12 +13,9 @@ class ChatBody extends StatefulWidget {
 }
 
 class _ChatBodyState extends State<ChatBody> {
-  Stream<QuerySnapshot<Map<String, dynamic>>>? _chatSnapshots;
-
   @override
   void initState() {
-    _chatSnapshots =
-        BlocProvider.of<HomeViewModel>(context).getChatsInRealTime();
+    BlocProvider.of<HomeViewModel>(context).getChatsInRealTime();
 
     super.initState();
   }
@@ -29,13 +23,12 @@ class _ChatBodyState extends State<ChatBody> {
   @override
   Widget build(BuildContext context) {
     final cubit = BlocProvider.of<HomeViewModel>(context);
-    return BlocConsumer<HomeViewModel, HomeStates>(
-      listener: (context, state) {},
+    return BlocBuilder<HomeViewModel, HomeStates>(
       builder: (context, state) {
         return Padding(
           padding: const EdgeInsets.only(top: 10.0),
           child: StreamBuilder(
-            stream: _chatSnapshots,
+            stream: cubit.chatController!.stream,
             builder: (context, snapShot) {
               switch (snapShot.connectionState) {
                 case ConnectionState.none:
@@ -51,9 +44,11 @@ class _ChatBodyState extends State<ChatBody> {
                     return cubit.chats.isNotEmpty
                         ? RepaintBoundary(
                             child: ListView.builder(
+                              itemExtent: 65,
                               shrinkWrap: true,
                               physics: AlwaysScrollableScrollPhysics(),
                               itemBuilder: (context, index) => ChatItem(
+                                key: ValueKey(cubit.chats[index].chatId),
                                 isSearched: false,
                                 chatModel: cubit.chats[index],
                               ),

@@ -58,6 +58,10 @@ Widget defaultFormField(
                       ),
                     )
                   : SizedBox.shrink(),
+              errorStyle: TextStyle(
+                fontSize: 12.0, // Smaller text for error message
+                height: 0.3, // Adjust height for compactness
+              ),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(30.0),
               ),

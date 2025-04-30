@@ -1,8 +1,6 @@
 import 'dart:developer';
 
-import 'package:chat_app/core/utils/send_notification_services.dart';
 import 'package:chat_app/core/utils/token_service.dart';
-import 'package:chat_app/main_development.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
@@ -83,7 +81,7 @@ class MessagingConfig {
       log("message received");
       try {
         RemoteNotification? notification = event.notification;
-        AndroidNotification? android = event.notification?.android;
+        //AndroidNotification? android = event.notification?.android;
         log(notification!.body.toString());
         log(notification.title.toString());
 
@@ -111,7 +109,7 @@ class MessagingConfig {
           ),
         );
 
-        handleNotification(navigatorKey.currentContext!, event.data);
+        //handleNotification(navigatorKey.currentContext!, event.data);
       } catch (err) {
         log(err.toString());
       }
@@ -121,16 +119,16 @@ class MessagingConfig {
         .getInitialMessage()
         .then((RemoteMessage? message) {
       if (message != null) {
-        handleNotification(navigatorKey.currentContext!, message.data);
+        //handleNotification(navigatorKey.currentContext!, message.data);
       }
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      handleNotification(navigatorKey.currentContext!, message.data);
+      //handleNotification(navigatorKey.currentContext!, message.data);
     });
   }
 
-  @pragma('vm:entry-point')
+  @pragma('vm:entry-point') // Required for background execution
   static Future<void> messageHandler(RemoteMessage message) async {
     log('background message ${message.notification!.body}');
   }

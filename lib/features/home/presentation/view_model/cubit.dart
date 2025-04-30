@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:chat_app/core/shared_widgets/shared_functions.dart';
+import 'package:chat_app/core/utils/global_variables.dart';
 import 'package:chat_app/core/utils/network_info.dart';
 import 'package:chat_app/core/utils/user_model.dart';
 import 'package:chat_app/features/group/data/model/group_model.dart';
@@ -17,11 +18,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeViewModel extends Cubit<HomeStates> {
   late String _currentUserUId;
+  late StreamController<QuerySnapshot<Map<String, dynamic>>>? chatController;
+  StreamSubscription<QuerySnapshot>? chatSubscription;
   HomeViewModel(
       {required this.firebaseHomeRepository,
       required this.localHomeRepository,
       required this.networkInfo})
       : super(InitialHomeStates()) {
+    chatController = StreamController.broadcast();
     _currentUserUId = firebaseHomeRepository.getCurrentUserUId();
   }
 
@@ -47,13 +51,11 @@ class HomeViewModel extends Cubit<HomeStates> {
   Future<void> getUsers() async {
     addedUsers = [];
     nonAddedUsers = [];
-    emit(GetUsersFromFirebaseLoadingState());
 
     await firebaseHomeRepository.getUsers().then((value) async {
       for (UserModel user in value) {
-        var currentUser = await firebaseHomeRepository.getUserInfo();
         if (user.addedChats != null &&
-            user.addedChats!.contains(currentUser.uId)) {
+            user.addedChats!.contains(currentUserUId)) {
           addedUsers.add(user);
           //print('This Should be printed twice#######################');
         } else {
@@ -81,32 +83,20 @@ class HomeViewModel extends Cubit<HomeStates> {
 
   List<ChatModel> chats = [];
   Map<String, ChatModel> chatMapping = {};
-  // get Chats of current user
-  Future<void> getChats() async {
-    if (await networkInfo.isConnected) {
-      emit(GetChatsFromFirebaseLoadingState());
-      await firebaseHomeRepository.getChats().then((value) async {
-        //chats = value;
-        //debugPrint('################### chats ${chats.length}');
-        emit(GetChatsFromFirebaseSuccessState());
-        await localHomeRepository.putChats(chats);
-      }).catchError((error) {
-        _handleError(error, GetChatsFromFirebaseErrorState());
-      });
-    } else {
-      emit(GetChatsFromLocalLoadingState());
-      await localHomeRepository.getChats().then((value) {
-        //chats = value;
 
-        emit(GetChatsFromLocalSuccessState());
-      }).catchError((error) {
-        _handleError(error, GetChatsFromLocalErrorState);
-      });
-    }
+  @override
+  Future<void> close() async {
+    chatController!.close();
+    chatController = null;
+    await firebaseHomeRepository.getChatsInRealTime().listen(null).cancel();
+    return super.close();
   }
 
   // Add new chat
   Future<void> addNewChat(UserModel currentUser, UserModel anotherUser) async {
+    if (!networkMonitor.isOnline.value) {
+      emit(ConnectionErrorState());
+    }
     emit(AddUserToChatLoadingState());
     await firebaseHomeRepository
         .addNewChatThenGet(currentUser, anotherUser)
@@ -127,7 +117,9 @@ class HomeViewModel extends Cubit<HomeStates> {
         }
 
         nonAddedUsers.remove(anotherUser);
-        addedUsers.add(anotherUser);
+        if (!addedUsers.contains(anotherUser)) {
+          addedUsers.add(anotherUser);
+        }
 
         emit(AddUserToChatSuccessState());
         await notifyUserChange(currentUser);
@@ -140,32 +132,25 @@ class HomeViewModel extends Cubit<HomeStates> {
 
   void addNewUser(UserModel newUser) {
     //nonAddedUsers.remove(newUser)
-    nonAddedUsers.removeWhere((e) => e.uId == newUser.uId);
-    addedUsers.add(newUser);
+    nonAddedUsers.removeWhere((user) => user.uId == newUser.uId);
+
+    if (!addedUsers.contains(newUser)) {
+      addedUsers.add(newUser);
+    }
+
     emit(NewUserIsAddedState(newUser: newUser));
   }
 
   // Get current user
-  UserModel? currentUser = UserModel(email: 'email');
+  UserModel currentUser = UserModel(email: '', name: '', phone: '');
   Future<void> getCurrentUser() async {
-    if (await networkInfo.isConnected) {
-      emit(GetUserInfoLoadingState());
-      await firebaseHomeRepository.getUserInfo().then((value) {
-        currentUser = value;
-        localHomeRepository.putUserInfo(currentUser!);
-        emit(GetUserInfoSuccessState());
-      }).catchError((error) {
-        _handleError(error, GetUserInfoErrorState());
-      });
-    } else {
-      emit(GetUserInfoLoadingState());
-      await localHomeRepository.getUserInfo().then((value) {
-        currentUser = value;
-        emit(GetUserInfoSuccessState());
-      }).catchError((error) {
-        _handleError(error, GetUserInfoErrorState());
-      });
-    }
+    emit(GetUserInfoLoadingState());
+    await firebaseHomeRepository.getUserInfo().then((value) {
+      currentUser = value;
+      emit(GetUserInfoSuccessState());
+    }).catchError((error) {
+      _handleError(error, GetUserInfoErrorState());
+    });
   }
 
   void notifyChat(ChatModel updatedChat) {
@@ -184,18 +169,14 @@ class HomeViewModel extends Cubit<HomeStates> {
     emit(NotifyChatState());
   }
 
-  Stream<QuerySnapshot<Map<String, dynamic>>> getChatsInRealTime() async* {
-    yield* firebaseHomeRepository.getChatsInRealTime().handleError((error) {
-      _handleError(error, GetChatsFromFirebaseErrorState());
-    });
+  void getChatsInRealTime() {
+    firebaseHomeRepository.getChatsInRealTime().listen(
+        (snapshot) => chatController!.add(snapshot),
+        onError: (error) => chatController!.addError(error));
   }
 
   Future<void> setChats(
       AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapShot) async {
-    // Ensure that all users exist
-    if (currentUser == null) {
-      return;
-    }
     final int oldLength = chatMapping.length;
 
     if (snapShot.data != null) {
@@ -245,28 +226,16 @@ class HomeViewModel extends Cubit<HomeStates> {
     chats = localChatList;
   }
 
-  Future<void> createGroup(GroupModel group) async {
-    if (!await networkInfo.isConnected) {
-      emit(ConnectionErrorState());
-      return;
-    }
-    // Add current user to group
-    group.participants!.add(currentUser!);
-    group.participantsUId!.add(currentUser!.uId!);
-    group.newMessages[currentUser!.uId!] = 0;
-    emit(CreateGroupLoadingState());
-    await firebaseHomeRepository.createGroup(group).then((value) async {
-      emit(CreateGroupSuccessState());
-      await firebaseHomeRepository.notifyGroupMembers(group);
+  Future<void> deleteAccount() async {
+    emit(DeleteAccountLoadingState());
+    await firebaseHomeRepository.deleteAccount().then((_) {
+      emit(DeleteAccountSuccessState());
     }).catchError((error) {
-      _handleError(error, CreateGroupErrorState());
+      emit(DeleteAccountErrorState());
     });
   }
 
   Future<void> updateUserImage(String image) async {
-    if (!await networkInfo.isConnected) {
-      emit(ConnectionErrorState());
-    }
     emit(UpdateUserImageLoadingState());
     return await firebaseHomeRepository
         .uploadUserImage(currentUser!, image)

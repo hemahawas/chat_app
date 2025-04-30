@@ -1,5 +1,6 @@
 import 'package:chat_app/core/utils/user_model.dart';
 import 'package:chat_app/features/home/data/model/chat_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 abstract class HomeStates {}
 
@@ -23,7 +24,11 @@ class AddUserToChatLoadingState extends HomeStates {}
 class AddUserToChatErrorState extends HomeStates {}
 
 // Get chats
-class GetChatsFromFirebaseSuccessState extends HomeStates {}
+class GetChatsFromFirebaseSuccessState extends HomeStates {
+  final List<ChatModel> chats;
+
+  GetChatsFromFirebaseSuccessState({required this.chats});
+}
 
 class GetChatsFromFirebaseLoadingState extends HomeStates {}
 
@@ -47,13 +52,6 @@ class GetUserInfoSuccessState extends HomeStates {}
 class GetUserInfoLoadingState extends HomeStates {}
 
 class GetUserInfoErrorState extends HomeStates {}
-
-// Create group
-class CreateGroupSuccessState extends HomeStates {}
-
-class CreateGroupLoadingState extends HomeStates {}
-
-class CreateGroupErrorState extends HomeStates {}
 
 // Connection Error
 class ConnectionErrorState extends HomeStates {}
@@ -84,3 +82,11 @@ class NewMessage extends HomeStates {
 
   NewMessage({required this.chat});
 }
+
+// Delete account
+
+class DeleteAccountLoadingState extends HomeStates {}
+
+class DeleteAccountSuccessState extends HomeStates {}
+
+class DeleteAccountErrorState extends HomeStates {}

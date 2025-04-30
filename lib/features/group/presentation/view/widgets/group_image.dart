@@ -25,6 +25,8 @@ class GroupImage extends StatelessWidget {
           : ClipRRect(
               borderRadius: BorderRadius.circular(50),
               child: Image.file(
+                cacheHeight: 180,
+                cacheWidth: 180,
                 pickedImage!,
                 fit: BoxFit.cover,
               ),

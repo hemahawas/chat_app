@@ -44,7 +44,8 @@ Future<void> sendNotification(
     },
     body: jsonEncode(<String, dynamic>{
       'message': {
-        'token': token,
+        'token':
+            'eAn3qvq8Se268GIx6S0S_8:APA91bGGnd_Yyf6EOvAOc_GrKfe9Vnje2Ty4fdsVsbmuH95Aa7uJMmnNQcKgQyzbBCNHGbdsqZOn7q_lWniHbnB_zgPlvD6vp5J7zi3u_VOMjsbcsEaldm0',
         'notification': {
           'title': title,
           'body': body,

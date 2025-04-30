@@ -60,7 +60,13 @@ class HomeRemoteFirebaseRepository {
 
   Future<List<UserModel>> getUsers() async {
     List<UserModel> users = [];
-    await firebaseFirestore.collection('users').get().then((value) {
+    await firebaseFirestore
+        .collection('users')
+        .where(
+          'addedChats',
+        )
+        .get()
+        .then((value) {
       for (var doc in value.docs) {
         users.add(UserModel.fromJson(doc.data()));
       }
@@ -137,17 +143,30 @@ class HomeRemoteFirebaseRepository {
   // O(n)
   // Create group
 
-  Future<void> createGroup(GroupModel group) async {
-    // upload the image then assign it
-    if (group.groupImageUrl != null) {
-      group.groupImageUrl =
-          await cloudinaryService.uploadImageThenGet(group.groupImageUrl!);
-    }
-    // Add to chat
-    await firebaseFirestore
-        .collection('chats')
-        .doc(group.chatId)
-        .set((group).toMap());
+  Future<void> deleteAccount() {
+    // delete the user from firebase auth
+    return firebaseAuth.currentUser!.delete().then((value) async {
+      // delete the user from firestore
+      await firebaseFirestore
+          .collection('users')
+          .doc(firebaseAuth.currentUser!.uid)
+          .delete();
+
+      // delete any chats or groups that related to user from firestore
+      await firebaseFirestore
+          .collection('chats')
+          .where('participantsUId',
+              arrayContains: firebaseAuth.currentUser!.uid)
+          .get()
+          .then((value) async {
+        for (var chat in value.docs) {
+          await firebaseFirestore
+              .collection('chats')
+              .doc(chat.data()['chatId'])
+              .delete();
+        }
+      });
+    });
   }
 
   // O(1)
@@ -206,25 +225,5 @@ class HomeRemoteFirebaseRepository {
         .collection('chats')
         .doc(chat.chatId)
         .set(chat.toMap());
-  }
-
-  Future<void> notifyGroupMembers(GroupModel group) async {
-    // Add the new group to users
-    await firebaseFirestore
-        .collection('users')
-        .where('uId', whereIn: group.participantsUId)
-        .get()
-        .then((users) async {
-      for (var user in users.docs) {
-        UserModel userModel = UserModel.fromJson(user.data());
-        userModel.addedChats ??= [];
-        userModel.addedChats!.add(group.chatId!);
-        // Update users
-        await firebaseFirestore
-            .collection('users')
-            .doc(userModel.uId)
-            .set(userModel.toMap());
-      }
-    });
   }
 }

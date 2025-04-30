@@ -7,17 +7,19 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 
-final sl = GetIt.instance;
+final sl = GetIt.asNewInstance();
 
 Future<void> initAuthSl() async {
   // Bloc
-  sl.registerFactory(() => AuthViewModel(authRepository: sl()));
+  sl.registerFactory(
+      () => AuthViewModel(authRepository: sl(), networkInfo: sl()));
 
   // Repositories
   sl.registerLazySingleton<AuthRepository>(() =>
       FirebaseAuthRepository(firebaseFirestore: sl(), firebaseAuth: sl()));
 
   //External
+
   sl.registerLazySingleton(() => FirebaseAuth.instance);
   sl.registerLazySingleton(() => FirebaseFirestore.instance);
   sl.registerLazySingleton(() => NetworkInfo(internetConnectionChecker: sl()));
