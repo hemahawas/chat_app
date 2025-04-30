@@ -1,16 +1,37 @@
-# chat_app
+# Flutter Chat App
 
-A new chat app Flutter project.
+A modern, feature-rich chat application built with **Flutter**, designed to provide seamless real-time communication. This app leverages **BLoC** for state management, **Firebase** and **APIs** for backend services, and **GetIt** for dependency injection. It offers a smooth and responsive user experience with a clean and intuitive UI.
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter application.
+**1. Authentication**
+* Secure user authentication using Firebase Authentication.
+* Supports email/password.
 
-A few resources to get you started if this is your first Flutter project:
+**2. Add New Connections**
+* Users can search for and add new connections by username.
+* Real-time updates for connection addition.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+**3. Real-Time Messaging**
+  * Instant, real-time messaging powered by Firebase Firestore.
+  * Supports text messages with timestamps and read receipts.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+**4. Search**
+* Create and manage group chats with multiple participants.
+
+
+## Technologies Used
+* Frontend: Flutter (Dart)
+* State Management: BLoC (Cubit)
+* Backend: Firebase (Authentication, Firestore, Cloud Functions) and REST APIs
+* Dependency Injection: GetIt
+* Real-Time Updates: Firebase Firestore
+* UI/UX: Custom widgets for a polished user experience
+
+## Application Demo
+[Chat App Demo](https://drive.google.com/file/d/1jlzEdJHsHSP6QNF19XXYFF41HiGaMNVx/view?usp=drive_link)
+
+## Contact
+* Email : ibraheem.rizk3@gmail.com
+* Linkedin : www.linkedin.com/in/ibraheem-rizk-hawas
+* Github : https://github.com/hemahawas
