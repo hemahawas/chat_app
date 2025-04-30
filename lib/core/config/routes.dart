@@ -10,7 +10,6 @@ import 'package:chat_app/features/group/presentation/view_model/group_arguments.
 import 'package:chat_app/features/home/presentation/view/home_view.dart';
 import 'package:chat_app/features/home/presentation/view/profile_view.dart';
 import 'package:chat_app/features/home/presentation/view/settings_view.dart';
-import 'package:chat_app/features/home/presentation/view/widgets/unadded_users.dart';
 import 'package:chat_app/features/home/presentation/view_model/cubit.dart';
 import 'package:chat_app/features/home/presentation/view_model/home_injection_container.dart'
     as home_di;
@@ -32,7 +31,6 @@ class Routes {
   static const String profileRoute = '/profileRoute';
   static const String messagingRoute = '/messagingRoute';
   static const String chatSearch = '/chatSearch';
-  static const String addUsersRoute = '/addUsersRoute';
   static const String newGroupRoute = '/newGroupRoute';
 }
 
@@ -82,21 +80,11 @@ class AppRoutes {
         return MaterialPageRoute(builder: (context) {
           return BlocProvider<MessagingViewModel>.value(
             value: messaging_di.sl<MessagingViewModel>()
-              // Here we got the arguments from routing then pass it to messaging view model
-              // I did this to avoid cascading in passing arguments.
-              // For more: https://www.geeksforgeeks.org/flutter-arguments-in-named-routes/
               ..getMessagingArguments(
                   routeSettings.arguments as MessagingArguments),
             child: const MessagingView(),
           );
         });
-      case Routes.addUsersRoute:
-        return MaterialPageRoute(
-          builder: (_) => BlocProvider.value(
-            value: home_di.sl<HomeViewModel>(),
-            child: UnAddedUsers(),
-          ),
-        );
       case Routes.newGroupRoute:
         return MaterialPageRoute(
             builder: (context) => BlocProvider(

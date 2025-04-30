@@ -1,6 +1,6 @@
 import 'package:chat_app/core/shared_widgets/custom_snack_bar.dart';
 import 'package:chat_app/core/shared_widgets/default_text_button.dart';
-import 'package:chat_app/main_development.dart';
+import 'package:chat_app/core/utils/global_variables.dart';
 import 'package:flutter/material.dart';
 
 class LoginButton extends StatelessWidget {

@@ -62,6 +62,8 @@ class _MessagesState extends State<Messages> {
                                 reverse: true,
                                 itemCount: cubit.chat!.messages!.length,
                                 itemBuilder: (context, index) => MessageItem(
+                                  key: ValueKey(
+                                      cubit.chat!.messages![index].messageId),
                                   participantNames: names,
                                   isGroup: cubit.chat is GroupModel,
                                   message: cubit.chat!.messages![index],

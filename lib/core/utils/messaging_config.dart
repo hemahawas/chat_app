@@ -81,7 +81,7 @@ class MessagingConfig {
       log("message received");
       try {
         RemoteNotification? notification = event.notification;
-        AndroidNotification? android = event.notification?.android;
+        //AndroidNotification? android = event.notification?.android;
         log(notification!.body.toString());
         log(notification.title.toString());
 

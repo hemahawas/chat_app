@@ -1,6 +1,7 @@
 import 'package:chat_app/core/config/routes.dart';
 import 'package:chat_app/core/themes/color_app.dart';
 import 'package:chat_app/features/group/presentation/view_model/group_arguments.dart';
+import 'package:chat_app/features/home/presentation/view/widgets/unadded_users.dart';
 import 'package:chat_app/features/home/presentation/view_model/cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,19 +23,12 @@ class PopupMenuItems extends StatelessWidget {
                       child: Text('New group'),
                       onTap: () {
                         Navigator.pushNamed(context, Routes.newGroupRoute,
-                                arguments: GroupArguments(
-                                    currentUser:
-                                        BlocProvider.of<HomeViewModel>(context)
-                                            .currentUser,
-                                    users:
-                                        BlocProvider.of<HomeViewModel>(context)
-                                            .addedUsers))
-                            .catchError((error) {
-                          showDialog(
-                              context: context,
-                              builder: (context) =>
-                                  Center(child: Text(error.toString())));
-                        });
+                            arguments: GroupArguments(
+                                currentUser:
+                                    BlocProvider.of<HomeViewModel>(context)
+                                        .currentUser,
+                                users: BlocProvider.of<HomeViewModel>(context)
+                                    .addedUsers));
                       }),
                   PopupMenuItem(
                     child: const Text('Profile'),
@@ -52,8 +46,14 @@ class PopupMenuItems extends StatelessWidget {
                   PopupMenuItem(
                     child: const Text('Add Users'),
                     onTap: () {
-                      Navigator.pushNamed(context, Routes.addUsersRoute,
-                          arguments: homeAppBarContext);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => BlocProvider.value(
+                                    value: BlocProvider.of<HomeViewModel>(
+                                        homeAppBarContext),
+                                    child: const UnAddedUsers(),
+                                  )));
                     },
                   ),
                 ]));

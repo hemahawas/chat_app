@@ -44,9 +44,11 @@ class _ChatBodyState extends State<ChatBody> {
                     return cubit.chats.isNotEmpty
                         ? RepaintBoundary(
                             child: ListView.builder(
+                              itemExtent: 65,
                               shrinkWrap: true,
                               physics: AlwaysScrollableScrollPhysics(),
                               itemBuilder: (context, index) => ChatItem(
+                                key: ValueKey(cubit.chats[index].chatId),
                                 isSearched: false,
                                 chatModel: cubit.chats[index],
                               ),

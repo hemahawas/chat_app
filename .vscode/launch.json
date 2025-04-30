@@ -39,20 +39,25 @@
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile",
-            "program": "lib/main_development.dart",
+            "program": "lib/main_production.dart",
             "toolArgs": [
                 "--flavor",
                 "development",
                 "--target",
-                "lib/main_development.dart",
+                "lib/main_production.dart",
                 "--no-enable-impeller"
             ]
         },
         {
-            "name": "chat_app (release mode)",
+            "name": "kalemni Production (build)",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "release"
+            "flutterMode": "release",
+            "program": "lib/main_production.dart",
+            "args": [
+                "--flavor",
+                "production"
+            ]
         }
     ]
 }

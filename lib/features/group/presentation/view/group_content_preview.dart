@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:chat_app/core/constants/app_strings.dart';
 import 'package:chat_app/core/shared_widgets/custom_appbar.dart';
 import 'package:chat_app/core/themes/color_app.dart';
+import 'package:chat_app/core/utils/global_variables.dart';
 import 'package:chat_app/core/utils/user_model.dart';
 import 'package:chat_app/features/group/data/model/group_model.dart';
 import 'package:chat_app/features/group/presentation/view/widgets/group_info_content.dart';
@@ -43,17 +43,22 @@ class _GroupContentPreviewState extends State<GroupContentPreview> {
     super.initState();
   }
 
+  onBackPressed() {
+    switch (currentStep) {
+      case 0:
+        Navigator.pop(context);
+        break;
+      case 1:
+        setState(() {
+          currentStep = 0;
+        });
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<GroupViewModel, GroupStates>(
-      listener: (context, state) {
-        if (state is ConnectionErrorState) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(AppStrings.noInternetConnection),
-            backgroundColor: Colors.red,
-          ));
-        }
-      },
+    return BlocBuilder<GroupViewModel, GroupStates>(
       builder: (context, state) => Scaffold(
         body: SafeArea(
           child: SizedBox(
@@ -63,18 +68,7 @@ class _GroupContentPreviewState extends State<GroupContentPreview> {
                 CustomAppbar(
                   text: 'Add Members',
                   iconButtons: [],
-                  onBackPressed: () {
-                    switch (currentStep) {
-                      case 0:
-                        Navigator.pop(context);
-                        break;
-                      case 1:
-                        setState(() {
-                          currentStep = 0;
-                        });
-                        break;
-                    }
-                  },
+                  onBackPressed: onBackPressed,
                 ),
                 getContent(currentStep),
               ],
@@ -83,19 +77,27 @@ class _GroupContentPreviewState extends State<GroupContentPreview> {
         ),
         floatingActionButton: AbsorbPointer(
           absorbing: isLoading,
-          child: FloatingActionButton(
-              backgroundColor: ColorApp.primaryColor,
-              onPressed: floatingActionButtonOnPressed,
-              child: isLoading
-                  ? RepaintBoundary(
-                      child: CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
-                      ),
-                    )
-                  : Icon(
-                      currentStep == 0 ? Icons.arrow_forward : Icons.done,
-                      size: 30,
-                    )),
+          child: ValueListenableBuilder(
+            valueListenable: networkMonitor.isOnline,
+            builder: (context, isConnected, child) => AbsorbPointer(
+              absorbing: !isConnected,
+              child: FloatingActionButton(
+                  backgroundColor:
+                      isConnected ? ColorApp.primaryColor : Colors.grey,
+                  onPressed: floatingActionButtonOnPressed,
+                  child: isLoading
+                      ? RepaintBoundary(
+                          child: CircularProgressIndicator(
+                            valueColor:
+                                AlwaysStoppedAnimation<Color>(Colors.black),
+                          ),
+                        )
+                      : Icon(
+                          currentStep == 0 ? Icons.arrow_forward : Icons.done,
+                          size: 30,
+                        )),
+            ),
+          ),
         ),
       ),
     );

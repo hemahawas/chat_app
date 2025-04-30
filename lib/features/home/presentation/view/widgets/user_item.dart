@@ -61,8 +61,7 @@ class _UserItemState extends State<UserItem> {
                         });
 
                         var cubit = BlocProvider.of<HomeViewModel>(context);
-                        await cubit.addNewChat(
-                            cubit.currentUser!, widget.model);
+                        await cubit.addNewChat(cubit.currentUser, widget.model);
                       },
                   icon: isPressed ? Icon(Icons.done) : Icon(Icons.add)),
             ),

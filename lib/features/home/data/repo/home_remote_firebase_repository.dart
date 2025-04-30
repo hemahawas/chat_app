@@ -60,7 +60,13 @@ class HomeRemoteFirebaseRepository {
 
   Future<List<UserModel>> getUsers() async {
     List<UserModel> users = [];
-    await firebaseFirestore.collection('users').get().then((value) {
+    await firebaseFirestore
+        .collection('users')
+        .where(
+          'addedChats',
+        )
+        .get()
+        .then((value) {
       for (var doc in value.docs) {
         users.add(UserModel.fromJson(doc.data()));
       }

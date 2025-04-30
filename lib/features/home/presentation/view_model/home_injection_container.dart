@@ -15,7 +15,7 @@ final sl = GetIt.instance;
 
 Future<void> initHomeSl() async {
   // Bloc
-  sl.registerCachedFactory(() => HomeViewModel(
+  sl.registerFactory(() => HomeViewModel(
       firebaseHomeRepository: sl(),
       localHomeRepository: sl(),
       networkInfo: sl()));

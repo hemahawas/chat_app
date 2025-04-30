@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:chat_app/core/shared_widgets/shared_functions.dart';
+import 'package:chat_app/core/utils/global_variables.dart';
 import 'package:chat_app/core/utils/network_info.dart';
 import 'package:chat_app/core/utils/user_model.dart';
 import 'package:chat_app/features/group/data/model/group_model.dart';
@@ -11,7 +12,6 @@ import 'package:chat_app/features/home/data/repo/home_local_hive_repository.dart
 import 'package:chat_app/features/home/data/repo/home_remote_firebase_repository.dart';
 import 'package:chat_app/features/home/presentation/view_model/states.dart';
 import 'package:chat_app/features/messaging/data/model/message_model.dart';
-import 'package:chat_app/main_development.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -85,9 +85,10 @@ class HomeViewModel extends Cubit<HomeStates> {
   Map<String, ChatModel> chatMapping = {};
 
   @override
-  Future<void> close() {
+  Future<void> close() async {
     chatController!.close();
     chatController = null;
+    await firebaseHomeRepository.getChatsInRealTime().listen(null).cancel();
     return super.close();
   }
 
@@ -235,9 +236,6 @@ class HomeViewModel extends Cubit<HomeStates> {
   }
 
   Future<void> updateUserImage(String image) async {
-    if (!networkMonitor.isOnline.value) {
-      emit(ConnectionErrorState());
-    }
     emit(UpdateUserImageLoadingState());
     return await firebaseHomeRepository
         .uploadUserImage(currentUser!, image)

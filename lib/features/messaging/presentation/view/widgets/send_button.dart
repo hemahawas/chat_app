@@ -1,9 +1,9 @@
 import 'package:chat_app/core/shared_widgets/icon_item_button.dart';
+import 'package:chat_app/core/utils/global_variables.dart';
 import 'package:chat_app/features/messaging/data/model/message_model.dart';
 import 'package:chat_app/features/messaging/presentation/view_model/cubit.dart';
 import 'package:chat_app/features/messaging/presentation/view_model/messaging_injection_container.dart'
     as messaging_di;
-import 'package:chat_app/main_development.dart';
 import 'package:flutter/material.dart';
 
 class SendButton extends StatelessWidget {

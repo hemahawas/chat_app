@@ -3,6 +3,7 @@ import 'package:chat_app/core/constants/app_strings.dart';
 import 'package:chat_app/core/shared_widgets/custom_snack_bar.dart';
 import 'package:chat_app/core/shared_widgets/default_text_button.dart';
 import 'package:chat_app/core/shared_widgets/shared_functions.dart';
+import 'package:chat_app/core/utils/global_variables.dart';
 import 'package:chat_app/features/auth/presentation/view_model/cubit.dart';
 import 'package:chat_app/features/auth/presentation/view_model/states.dart';
 import 'package:chat_app/main_development.dart';
