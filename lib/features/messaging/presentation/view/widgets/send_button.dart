@@ -25,6 +25,9 @@ class SendButton extends StatelessWidget {
             color: isConnected ? null : Colors.grey,
             size: 50,
             onPressed: () async {
+              if (sendController.text.isEmpty) {
+                return;
+              }
               var body = sendController.text;
               sendController.clear();
               MessageModel message = MessageModel(

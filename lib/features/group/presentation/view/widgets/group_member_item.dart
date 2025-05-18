@@ -12,7 +12,6 @@ class GroupMemberItem extends StatelessWidget {
       children: [
         ImageField(
           borderColor: Colors.transparent,
-          size: 50,
           image: model.image,
         ),
         SizedBox(

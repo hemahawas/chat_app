@@ -2,7 +2,6 @@ import 'package:chat_app/core/shared_widgets/icon_item_button.dart';
 import 'package:chat_app/core/utils/user_model.dart';
 import 'package:chat_app/features/group/presentation/view/widgets/group_user_item.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/image_field.dart';
-import 'package:chat_app/features/home/presentation/view/widgets/user_item.dart';
 import 'package:flutter/material.dart';
 
 class GroupUsersContent extends StatelessWidget {
@@ -30,6 +29,7 @@ class GroupUsersContent extends StatelessWidget {
                     height: 100,
                     child: RepaintBoundary(
                       child: ListView.builder(
+                        itemExtent: 50,
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
                         physics: const BouncingScrollPhysics(),
@@ -65,6 +65,7 @@ class GroupUsersContent extends StatelessWidget {
             ),
             RepaintBoundary(
               child: ListView.builder(
+                itemExtent: 65,
                 physics: AlwaysScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: users.length,

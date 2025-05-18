@@ -1,7 +1,5 @@
 import 'package:chat_app/core/config/routes.dart';
-import 'package:chat_app/core/constants/app_strings.dart';
-import 'package:chat_app/core/shared_widgets/custom_snack_bar.dart';
-import 'package:chat_app/core/shared_widgets/shared_functions.dart';
+import 'package:chat_app/core/shared_widgets/custom_circular_progress_indicator.dart';
 import 'package:chat_app/features/auth/presentation/view/widgets/email_field.dart';
 import 'package:chat_app/features/auth/presentation/view/widgets/login_button.dart';
 import 'package:chat_app/features/auth/presentation/view/widgets/login_title.dart';
@@ -14,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginBody extends StatefulWidget {
-  LoginBody({super.key});
+  const LoginBody({super.key});
 
   @override
   State<LoginBody> createState() => _LoginBodyState();
@@ -39,70 +37,54 @@ class _LoginBodyState extends State<LoginBody> {
     super.dispose();
   }
 
-  //var formKey = GlobalKey<FormState>();
+  var formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthViewModel, AuthStates>(
       listener: (context, state) {
         if (state is LoginSuccessState) {
-          showToast(msg: 'Login Successfully');
           Navigator.pushReplacementNamed(context, Routes.homeRoute);
-        } else if (state is LoginErrorState) {
-          showToast(msg: state.message);
-        }
-        if (state is ConnectionErrorState) {
-          CustomSnackBar.show(
-              context: context,
-              message: AppStrings.noInternetConnection,
-              color: Colors.red);
         }
       },
-      builder: (context, state) => SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.all(20.0),
-          child: SizedBox(
-            height: MediaQuery.of(context).size.height,
+      builder: (context, state) => Padding(
+        padding: EdgeInsets.all(20.0),
+        child: SingleChildScrollView(
+          child: Form(
+            key: formKey,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               spacing: 15,
               children: [
-                Expanded(flex: 5, child: const LogoWidget()),
-                Expanded(
-                  flex: 1,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 20.0),
-                    child: const LoginTitle(),
-                  ),
+                const LogoWidget(),
+                SizedBox(
+                  height: 32,
                 ),
-                Expanded(
-                    flex: 1,
-                    child: EmailField(emailController: emailController)),
-                Expanded(
-                  flex: 1,
-                  child: PasswordField(
-                      passwordController: passwordController,
-                      changeVisibility: () {
-                        BlocProvider.of<AuthViewModel>(context)
-                            .changeVisibility();
-                      },
-                      isPasswordVisible: BlocProvider.of<AuthViewModel>(context)
-                          .isPasswordVisible),
-                ),
-                Expanded(
-                  flex: 2,
-                  child: state is LoginLoadingState
-                      ? SizedBox(
-                          height: 30,
-                          child: Center(child: CircularProgressIndicator()))
-                      : LoginButton(
-                          emailController: emailController,
-                          passwordController: passwordController,
-                          onSuccess: () async {
+                const LoginTitle(),
+                EmailField(emailController: emailController),
+                PasswordField(
+                    passwordController: passwordController,
+                    changeVisibility: () {
+                      BlocProvider.of<AuthViewModel>(context)
+                          .changeVisibility();
+                    },
+                    isPasswordVisible: BlocProvider.of<AuthViewModel>(context)
+                        .isPasswordVisible),
+                state is LoginLoadingState
+                    ? SizedBox(
+                        height: 30,
+                        child: Center(child: CustomCircularProgressIndicator()))
+                    : LoginButton(
+                        emailController: emailController,
+                        passwordController: passwordController,
+                        onSuccess: () async {
+                          if (formKey.currentState!.validate()) {
                             await BlocProvider.of<AuthViewModel>(context).logIn(
                                 emailController.text, passwordController.text);
-                          },
-                        ),
-                ),
-                Expanded(flex: 3, child: const NvigatingToRegisterView()),
+                          }
+                        },
+                      ),
+                const NavigatingToRegisterView(),
               ],
             ),
           ),

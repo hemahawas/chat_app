@@ -20,7 +20,6 @@ class GroupImage extends StatelessWidget {
           ? ImageField(
               image: null,
               borderColor: Colors.transparent,
-              size: 100,
             )
           : ClipRRect(
               borderRadius: BorderRadius.circular(50),

@@ -2,8 +2,8 @@ import 'package:chat_app/core/config/routes.dart';
 import 'package:chat_app/core/themes/styles.dart';
 import 'package:flutter/material.dart';
 
-class NvigatingToRegisterView extends StatelessWidget {
-  const NvigatingToRegisterView({super.key});
+class NavigatingToRegisterView extends StatelessWidget {
+  const NavigatingToRegisterView({super.key});
 
   @override
   Widget build(BuildContext context) {

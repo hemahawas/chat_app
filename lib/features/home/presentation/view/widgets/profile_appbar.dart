@@ -1,4 +1,4 @@
-import 'package:chat_app/core/themes/color_app.dart';
+import 'package:chat_app/core/shared_widgets/platform_arrow_back.dart';
 import 'package:chat_app/core/themes/styles.dart';
 import 'package:flutter/material.dart';
 
@@ -22,9 +22,8 @@ class ProfileAppbar extends StatelessWidget {
             Navigator.pop(context);
           },
           icon: Icon(
-            Icons.arrow_back,
+            CustomPlatform.arrowBack,
             size: 35,
-            color: ColorApp.primaryColor,
           ),
         ),
       ),

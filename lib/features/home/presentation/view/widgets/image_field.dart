@@ -5,22 +5,18 @@ import 'package:flutter/material.dart';
 class ImageField extends StatelessWidget {
   final String? image;
   final Color borderColor;
-  final double? size;
   const ImageField({
     super.key,
     this.image,
     required this.borderColor,
-    this.size = 60,
   });
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: size!,
-      height: size!,
+    return AspectRatio(
+      aspectRatio: 1,
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(30),
           border: Border.all(color: borderColor, width: 3),
         ),
         child: ClipOval(

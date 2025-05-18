@@ -8,7 +8,6 @@ import 'package:chat_app/features/group/data/model/group_model.dart';
 import 'package:chat_app/features/home/data/model/call_Model.dart';
 import 'package:chat_app/features/home/data/model/chat_model.dart';
 import 'package:chat_app/features/home/data/model/status_model.dart';
-import 'package:chat_app/features/home/data/repo/home_local_hive_repository.dart';
 import 'package:chat_app/features/home/data/repo/home_remote_firebase_repository.dart';
 import 'package:chat_app/features/home/presentation/view_model/states.dart';
 import 'package:chat_app/features/messaging/data/model/message_model.dart';
@@ -21,16 +20,14 @@ class HomeViewModel extends Cubit<HomeStates> {
   late StreamController<QuerySnapshot<Map<String, dynamic>>>? chatController;
   StreamSubscription<QuerySnapshot>? chatSubscription;
   HomeViewModel(
-      {required this.firebaseHomeRepository,
-      required this.localHomeRepository,
-      required this.networkInfo})
+      {required this.firebaseHomeRepository, required this.networkInfo})
       : super(InitialHomeStates()) {
     chatController = StreamController.broadcast();
     _currentUserUId = firebaseHomeRepository.getCurrentUserUId();
   }
 
   final HomeRemoteFirebaseRepository firebaseHomeRepository;
-  final HomeLocalHiveRepository localHomeRepository;
+
   final NetworkInfo networkInfo;
 
   // To change the bottom nav bar

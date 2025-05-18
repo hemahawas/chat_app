@@ -1,4 +1,5 @@
 import 'package:chat_app/core/constants/app_sizes.dart';
+import 'package:chat_app/core/shared_widgets/custom_circular_progress_indicator.dart';
 import 'package:chat_app/core/shared_widgets/custom_snack_bar.dart';
 import 'package:chat_app/core/shared_widgets/responsive_sizedbox.dart';
 import 'package:chat_app/core/themes/styles.dart';
@@ -50,7 +51,7 @@ class _ProfileViewState extends State<ProfileView> {
           if (state is DeleteAccountLoadingState) {
             showDialog(
                 context: context,
-                builder: (context) => CircularProgressIndicator());
+                builder: (context) => CustomCircularProgressIndicator());
           }
           if (state is DeleteAccountSuccessState) {
             CustomSnackBar.show(

@@ -22,7 +22,6 @@ Widget defaultFormField(
       keyboardType: type,
       obscureText: isPassword,
       enabled: isClickable,
-      autovalidateMode: AutovalidateMode.onUserInteraction,
       onFieldSubmitted: (value) {
         if (onSubmit != null) {
           onSubmit(value);

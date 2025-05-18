@@ -12,18 +12,21 @@ class CustomAppbar extends StatelessWidget {
   final VoidCallback? onBackPressed;
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (onBackPressed != null)
-            IconButton(onPressed: onBackPressed, icon: Icon(Icons.arrow_back)),
-          Text(text, style: TextStyle(fontSize: 30)),
-          Spacer(),
-          Row(children: iconButtons),
-        ],
-      ),
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (onBackPressed != null)
+          IconButton(onPressed: onBackPressed, icon: Icon(Icons.arrow_back)),
+        Padding(
+          padding: const EdgeInsets.only(top: 8.0),
+          child: Text(
+            text,
+            style: TextStyle(fontSize: 20),
+          ),
+        ),
+        Spacer(),
+        Row(children: iconButtons),
+      ],
     );
   }
 }

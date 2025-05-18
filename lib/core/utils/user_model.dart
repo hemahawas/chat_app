@@ -1,27 +1,18 @@
-import 'package:chat_app/core/utils/hive_helper.dart';
 import 'package:chat_app/features/home/data/model/status_model.dart';
 import 'package:equatable/equatable.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 
-part 'user_model.g.dart';
-
-@HiveType(typeId: HiveHelper.userType)
 class UserModel extends Equatable {
-  @HiveField(HiveHelper.userNameField)
   String? name;
   String? email;
-  @HiveField(HiveHelper.userPhoneField)
   String? phone;
-  @HiveField(HiveHelper.userUIdField)
   String? uId;
-  @HiveField(HiveHelper.userImageField)
   String? image =
       'https://firebasestorage.googleapis.com/v0/b/my-project-4120f.appspot.com/o/default_components%2Fuser.png?alt=media&token=346e27d2-eee4-45cd-aa7c-024069ba1ca4';
 
   bool? isEmailVerified;
 
   List<String>? addedChats;
-  @HiveField(HiveHelper.userStatusField)
+
   StatusModel? status;
 
   UserModel({

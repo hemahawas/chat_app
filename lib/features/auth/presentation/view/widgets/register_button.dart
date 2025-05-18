@@ -1,7 +1,5 @@
-import 'package:chat_app/core/shared_widgets/custom_snack_bar.dart';
 import 'package:chat_app/core/shared_widgets/default_text_button.dart';
 import 'package:chat_app/core/utils/global_variables.dart';
-import 'package:chat_app/main_development.dart';
 import 'package:flutter/material.dart';
 
 class RegisterButton extends StatelessWidget {
@@ -23,22 +21,7 @@ class RegisterButton extends StatelessWidget {
       builder: (context, isConnected, _) => DefaultTextButton(
           isConnected: isConnected,
           onPressed: () {
-            if (!(emailController.text.contains('@'))) {
-              CustomSnackBar.show(
-                  color: Colors.grey,
-                  context: context,
-                  message: 'Email must contain @');
-            }
-            if (passwordController.text.length < 8) {
-              CustomSnackBar.show(
-                  color: Colors.grey,
-                  context: context,
-                  message: 'Password is too short');
-            }
-            if (emailController.text.contains('@') &&
-                passwordController.text.length >= 8) {
-              onSuccess();
-            }
+            onSuccess();
           },
           text: 'register'),
     );

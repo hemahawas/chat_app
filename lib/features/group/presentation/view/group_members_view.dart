@@ -25,41 +25,47 @@ class GroupMembersView extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.all(20.0),
             child: SingleChildScrollView(
-              physics: AlwaysScrollableScrollPhysics(),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ImageField(
-                    borderColor: Colors.transparent,
-                    size: 90,
-                    image: groupModel.groupImageUrl,
-                  ),
-                  Text(groupModel.groupName, style: Styles.textStyle24),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Container(
-                    height: 2,
-                    color: Colors.grey[400],
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      '${groupModel.participants!.length} Members',
-                      style: Styles.textStyle24,
-                    ),
-                  ),
-                  RepaintBoundary(
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemBuilder: (context, index) => GroupMemberItem(
-                        model: groupModel.participants![index],
+              child: Center(
+                child: Column(
+                  children: [
+                    ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxHeight: 120,
+                        maxWidth: 120,
                       ),
-                      itemCount: groupModel.participants!.length,
+                      child: ImageField(
+                        borderColor: Colors.transparent,
+                        image: groupModel.groupImageUrl,
+                      ),
                     ),
-                  ),
-                ],
+                    Text(groupModel.groupName, style: Styles.textStyle24),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Container(
+                      height: 2,
+                      color: Colors.grey[400],
+                    ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        '${groupModel.participants!.length} Members',
+                        style: Styles.textStyle24,
+                      ),
+                    ),
+                    RepaintBoundary(
+                      child: ListView.builder(
+                        itemExtent: 65,
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, index) => GroupMemberItem(
+                          model: groupModel.participants![index],
+                        ),
+                        itemCount: groupModel.participants!.length,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           )),
