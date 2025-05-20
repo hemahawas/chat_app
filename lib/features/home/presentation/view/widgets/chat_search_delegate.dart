@@ -21,11 +21,11 @@ class ChatSearchDelegate extends SearchDelegate {
   //To leave and close the search bar
   @override
   Widget? buildLeading(BuildContext context) {
-    return IconButton(
-        onPressed: () {
-          close(context, null);
-        },
-        icon: Icon(Icons.arrow_back));
+    return BackButton(
+      onPressed: () {
+        close(context, null);
+      },
+    );
   }
 
   // To get the results
@@ -68,6 +68,7 @@ class ChatSearchDelegate extends SearchDelegate {
           }
           // View the results
           return ListView.builder(
+            itemExtent: 65,
             itemCount: matchQuery.length,
             itemBuilder: (context, index) => matchQuery[index],
           );
@@ -104,7 +105,7 @@ class ChatSearchDelegate extends SearchDelegate {
               var anotherUser =
                   chatItem.chatModel.participants!.firstWhere((e) {
                 return e.uId !=
-                    BlocProvider.of<HomeViewModel>(context).currentUser!.uId;
+                    BlocProvider.of<HomeViewModel>(context).currentUser.uId;
               });
               if ((anotherUser.name!
                   .toLowerCase()
@@ -115,6 +116,7 @@ class ChatSearchDelegate extends SearchDelegate {
           }
           // View the results
           return ListView.builder(
+            itemExtent: 65,
             itemCount: matchQuery.length,
             itemBuilder: (context, index) => matchQuery[index],
           );

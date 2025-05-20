@@ -1,17 +1,10 @@
-import 'package:chat_app/core/utils/hive_helper.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-
-part 'message_model.g.dart';
-
-@HiveType(typeId: HiveHelper.messageType)
 class MessageModel {
-  @HiveField(HiveHelper.messageBodyField)
   String? body;
-  @HiveField(HiveHelper.messageImageField)
+
   String? image;
-  @HiveField(HiveHelper.messageSenderIdField)
+
   String? messageSenderId;
-  @HiveField(HiveHelper.messageSendingTimeField)
+
   DateTime? sendingTime;
   List<String> isSeenBy = [];
 

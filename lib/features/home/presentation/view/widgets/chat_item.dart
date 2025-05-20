@@ -4,6 +4,7 @@ import 'package:chat_app/core/themes/styles.dart';
 import 'package:chat_app/core/utils/user_model.dart';
 import 'package:chat_app/features/group/data/model/group_model.dart';
 import 'package:chat_app/features/home/data/model/chat_model.dart';
+import 'package:chat_app/features/home/presentation/view/widgets/chat_title.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/image_field.dart';
 import 'package:chat_app/features/home/presentation/view_model/cubit.dart';
 import 'package:chat_app/features/messaging/presentation/view_model/messaging_arguments.dart';
@@ -31,9 +32,8 @@ class ChatItem extends StatelessWidget {
       }
     }
 
-    return MaterialButton(
-      padding: EdgeInsets.all(5),
-      onPressed: () async {
+    return GestureDetector(
+      onTap: () async {
         // if This chat is searched, close the search,
         // so that when you press back arrow, you will back to home view
         if (isSearched) {
@@ -42,43 +42,35 @@ class ChatItem extends StatelessWidget {
 
         // Give the Required args from chat view model to messaging view model while routing
         // See the routes.dart file
-
         await Navigator.pushNamed(context, Routes.messagingRoute,
             arguments: MessagingArguments(
                 chatModel: chatModel, currentUser: cubit.currentUser));
       },
-      child: SizedBox(
-        height: 60,
-        width: MediaQuery.of(context).size.width,
+      child: Padding(
+        padding: const EdgeInsets.all(5),
         child: Row(
           children: [
-            Expanded(
-              flex: 2,
-              child: Padding(
-                padding: const EdgeInsets.only(right: 10),
-                child: ImageField(
-                  // user image
-                  image: chatModel is GroupModel
-                      ? (chatModel as GroupModel).groupImageUrl
-                      : anotherUser!.image,
-                  borderColor: Colors.white10,
-                ),
+            Padding(
+              padding: const EdgeInsets.only(right: 10),
+              child: ImageField(
+                // user image
+                image: chatModel is GroupModel
+                    ? (chatModel as GroupModel).groupImageUrl
+                    : anotherUser!.image,
+                borderColor: Colors.white10,
               ),
             ),
             Expanded(
-              flex: 9,
               child: Column(
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Expanded(
-                        child: Text(
-                          chatModel is GroupModel
+                        child: ChatTitle(
+                          chatName: chatModel is GroupModel
                               ? (chatModel as GroupModel).groupName
                               : anotherUser!.name!,
-                          style: Styles.textStyle15
-                              .copyWith(fontSize: 18, color: Colors.black),
                         ),
                       ),
                       Padding(

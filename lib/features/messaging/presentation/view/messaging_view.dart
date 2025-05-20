@@ -27,13 +27,19 @@ class MessagingView extends StatelessWidget {
                     .messagesIsSeen();
               }
             },
-            child: Scaffold(
-              resizeToAvoidBottomInset: true,
-              backgroundColor: Colors.transparent,
-              appBar: PreferredSize(
-                  preferredSize: Size.fromHeight(AppSizes.toolBarHieght),
-                  child: MessagingAppbar()),
-              body: MessagingBody(),
+            child: SafeArea(
+              top: false,
+              left: false,
+              right: false,
+              bottom: true,
+              child: Scaffold(
+                resizeToAvoidBottomInset: true,
+                backgroundColor: Colors.transparent,
+                appBar: PreferredSize(
+                    preferredSize: Size.fromHeight(AppSizes.toolBarHieght),
+                    child: MessagingAppbar()),
+                body: MessagingBody(),
+              ),
             ),
           ),
         );

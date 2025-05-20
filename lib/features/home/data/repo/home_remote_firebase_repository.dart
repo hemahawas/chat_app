@@ -21,37 +21,19 @@ class HomeRemoteFirebaseRepository {
     return firebaseAuth.currentUser!.uid;
   }
 
-  Future<List<ChatModel>> getChats() async {
-    List<ChatModel> chats = [];
-
-    // get chats from firebase
-    await firebaseFirestore.collection('chats').get().then((value) {
-      // get only the chats that connected with current user
-      for (var doc in value.docs) {
-        // Not Professional: convert all chats to model then pick only connected chat
-        var chat = ChatModel.fromJson(doc.data());
-
-        if (chat.chatId!
-            // ignore: collection_methods_unrelated_type
-            .contains(firebaseAuth.currentUser!.uid.toString())) {
-          chats.add(chat);
-        }
-      }
-    });
-
-    return chats;
-  }
-
   // O(1)
 
   Future<UserModel> getUserInfo() async {
-    UserModel user = UserModel(email: 'email');
+    UserModel user = UserModel(email: 'email', name: 'name', phone: 'phone');
     await firebaseFirestore
         .collection('users')
         .doc(firebaseAuth.currentUser!.uid)
         .get()
         .then((value) {
-      user = UserModel.fromJson(value.data());
+      var data = value.data();
+      if (data != null) {
+        user = UserModel.fromJson(data);
+      }
     });
     return user;
   }
@@ -62,19 +44,12 @@ class HomeRemoteFirebaseRepository {
     List<UserModel> users = [];
     await firebaseFirestore
         .collection('users')
-        .where(
-          'addedChats',
-        )
+        .where('uId', isNotEqualTo: firebaseAuth.currentUser!.uid)
         .get()
         .then((value) {
       for (var doc in value.docs) {
         users.add(UserModel.fromJson(doc.data()));
       }
-    });
-
-    // Remove the current user
-    users.removeWhere((user) {
-      return user.uId == firebaseAuth.currentUser!.uid;
     });
     return users;
   }
@@ -172,10 +147,17 @@ class HomeRemoteFirebaseRepository {
   // O(1)
 
   Future<void> uploadUserImage(UserModel user, String image) async {
-    // upload to cloudinary then put the url in user image
-    user.image = await cloudinaryService.uploadImageThenGet(image);
-    // Update user in firestore
-    await firebaseFirestore.collection('users').doc(user.uId).set(user.toMap());
+    try {
+      // upload to cloudinary then put the url in user image
+      user.image = await cloudinaryService.uploadImageThenGet(image);
+      // Update user in firestore
+      await firebaseFirestore
+          .collection('users')
+          .doc(user.uId)
+          .update({'image': user.image});
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 
   // O(n^2)
@@ -216,14 +198,5 @@ class HomeRemoteFirebaseRepository {
     }).catchError((error) {
       debugPrint('get Chat Error: ' '${error.toString()}');
     });
-  }
-
-  // O(1)
-
-  Future<void> chatIsSeen(ChatModel chat) async {
-    await firebaseFirestore
-        .collection('chats')
-        .doc(chat.chatId)
-        .set(chat.toMap());
   }
 }

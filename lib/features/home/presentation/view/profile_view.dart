@@ -1,6 +1,6 @@
 import 'package:chat_app/core/constants/app_sizes.dart';
+import 'package:chat_app/core/shared_widgets/custom_circular_progress_indicator.dart';
 import 'package:chat_app/core/shared_widgets/custom_snack_bar.dart';
-import 'package:chat_app/core/shared_widgets/responsive_sizedbox.dart';
 import 'package:chat_app/core/themes/styles.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/profile_appbar.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/profile_image_and_modify.dart';
@@ -42,15 +42,15 @@ class _ProfileViewState extends State<ProfileView> {
     TextEditingController phoneController = TextEditingController();
     final homeAppBarContext =
         ModalRoute.of(context)!.settings.arguments as BuildContext;
-    final cubit = BlocProvider.of<HomeViewModel>(homeAppBarContext);
+
     return BlocProvider.value(
-      value: cubit,
+      value: BlocProvider.of<HomeViewModel>(homeAppBarContext),
       child: BlocConsumer<HomeViewModel, HomeStates>(
         listener: (context, state) {
           if (state is DeleteAccountLoadingState) {
             showDialog(
                 context: context,
-                builder: (context) => CircularProgressIndicator());
+                builder: (context) => CustomCircularProgressIndicator());
           }
           if (state is DeleteAccountSuccessState) {
             CustomSnackBar.show(
@@ -60,8 +60,9 @@ class _ProfileViewState extends State<ProfileView> {
           }
         },
         builder: (context, state) {
-          nameController.text = cubit.currentUser.name!;
-          phoneController.text = cubit.currentUser.phone!;
+          final cubit = BlocProvider.of<HomeViewModel>(context);
+          nameController.text = cubit.currentUser.name;
+          phoneController.text = cubit.currentUser.phone;
 
           return Scaffold(
             appBar: PreferredSize(
@@ -73,23 +74,20 @@ class _ProfileViewState extends State<ProfileView> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ResponsiveSizedBox(
-                      sizedBoxContext: context,
-                      hasHeight: true,
+                    SizedBox(
+                      height: 10,
                     ),
                     Center(
                       child: ProfileImageAndModify(
                         userProfileImage: cubit.currentUser.image,
                       ),
                     ),
-                    ResponsiveSizedBox(
-                      sizedBoxContext: context,
-                      hasHeight: true,
+                    SizedBox(
+                      height: 10,
                     ),
                     const SeparatingLine(),
-                    ResponsiveSizedBox(
-                      sizedBoxContext: context,
-                      hasHeight: true,
+                    SizedBox(
+                      height: 10,
                     ),
                     Text(
                       'Name',
@@ -100,9 +98,8 @@ class _ProfileViewState extends State<ProfileView> {
                     AbsorbPointer(
                         child:
                             ProfileInputField(inputController: nameController)),
-                    ResponsiveSizedBox(
-                      sizedBoxContext: context,
-                      hasHeight: true,
+                    SizedBox(
+                      height: 10,
                     ),
                     Text(
                       'Phone',
@@ -113,9 +110,8 @@ class _ProfileViewState extends State<ProfileView> {
                     AbsorbPointer(
                         child: ProfileInputField(
                             inputController: phoneController)),
-                    ResponsiveSizedBox(
-                      sizedBoxContext: context,
-                      hasHeight: true,
+                    SizedBox(
+                      height: 10,
                     ),
                   ],
                 ),

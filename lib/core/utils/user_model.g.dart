@@ -3,51 +3,29 @@
 part of 'user_model.dart';
 
 // **************************************************************************
-// TypeAdapterGenerator
+// JsonSerializableGenerator
 // **************************************************************************
 
-class UserModelAdapter extends TypeAdapter<UserModel> {
-  @override
-  final int typeId = 2;
-
-  @override
-  UserModel read(BinaryReader reader) {
-    final numOfFields = reader.readByte();
-    final fields = <int, dynamic>{
-      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
-    };
-    return UserModel(
-      name: fields[0] as String?,
-      phone: fields[1] as String?,
-      uId: fields[2] as String?,
-      image: fields[3] as String?,
-      status: fields[4] as StatusModel?,
+UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
+      addedChats: (json['addedChats'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          [],
+      email: json['email'] as String,
+      name: json['name'] as String,
+      phone: json['phone'] as String,
+      uId: json['uId'] as String? ?? '',
+      image: json['image'] as String? ??
+          'https://firebasestorage.googleapis.com/v0/b/my-project-4120f.appspot.com/o/default_components%2Fuser.png?alt=media&token=346e27d2-eee4-45cd-aa7c-024069ba1ca4',
+      isEmailVerified: json['isEmailVerified'] as bool? ?? false,
     );
-  }
 
-  @override
-  void write(BinaryWriter writer, UserModel obj) {
-    writer
-      ..writeByte(5)
-      ..writeByte(0)
-      ..write(obj.name)
-      ..writeByte(1)
-      ..write(obj.phone)
-      ..writeByte(2)
-      ..write(obj.uId)
-      ..writeByte(3)
-      ..write(obj.image)
-      ..writeByte(4)
-      ..write(obj.status);
-  }
-
-  @override
-  int get hashCode => typeId.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is UserModelAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
-}
+Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
+      'name': instance.name,
+      'email': instance.email,
+      'phone': instance.phone,
+      'uId': instance.uId,
+      'image': instance.image,
+      'isEmailVerified': instance.isEmailVerified,
+      'addedChats': instance.addedChats,
+    };

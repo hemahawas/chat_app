@@ -1,4 +1,3 @@
-import 'package:chat_app/core/themes/color_app.dart';
 import 'package:chat_app/core/themes/styles.dart';
 import 'package:flutter/material.dart';
 
@@ -17,15 +16,10 @@ class ProfileAppbar extends StatelessWidget {
       ),
       leading: Padding(
         padding: EdgeInsets.only(top: 10.0),
-        child: IconButton(
+        child: BackButton(
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Icon(
-            Icons.arrow_back,
-            size: 35,
-            color: ColorApp.primaryColor,
-          ),
         ),
       ),
       bottom: PreferredSize(

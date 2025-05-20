@@ -1,6 +1,6 @@
 import 'package:chat_app/core/utils/user_model.dart';
 
-class StatusModel extends UserModel {
+class StatusModel {
   String? statusContent;
   String? statusMedia;
   List<UserModel>? viewingUsers;

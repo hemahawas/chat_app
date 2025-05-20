@@ -7,7 +7,6 @@ class CallModel {
   UserModel? caller;
   String? callingDuration;
 
-  // TODO
   // 1. Constructor
   // 2. from Json
   // 3. to Map

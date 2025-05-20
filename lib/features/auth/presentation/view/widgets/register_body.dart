@@ -1,6 +1,5 @@
 import 'package:chat_app/core/config/routes.dart';
-import 'package:chat_app/core/constants/app_strings.dart';
-import 'package:chat_app/core/shared_widgets/custom_snack_bar.dart';
+import 'package:chat_app/core/shared_widgets/custom_circular_progress_indicator.dart';
 import 'package:chat_app/core/utils/user_model.dart';
 import 'package:chat_app/features/auth/presentation/view/widgets/email_field.dart';
 import 'package:chat_app/features/auth/presentation/view/widgets/logo_widget.dart';
@@ -16,7 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RegisterBody extends StatefulWidget {
-  RegisterBody({super.key});
+  const RegisterBody({super.key});
 
   @override
   State<RegisterBody> createState() => _RegisterBodyState();
@@ -24,11 +23,8 @@ class RegisterBody extends StatefulWidget {
 
 class _RegisterBodyState extends State<RegisterBody> {
   late final TextEditingController emailController;
-
   late final TextEditingController passwordController;
-
   late final TextEditingController nameController;
-
   late final TextEditingController phoneController;
 
   @override
@@ -49,7 +45,7 @@ class _RegisterBodyState extends State<RegisterBody> {
     super.dispose();
   }
 
-  //var key = GlobalKey<FormState>();
+  var formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthViewModel, AuthStates>(
@@ -57,66 +53,52 @@ class _RegisterBodyState extends State<RegisterBody> {
         if (state is RegisterSuccessState) {
           Navigator.pushReplacementNamed(context, Routes.homeRoute);
         }
-
-        if (state is ConnectionErrorState) {
-          CustomSnackBar.show(
-              context: context,
-              message: AppStrings.noInternetConnection,
-              color: Colors.red);
-        }
       },
-      builder: (context, state) => SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.0),
-          child: SizedBox(
-            height: MediaQuery.of(context).size.height,
+      builder: (context, state) => Padding(
+        padding: EdgeInsets.symmetric(horizontal: 20.0),
+        child: SingleChildScrollView(
+          child: Form(
+            key: formKey,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             child: Column(
               spacing: 15,
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Expanded(flex: 4, child: const LogoWidget()),
-                Expanded(flex: 1, child: const RegisterTitle()),
-                Expanded(
-                    flex: 1, child: NameField(nameController: nameController)),
-                Expanded(
-                    flex: 1,
-                    child: EmailField(emailController: emailController)),
-                Expanded(
-                    flex: 1,
-                    child: PhoneField(phoneController: phoneController)),
-                Expanded(
-                  flex: 1,
-                  child: PasswordField(
-                      passwordController: passwordController,
-                      changeVisibility: () {
-                        BlocProvider.of<AuthViewModel>(context)
-                            .changeVisibility();
-                      },
-                      isPasswordVisible: BlocProvider.of<AuthViewModel>(context)
-                          .isPasswordVisible),
-                ),
-                Expanded(
-                    flex: 1,
-                    child: state is RegisterLoadingState
-                        ? SizedBox(
-                            height: 30,
-                            child: const Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                          )
-                        : RegisterButton(
-                            emailController: emailController,
-                            passwordController: passwordController,
-                            onSuccess: () async {
-                              UserModel userModel = UserModel(
-                                  email: emailController.text,
-                                  name: nameController.text,
-                                  phone: phoneController.text);
-                              await BlocProvider.of<AuthViewModel>(context)
-                                  .register(userModel, passwordController.text);
-                            })),
-                Expanded(flex: 1, child: const NavigatingToLoginView()),
+                const LogoWidget(),
+                const RegisterTitle(),
+                NameField(nameController: nameController),
+                EmailField(emailController: emailController),
+                PhoneField(phoneController: phoneController),
+                PasswordField(
+                    passwordController: passwordController,
+                    changeVisibility: () {
+                      BlocProvider.of<AuthViewModel>(context)
+                          .changeVisibility();
+                    },
+                    isPasswordVisible: BlocProvider.of<AuthViewModel>(context)
+                        .isPasswordVisible),
+                state is RegisterLoadingState
+                    ? SizedBox(
+                        height: 30,
+                        child: const Center(
+                          child: CustomCircularProgressIndicator(),
+                        ),
+                      )
+                    : RegisterButton(
+                        emailController: emailController,
+                        passwordController: passwordController,
+                        onSuccess: () async {
+                          if (formKey.currentState!.validate()) {
+                            UserModel userModel = UserModel(
+                                email: emailController.text,
+                                name: nameController.text,
+                                phone: phoneController.text);
+                            await BlocProvider.of<AuthViewModel>(context)
+                                .register(userModel, passwordController.text);
+                          }
+                        }),
+                const NavigatingToLoginView(),
               ],
             ),
           ),
