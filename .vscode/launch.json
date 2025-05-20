@@ -40,12 +40,12 @@
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile",
-            "program": "lib/main_production.dart",
+            "program": "lib/main_development.dart",
             "toolArgs": [
                 "--flavor",
                 "development",
                 "--target",
-                "lib/main_production.dart",
+                "lib/main_development.dart",
                 "--no-enable-impeller"
             ]
         },

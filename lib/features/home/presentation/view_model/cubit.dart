@@ -235,10 +235,10 @@ class HomeViewModel extends Cubit<HomeStates> {
   Future<void> updateUserImage(String image) async {
     emit(UpdateUserImageLoadingState());
     return await firebaseHomeRepository
-        .uploadUserImage(currentUser!, image)
+        .uploadUserImage(currentUser, image)
         .then((_) {
       emit(UpdateUserImageSuccessState());
-      notifyUserChange(currentUser!);
+      notifyUserChange(currentUser);
     }).catchError((error) {
       _handleError(error, UpdateUserImageErrorState());
     });

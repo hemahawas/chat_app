@@ -59,7 +59,12 @@ class _GroupContentPreviewState extends State<GroupContentPreview> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<GroupViewModel, GroupStates>(
+    return BlocConsumer<GroupViewModel, GroupStates>(
+      listener: (context, state) {
+        if (state is CreateGroupSuccessState) {
+          Navigator.popUntil(context, (route) => route.isFirst);
+        }
+      },
       builder: (context, state) => Scaffold(
         body: SafeArea(
           child: SizedBox(
@@ -88,8 +93,11 @@ class _GroupContentPreviewState extends State<GroupContentPreview> {
                     isConnected ? ColorApp.primaryColor : Colors.grey,
                 onPressed: floatingActionButtonOnPressed,
                 child: isLoading
-                    ? CustomCircularProgressIndicator(
-                        color: Colors.white,
+                    ? Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: CustomCircularProgressIndicator(
+                          color: Colors.white,
+                        ),
                       )
                     : Icon(
                         color: Colors.white,
@@ -165,9 +173,9 @@ class _GroupContentPreviewState extends State<GroupContentPreview> {
             newMessages: newMessages);
 
         // Create group chat
-        await BlocProvider.of<GroupViewModel>(context).createGroup(group);
-        // Go to home
-        Navigator.popUntil(context, (route) => route.isFirst);
+        await BlocProvider.of<GroupViewModel>(context)
+            .createGroup(group)
+            .then((_) {});
 
         break;
     }

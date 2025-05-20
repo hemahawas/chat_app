@@ -7,6 +7,7 @@ import 'package:chat_app/features/messaging/presentation/view_model/messaging_in
     as messaging_di;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Messages extends StatefulWidget {
   const Messages({super.key});
@@ -20,7 +21,7 @@ class _MessagesState extends State<Messages> {
   @override
   void initState() {
     _messagesSnapshots =
-        messaging_di.sl<MessagingViewModel>().getMessagesInRealTime();
+        BlocProvider.of<MessagingViewModel>(context).getMessagesInRealTime();
 
     super.initState();
   }
@@ -32,7 +33,7 @@ class _MessagesState extends State<Messages> {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = messaging_di.sl<MessagingViewModel>();
+    final cubit = BlocProvider.of<MessagingViewModel>(context);
     return StreamBuilder(
         stream: _messagesSnapshots,
         builder: (context, snapShot) {
@@ -46,10 +47,11 @@ class _MessagesState extends State<Messages> {
             case ConnectionState.done:
               if (snapShot.hasData) {
                 cubit.setMessages(snapShot);
-
                 Map<String, String> names = {};
-                names.addEntries(cubit.chat!.participants!
-                    .map((e) => MapEntry(e.uId!, e.name!)));
+                if (cubit.chat is GroupModel) {
+                  names.addEntries(cubit.chat!.participants!
+                      .map((e) => MapEntry(e.uId!, e.name)));
+                }
 
                 return Expanded(
                   child: SizedBox(

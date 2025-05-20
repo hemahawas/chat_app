@@ -10,22 +10,28 @@ class GroupMemberItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        ImageField(
-          borderColor: Colors.transparent,
-          image: model.image,
+        ConstrainedBox(
+          constraints: const BoxConstraints(
+            maxWidth: 50,
+          ),
+          child: ImageField(
+            borderColor: Colors.transparent,
+            image: model.image,
+          ),
         ),
         SizedBox(
           width: 10,
         ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              model.name!,
+              model.name,
               style: Styles.textStyle24.copyWith(fontSize: 12),
             ),
             Text(
-              model.phone!,
+              model.phone,
               style:
                   Styles.textStyle15.copyWith(fontSize: 12, color: Colors.grey),
             ),

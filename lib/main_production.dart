@@ -11,6 +11,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'firebase_options.dart';
 import 'injection_container.dart' as di;
@@ -20,6 +21,9 @@ void main() async {
 
   // Dependency injection config
   di.init();
+
+  // Security Config
+  await dotenv.load(fileName: "../.env");
 
   // Bloc observer config
   Bloc.observer = AppBlocObserver();

@@ -15,10 +15,8 @@ class CallItem extends StatelessWidget {
           image: AssetImages.userImage,
           borderColor: Colors.white10,
         ),
-        ResponsiveSizedBox(
-          sizedBoxContext: context,
-          hasWidth: true,
-          widthFraction: 20,
+        SizedBox(
+          width: 10,
         ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -28,10 +26,8 @@ class CallItem extends StatelessWidget {
               style: Styles.textStyle15
                   .copyWith(fontSize: 18, color: Colors.black87),
             ),
-            ResponsiveSizedBox(
-              sizedBoxContext: context,
-              hasHeight: true,
-              heightFraction: 70,
+            SizedBox(
+              height: 10,
             ),
             Text(
               'Today, 10:30 PM',

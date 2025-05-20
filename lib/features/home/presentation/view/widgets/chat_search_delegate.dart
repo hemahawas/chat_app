@@ -21,11 +21,11 @@ class ChatSearchDelegate extends SearchDelegate {
   //To leave and close the search bar
   @override
   Widget? buildLeading(BuildContext context) {
-    return IconButton(
-        onPressed: () {
-          close(context, null);
-        },
-        icon: Icon(Icons.arrow_back));
+    return BackButton(
+      onPressed: () {
+        close(context, null);
+      },
+    );
   }
 
   // To get the results

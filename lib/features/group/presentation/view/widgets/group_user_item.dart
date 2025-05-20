@@ -23,10 +23,8 @@ class _GroupUserItemState extends State<GroupUserItem> {
           image: widget.model.image,
           borderColor: Colors.transparent,
         ),
-        ResponsiveSizedBox(
-          sizedBoxContext: context,
-          hasWidth: true,
-          widthFraction: 20,
+        SizedBox(
+          width: 10,
         ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,

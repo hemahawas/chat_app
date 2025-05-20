@@ -30,10 +30,8 @@ class _MessagingBodyState extends State<MessagingBody> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        ResponsiveSizedBox(
-          sizedBoxContext: context,
-          hasHeight: true,
-          heightFraction: 80,
+        SizedBox(
+          height: 20,
         ),
         Messages(),
         Row(

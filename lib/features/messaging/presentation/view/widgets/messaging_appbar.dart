@@ -35,11 +35,8 @@ class MessagingAppbar extends StatelessWidget {
       leading: SizedBox(
         height: 30,
         width: 30,
-        child: IconButton(
-          padding: EdgeInsets.zero,
-          iconSize: 20,
-          icon: Icon(CustomPlatform.arrowBack),
-          onPressed: () async {
+        child: BackButton(
+          onPressed: () {
             cubit.messagesIsSeen();
             Navigator.pop(context, cubit.chat);
           },
@@ -72,8 +69,9 @@ class MessagingAppbar extends StatelessWidget {
               ),
             ),
             Expanded(
-              child: Text(
-                  '${cubit.chat is GroupModel ? (cubit.chat as GroupModel).groupName : anotherUser!.name}'),
+              child: Text(cubit.chat is GroupModel
+                  ? (cubit.chat as GroupModel).groupName
+                  : anotherUser!.name),
             ),
           ],
         ),

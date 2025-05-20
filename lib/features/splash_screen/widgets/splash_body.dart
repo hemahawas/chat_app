@@ -1,6 +1,5 @@
 import 'package:chat_app/core/constants/app_strings.dart';
 import 'package:chat_app/core/constants/asset_images.dart';
-import 'package:chat_app/core/shared_widgets/responsive_sizedbox.dart';
 import 'package:chat_app/core/themes/color_app.dart';
 import 'package:flutter/material.dart';
 
@@ -27,9 +26,8 @@ class SplashBody extends StatelessWidget {
               fontSize: 25,
             ),
           ),
-          ResponsiveSizedBox(
-            sizedBoxContext: context,
-            hasHeight: true,
+          SizedBox(
+            height: 10,
           ),
           Text(
             AppStrings.splashTitle,

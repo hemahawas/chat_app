@@ -1,4 +1,6 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 class EndPoints {
-  static const String cloudinary = 'https://api.cloudinary.com/v1_1/drdht9ipy/';
-  static const String cloudinaryUpload = '${cloudinary}upload';
+  static String cloudinary = dotenv.env['CLOUDINARY_URL'] ?? '';
+  static String cloudinaryUpload = '${cloudinary}upload';
 }

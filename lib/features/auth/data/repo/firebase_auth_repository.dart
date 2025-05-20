@@ -26,7 +26,7 @@ class FirebaseAuthRepository extends AuthRepository {
   Future<void> register(UserModel model, String password) async {
     // Create user
     await firebaseAuth
-        .createUserWithEmailAndPassword(email: model.email!, password: password)
+        .createUserWithEmailAndPassword(email: model.email, password: password)
         .then((userCredential) async {
       model.uId = userCredential.user!.uid;
 

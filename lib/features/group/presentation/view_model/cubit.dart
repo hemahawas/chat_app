@@ -1,4 +1,3 @@
-import 'package:chat_app/core/utils/global_variables.dart';
 import 'package:chat_app/core/utils/network_info.dart';
 import 'package:chat_app/core/utils/user_model.dart';
 import 'package:chat_app/features/group/data/model/group_model.dart';

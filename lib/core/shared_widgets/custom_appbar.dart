@@ -16,7 +16,9 @@ class CustomAppbar extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (onBackPressed != null)
-          IconButton(onPressed: onBackPressed, icon: Icon(Icons.arrow_back)),
+          BackButton(
+            onPressed: onBackPressed,
+          ),
         Padding(
           padding: const EdgeInsets.only(top: 8.0),
           child: Text(

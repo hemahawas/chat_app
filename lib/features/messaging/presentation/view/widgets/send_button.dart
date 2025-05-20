@@ -5,6 +5,7 @@ import 'package:chat_app/features/messaging/presentation/view_model/cubit.dart';
 import 'package:chat_app/features/messaging/presentation/view_model/messaging_injection_container.dart'
     as messaging_di;
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SendButton extends StatelessWidget {
   const SendButton({super.key, required this.sendController});
@@ -15,6 +16,7 @@ class SendButton extends StatelessWidget {
     return ValueListenableBuilder<bool>(
       valueListenable: networkMonitor.isOnline,
       builder: (context, isConnected, _) {
+        final cubit = BlocProvider.of<MessagingViewModel>(context);
         return AbsorbPointer(
           absorbing: !isConnected,
           child: IconItemButton(
@@ -33,11 +35,9 @@ class SendButton extends StatelessWidget {
               MessageModel message = MessageModel(
                   body: body,
                   image: '',
-                  messageSenderId:
-                      messaging_di.sl<MessagingViewModel>().currentUser!.uId,
+                  messageSenderId: cubit.currentUser!.uId,
                   sendingTime: DateTime.now().toLocal());
-              await messaging_di.sl<MessagingViewModel>().sendTextMessage(
-                  messaging_di.sl<MessagingViewModel>().chat!, message);
+              await cubit.sendTextMessage(cubit.chat!, message);
             },
           ),
         );
