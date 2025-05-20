@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:chat_app/core/config/routes.dart';
@@ -12,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:root_checker_plus/root_checker_plus.dart';
 
 import 'firebase_options.dart';
 import 'injection_container.dart' as di;
@@ -23,7 +25,27 @@ void main() async {
   di.init();
 
   // Security Config
-  await dotenv.load(fileName: "../.env");
+  await dotenv.load(fileName: ".env");
+  bool rootedCheck = false;
+  bool jailBreak = false;
+
+  if (Platform.isAndroid) {
+    try {
+      rootedCheck = (await RootCheckerPlus.isRootChecker())!;
+    } on PlatformException {
+      rootedCheck = false;
+    }
+  } else if (Platform.isIOS) {
+    try {
+      jailBreak = (await RootCheckerPlus.isJailbreak())!;
+    } on PlatformException {
+      jailBreak = false;
+    }
+  }
+
+  if (rootedCheck || jailBreak) {
+    return;
+  }
 
   // Bloc observer config
   Bloc.observer = AppBlocObserver();
