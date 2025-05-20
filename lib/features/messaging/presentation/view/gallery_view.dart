@@ -76,6 +76,9 @@ class GalleryView extends StatelessWidget {
                               child: BlocBuilder<MessagingViewModel,
                                   MessagingStates>(
                                 builder: (context, state) {
+                                  final cubit =
+                                      BlocProvider.of<MessagingViewModel>(
+                                          context);
                                   return AbsorbPointer(
                                     absorbing: !isConnected,
                                     child: IconButton(
@@ -84,20 +87,13 @@ class GalleryView extends StatelessWidget {
                                         var message = MessageModel(
                                             body: messageController.text,
                                             image: path,
-                                            messageSenderId: messaging_di
-                                                .sl<MessagingViewModel>()
-                                                .currentUser!
-                                                .uId,
+                                            messageSenderId:
+                                                cubit.currentUser!.uId,
                                             sendingTime:
                                                 DateTime.now().toLocal());
                                         // Then send the message
-                                        messaging_di
-                                            .sl<MessagingViewModel>()
-                                            .sendImageMessage(
-                                                messaging_di
-                                                    .sl<MessagingViewModel>()
-                                                    .chat!,
-                                                message);
+                                        cubit.sendImageMessage(
+                                            cubit.chat!, message);
                                         // Then return to messaging view
                                         Navigator.pop(context);
                                       },

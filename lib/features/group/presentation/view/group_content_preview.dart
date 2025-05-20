@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:chat_app/core/shared_widgets/custom_appbar.dart';
+import 'package:chat_app/core/shared_widgets/custom_circular_progress_indicator.dart';
 import 'package:chat_app/core/themes/color_app.dart';
 import 'package:chat_app/core/utils/global_variables.dart';
 import 'package:chat_app/core/utils/user_model.dart';
@@ -58,45 +59,51 @@ class _GroupContentPreviewState extends State<GroupContentPreview> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<GroupViewModel, GroupStates>(
+    return BlocConsumer<GroupViewModel, GroupStates>(
+      listener: (context, state) {
+        if (state is CreateGroupSuccessState) {
+          Navigator.popUntil(context, (route) => route.isFirst);
+        }
+      },
       builder: (context, state) => Scaffold(
         body: SafeArea(
           child: SizedBox(
             height: MediaQuery.of(context).size.height,
             child: Column(
               children: [
-                CustomAppbar(
-                  text: 'Add Members',
-                  iconButtons: [],
-                  onBackPressed: onBackPressed,
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: CustomAppbar(
+                    text: 'Add Members',
+                    iconButtons: [],
+                    onBackPressed: onBackPressed,
+                  ),
                 ),
                 getContent(currentStep),
               ],
             ),
           ),
         ),
-        floatingActionButton: AbsorbPointer(
-          absorbing: isLoading,
-          child: ValueListenableBuilder(
-            valueListenable: networkMonitor.isOnline,
-            builder: (context, isConnected, child) => AbsorbPointer(
-              absorbing: !isConnected,
-              child: FloatingActionButton(
-                  backgroundColor:
-                      isConnected ? ColorApp.primaryColor : Colors.grey,
-                  onPressed: floatingActionButtonOnPressed,
-                  child: isLoading
-                      ? RepaintBoundary(
-                          child: CircularProgressIndicator(
-                            valueColor:
-                                AlwaysStoppedAnimation<Color>(Colors.black),
-                          ),
-                        )
-                      : Icon(
-                          currentStep == 0 ? Icons.arrow_forward : Icons.done,
-                          size: 30,
-                        )),
-            ),
+        floatingActionButton: ValueListenableBuilder(
+          valueListenable: networkMonitor.isOnline,
+          builder: (context, isConnected, child) => AbsorbPointer(
+            absorbing: !isConnected || isLoading,
+            child: FloatingActionButton(
+                backgroundColor:
+                    isConnected ? ColorApp.primaryColor : Colors.grey,
+                onPressed: floatingActionButtonOnPressed,
+                child: isLoading
+                    ? Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: CustomCircularProgressIndicator(
+                          color: Colors.white,
+                        ),
+                      )
+                    : Icon(
+                        color: Colors.white,
+                        currentStep == 0 ? Icons.arrow_forward : Icons.done,
+                        size: 30,
+                      )),
           ),
         ),
       ),
@@ -166,9 +173,9 @@ class _GroupContentPreviewState extends State<GroupContentPreview> {
             newMessages: newMessages);
 
         // Create group chat
-        await BlocProvider.of<GroupViewModel>(context).createGroup(group);
-        // Go to home
-        Navigator.popUntil(context, (route) => route.isFirst);
+        await BlocProvider.of<GroupViewModel>(context)
+            .createGroup(group)
+            .then((_) {});
 
         break;
     }

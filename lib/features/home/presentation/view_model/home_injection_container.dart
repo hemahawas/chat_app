@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:chat_app/core/utils/cloudinary_service.dart';
 import 'package:chat_app/core/utils/network_info.dart';
 import 'package:chat_app/features/group/presentation/view_model/cubit.dart';
-import 'package:chat_app/features/home/data/repo/home_local_hive_repository.dart';
+
 import 'package:chat_app/features/home/data/repo/home_remote_firebase_repository.dart';
 import 'package:chat_app/features/home/presentation/view_model/cubit.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -15,10 +15,8 @@ final sl = GetIt.instance;
 
 Future<void> initHomeSl() async {
   // Bloc
-  sl.registerFactory(() => HomeViewModel(
-      firebaseHomeRepository: sl(),
-      localHomeRepository: sl(),
-      networkInfo: sl()));
+  sl.registerFactory(
+      () => HomeViewModel(firebaseHomeRepository: sl(), networkInfo: sl()));
 
   sl.registerFactory(() => GroupViewModel());
   // Repositories
@@ -27,8 +25,6 @@ Future<void> initHomeSl() async {
           cloudinaryService: sl(),
           firebaseAuth: sl(),
           firebaseFirestore: sl()));
-  sl.registerLazySingleton<HomeLocalHiveRepository>(
-      () => HomeLocalHiveRepository());
 
   // Externals
   sl.registerLazySingleton(() => FirebaseAuth.instance);

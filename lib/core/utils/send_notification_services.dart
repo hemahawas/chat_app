@@ -4,12 +4,13 @@ import 'dart:developer';
 import 'package:chat_app/core/utils/token_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:googleapis_auth/auth_io.dart' as auth;
 import 'package:http/http.dart' as http;
 
 Future<String> getAccessToken() async {
   final jsonString = await rootBundle.loadString(
-    'assets/keys/chat-app-e5cb1-8d448f79f16a.json',
+    dotenv.env['GOOGLE_APPLICATION_CREDENTIALS'] ?? '',
   );
 
   final accountCredentials =
@@ -27,7 +28,7 @@ Future<void> sendNotification(
     required Map<String, String> data}) async {
   final String accessToken = await getAccessToken();
   final String fcmUrl =
-      'https://fcm.googleapis.com/v1/projects/chat-app-e5cb1/messages:send';
+      'https://fcm.googleapis.com/v1/projects/${dotenv.env['PROJECT_ID']}/messages:send';
   String token = '';
   try {
     token = await TokenService.getToken();
@@ -44,8 +45,7 @@ Future<void> sendNotification(
     },
     body: jsonEncode(<String, dynamic>{
       'message': {
-        'token':
-            'eAn3qvq8Se268GIx6S0S_8:APA91bGGnd_Yyf6EOvAOc_GrKfe9Vnje2Ty4fdsVsbmuH95Aa7uJMmnNQcKgQyzbBCNHGbdsqZOn7q_lWniHbnB_zgPlvD6vp5J7zi3u_VOMjsbcsEaldm0',
+        'token': '',
         'notification': {
           'title': title,
           'body': body,
@@ -70,9 +70,9 @@ Future<void> sendNotification(
   );
 
   if (response.statusCode == 200) {
-    print('Notification sent successfully');
+    debugPrint('Notification sent successfully');
   } else {
-    print('Failed to send notification: ${response.body}');
+    debugPrint('Failed to send notification: ${response.body}');
   }
 }
 

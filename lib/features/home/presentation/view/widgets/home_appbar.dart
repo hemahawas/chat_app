@@ -1,3 +1,4 @@
+import 'package:chat_app/core/constants/app_sizes.dart';
 import 'package:chat_app/core/themes/styles.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/chat_search_delegate.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/popup_menu_items.dart';

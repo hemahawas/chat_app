@@ -10,12 +10,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeView extends StatelessWidget {
-  HomeView({super.key});
+  const HomeView({super.key});
 
-  final List<Widget> homeBodies = [
-    const ChatBody(),
-    const StatusBody(),
-    const CallsBody()
+  static const List<Widget> homeBodies = [
+    ChatBody(),
+    StatusBody(),
+    CallsBody()
   ];
 
   @override
@@ -25,15 +25,16 @@ class HomeView extends StatelessWidget {
         final cubit = BlocProvider.of<HomeViewModel>(context);
         return Scaffold(
           appBar: PreferredSize(
-              preferredSize: Size.fromHeight(AppSizes.toolBarHieght),
-              child: HomeAppbar(
-                homeAppBarContext: context,
-              )),
+            preferredSize: Size.fromHeight(AppSizes.toolBarHieght),
+            child: HomeAppbar(
+              homeAppBarContext: context,
+            ),
+          ),
           body: IndexedStack(
               index: cubit.navBarCurrentIndex, children: homeBodies),
           bottomNavigationBar: HomeBottomNavigationBar(
             currentIndex: cubit.navBarCurrentIndex,
-            onTap: (index) => {cubit.changeNavBarIndex(index)},
+            onTap: (index) => cubit.changeNavBarIndex(index),
           ),
         );
       },

@@ -14,6 +14,8 @@ class EmailField extends StatelessWidget {
       validate: (value) {
         if (value.toString().isEmpty) {
           return 'Email is required';
+        } else if (!value.toString().contains('@')) {
+          return 'Email must conatin @';
         }
       },
       label: 'Enter Your Email',

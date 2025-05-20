@@ -20,7 +20,7 @@ class PasswordField extends StatelessWidget {
       controller: passwordController,
       type: TextInputType.visiblePassword,
       validate: (value) {
-        if (value!.toString().isEmpty) {
+        if (value!.toString().isEmpty || value.length < 8) {
           return 'Password is too short';
         }
       },

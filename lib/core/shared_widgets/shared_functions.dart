@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 showToast({
   required String msg,
 }) =>
@@ -10,5 +12,5 @@ showTimeExcecution({
   var time = DateTime.now().millisecondsSinceEpoch;
   function();
   var time2 = DateTime.now().millisecondsSinceEpoch;
-  print('$msg: ${time2 - time}');
+  debugPrint('$msg: ${time2 - time}');
 }

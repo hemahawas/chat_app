@@ -16,10 +16,8 @@ class RecentStatusItem extends StatelessWidget {
           image: AssetImages.userImage,
           borderColor: ColorApp.primaryColor,
         ),
-        ResponsiveSizedBox(
-          sizedBoxContext: context,
-          hasWidth: true,
-          widthFraction: 20,
+        SizedBox(
+          width: 10,
         ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -29,10 +27,8 @@ class RecentStatusItem extends StatelessWidget {
               style: Styles.textStyle15
                   .copyWith(fontSize: 18, color: Colors.black87),
             ),
-            ResponsiveSizedBox(
-              sizedBoxContext: context,
-              hasHeight: true,
-              heightFraction: 70,
+            SizedBox(
+              height: 10,
             ),
             Text(
               'Today, 12:00 PM',
