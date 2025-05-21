@@ -16,8 +16,9 @@ class SplashBody extends StatelessWidget {
               color: ColorApp.appBackgroundColor,
               child: Image.asset(
                 AssetImages.splashImage,
-                height: 200,
-                width: 200,
+                cacheHeight: 200,
+                cacheWidth: 200,
+                fit: BoxFit.cover,
               )),
           Text(
             AppStrings.appName,

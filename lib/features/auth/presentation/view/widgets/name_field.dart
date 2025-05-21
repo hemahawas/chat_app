@@ -9,6 +9,7 @@ class NameField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return defaultFormField(
+      maxLines: 1,
       controller: nameController,
       type: TextInputType.name,
       label: 'Enter Your Name',

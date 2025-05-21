@@ -8,6 +8,7 @@ class GroupNameField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return defaultFormField(
+        maxLines: 1,
         controller: groupNameGontroller,
         type: TextInputType.text,
         label: 'Type group name',

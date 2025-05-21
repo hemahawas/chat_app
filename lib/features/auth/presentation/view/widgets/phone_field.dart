@@ -8,6 +8,7 @@ class PhoneField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return defaultFormField(
+      maxLines: 1,
       controller: phoneController,
       label: 'Enter your phone',
       prefix: Icons.phone_android,

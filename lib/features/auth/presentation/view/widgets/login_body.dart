@@ -1,9 +1,9 @@
 import 'package:chat_app/core/config/routes.dart';
+import 'package:chat_app/core/shared_widgets/app_name_shimmer.dart';
 import 'package:chat_app/core/shared_widgets/custom_circular_progress_indicator.dart';
 import 'package:chat_app/features/auth/presentation/view/widgets/email_field.dart';
 import 'package:chat_app/features/auth/presentation/view/widgets/login_button.dart';
 import 'package:chat_app/features/auth/presentation/view/widgets/login_title.dart';
-import 'package:chat_app/features/auth/presentation/view/widgets/logo_widget.dart';
 import 'package:chat_app/features/auth/presentation/view/widgets/navigating_to_register_view.dart';
 import 'package:chat_app/features/auth/presentation/view/widgets/password_field.dart';
 import 'package:chat_app/features/auth/presentation/view_model/cubit.dart';
@@ -54,9 +54,13 @@ class _LoginBodyState extends State<LoginBody> {
             autovalidateMode: AutovalidateMode.onUserInteraction,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               spacing: 15,
               children: [
-                const LogoWidget(),
+                SizedBox(
+                  height: 40,
+                ),
+                const AppNameShimmer(),
                 SizedBox(
                   height: 32,
                 ),
@@ -70,6 +74,9 @@ class _LoginBodyState extends State<LoginBody> {
                     },
                     isPasswordVisible: BlocProvider.of<AuthViewModel>(context)
                         .isPasswordVisible),
+                SizedBox(
+                  height: 32,
+                ),
                 state is LoginLoadingState
                     ? SizedBox(
                         height: 30,

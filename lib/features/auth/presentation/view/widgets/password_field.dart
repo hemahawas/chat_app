@@ -17,6 +17,7 @@ class PasswordField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return defaultFormField(
+      maxLines: 1,
       controller: passwordController,
       type: TextInputType.visiblePassword,
       validate: (value) {

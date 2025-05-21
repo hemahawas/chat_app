@@ -20,7 +20,7 @@ void main() async {
   di.init();
 
   // Security Config
-  await dotenv.load(fileName: "../.env");
+  await dotenv.load(fileName: ".env");
 
   // Bloc observer config
   Bloc.observer = AppBlocObserver();

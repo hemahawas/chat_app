@@ -1,8 +1,8 @@
 import 'package:chat_app/core/config/routes.dart';
+import 'package:chat_app/core/shared_widgets/app_name_shimmer.dart';
 import 'package:chat_app/core/shared_widgets/custom_circular_progress_indicator.dart';
 import 'package:chat_app/core/utils/user_model.dart';
 import 'package:chat_app/features/auth/presentation/view/widgets/email_field.dart';
-import 'package:chat_app/features/auth/presentation/view/widgets/logo_widget.dart';
 import 'package:chat_app/features/auth/presentation/view/widgets/name_field.dart';
 import 'package:chat_app/features/auth/presentation/view/widgets/navigating_to_login_view.dart';
 import 'package:chat_app/features/auth/presentation/view/widgets/password_field.dart';
@@ -65,7 +65,13 @@ class _RegisterBodyState extends State<RegisterBody> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const LogoWidget(),
+                SizedBox(
+                  height: 40,
+                ),
+                const AppNameShimmer(),
+                SizedBox(
+                  height: 32,
+                ),
                 const RegisterTitle(),
                 NameField(nameController: nameController),
                 EmailField(emailController: emailController),

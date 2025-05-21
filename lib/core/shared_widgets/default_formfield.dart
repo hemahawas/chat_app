@@ -9,6 +9,7 @@ Widget defaultFormField(
         GestureTapCallback? onTap,
         bool isPassword = false,
         required Function validate,
+        required int? maxLines,
         Function(PointerDownEvent)? onTapOutside,
         String? label,
         String? hint,
@@ -16,8 +17,10 @@ Widget defaultFormField(
         IconData? suffix,
         VoidCallback? suffixPressed,
         bool isClickable = true,
+        ScrollController? scrollController,
         InputDecoration? decoration}) =>
     TextFormField(
+      scrollController: scrollController,
       controller: controller,
       keyboardType: type,
       obscureText: isPassword,
@@ -40,6 +43,7 @@ Widget defaultFormField(
       validator: (value) {
         return validate(value);
       },
+      maxLines: maxLines,
       onTapOutside: onTapOutside,
       decoration: decoration ??
           InputDecoration(

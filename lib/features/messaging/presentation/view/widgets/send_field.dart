@@ -4,44 +4,59 @@ import 'package:chat_app/features/messaging/presentation/view/widgets/attachment
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class SendField extends StatelessWidget {
+class SendField extends StatefulWidget {
   final TextEditingController sendController;
-
   const SendField({super.key, required this.sendController});
 
   @override
+  State<SendField> createState() => _SendFieldState();
+}
+
+class _SendFieldState extends State<SendField> {
+  final ScrollController scrollController = ScrollController();
+  @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(5),
-      child: defaultFormField(
-          controller: sendController,
-          type: TextInputType.text,
-          validate: (value) {},
-          decoration: InputDecoration(
-              suffixIcon: Transform.rotate(
-                angle: 45,
-                child: IconButton(
-                  onPressed: () {
-                    showCupertinoModalPopup(
-                      context: context,
-                      builder: (builder) => AttachmentItems(),
-                    );
-                  },
-                  icon: Icon(Icons.attachment),
-                  iconSize: 30,
-                  color: Colors.grey,
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+        maxHeight: 150,
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(5),
+        child: defaultFormField(
+            scrollController: scrollController,
+            maxLines: null,
+            controller: widget.sendController,
+            type: TextInputType.multiline,
+            validate: (value) {},
+            decoration: InputDecoration(
+                suffixIcon: Transform.rotate(
+                  alignment: Alignment.bottomLeft,
+                  angle: 45,
+                  child: IconButton(
+                    padding: EdgeInsets.only(left: 15, top: 15, right: 10),
+                    onPressed: () {
+                      showCupertinoModalPopup(
+                        context: context,
+                        builder: (builder) => AttachmentItems(),
+                      );
+                    },
+                    icon: Icon(Icons.attachment),
+                    iconSize: 30,
+                    color: Colors.grey,
+                  ),
                 ),
-              ),
-              fillColor: ColorApp.appBackgroundColor,
-              filled: true,
-              hintText: 'send your message',
-              floatingLabelStyle: const TextStyle(color: ColorApp.primaryColor),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30.0),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30.0),
-              ))),
+                fillColor: ColorApp.appBackgroundColor,
+                filled: true,
+                hintText: 'send your message',
+                floatingLabelStyle:
+                    const TextStyle(color: ColorApp.primaryColor),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                ))),
+      ),
     );
   }
 }

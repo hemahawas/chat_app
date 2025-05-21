@@ -14,6 +14,7 @@ class ProfileInputField extends StatelessWidget {
       shadowColor: Colors.grey,
       borderRadius: BorderRadius.circular(30),
       child: defaultFormField(
+          maxLines: 1,
           controller: inputController,
           type: TextInputType.number,
           validate: (value) {},

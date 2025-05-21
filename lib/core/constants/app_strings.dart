@@ -1,6 +1,6 @@
 abstract class AppStrings {
   static const String appName = 'Kalemni';
-  static const String splashTitle = 'The best clone of WhatsApp';
+  static const String splashTitle = 'The best chat app of the century';
   static const String noRouteFound = 'No Route Found';
   static const String noCallsYet = 'No Calls Yet';
   static const String addNewConnectionsForYourChat =

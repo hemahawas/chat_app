@@ -9,6 +9,7 @@ class EmailField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return defaultFormField(
+      maxLines: 1,
       controller: emailController,
       type: TextInputType.emailAddress,
       validate: (value) {

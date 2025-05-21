@@ -13,6 +13,7 @@ class ProfilePhoneField extends StatelessWidget {
       shadowColor: Colors.grey,
       borderRadius: BorderRadius.circular(30),
       child: defaultFormField(
+          maxLines: 1,
           controller: phoneController,
           type: TextInputType.number,
           validate: (value) {},
