@@ -4,7 +4,7 @@
     
     <uses-permission android:name="android.permission.INTERNET" />
     <application
-        android:label="@string/app_name"
+        android:label="com.kalemni.hawas_solutions"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon"
         android:enableOnBackInvokedCallback="true">    

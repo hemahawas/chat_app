@@ -20,7 +20,8 @@ class _SendFieldState extends State<SendField> {
       constraints: BoxConstraints(
         maxHeight: 150,
       ),
-      child: Padding(
+      child: Container(
+        alignment: Alignment.bottomLeft,
         padding: EdgeInsets.all(5),
         child: defaultFormField(
             scrollController: scrollController,
@@ -30,10 +31,9 @@ class _SendFieldState extends State<SendField> {
             validate: (value) {},
             decoration: InputDecoration(
                 suffixIcon: Transform.rotate(
-                  alignment: Alignment.bottomLeft,
                   angle: 45,
                   child: IconButton(
-                    padding: EdgeInsets.only(left: 15, top: 15, right: 10),
+                    alignment: Alignment.bottomRight,
                     onPressed: () {
                       showCupertinoModalPopup(
                         context: context,

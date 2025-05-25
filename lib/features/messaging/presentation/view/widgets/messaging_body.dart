@@ -1,4 +1,3 @@
-import 'package:chat_app/core/shared_widgets/responsive_sizedbox.dart';
 import 'package:chat_app/features/messaging/presentation/view/widgets/messages.dart';
 import 'package:chat_app/features/messaging/presentation/view/widgets/send_button.dart';
 import 'package:chat_app/features/messaging/presentation/view/widgets/send_field.dart';
@@ -35,6 +34,7 @@ class _MessagingBodyState extends State<MessagingBody> {
         ),
         Messages(),
         Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Expanded(child: SendField(sendController: sendController)),
             SendButton(

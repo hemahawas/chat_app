@@ -64,7 +64,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '947610105866',
     projectId: 'chat-app-e5cb1',
     storageBucket: 'chat-app-e5cb1.firebasestorage.app',
-    iosBundleId: 'com.example.chatApp',
+    iosBundleId: 'com.kalemni.hawasSolutions',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
@@ -73,7 +73,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '947610105866',
     projectId: 'chat-app-e5cb1',
     storageBucket: 'chat-app-e5cb1.firebasestorage.app',
-    iosBundleId: 'com.example.chatApp',
+    iosBundleId: 'com.kalemni.hawasSolutions',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
