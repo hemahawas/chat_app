@@ -3,8 +3,6 @@ import 'dart:async';
 import 'package:chat_app/features/group/data/model/group_model.dart';
 import 'package:chat_app/features/messaging/presentation/view/widgets/message_item.dart';
 import 'package:chat_app/features/messaging/presentation/view_model/cubit.dart';
-import 'package:chat_app/features/messaging/presentation/view_model/messaging_injection_container.dart'
-    as messaging_di;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -59,30 +57,21 @@ class _MessagesState extends State<Messages> {
                       alignment: Alignment.topCenter,
                       child: cubit.chat!.messages!.isNotEmpty
                           ? RepaintBoundary(
-                              child: ListView.builder(
-                                shrinkWrap: true,
-                                reverse: true,
-                                itemCount: cubit.chat!.messages!.length,
-                                itemBuilder: (context, index) => MessageItem(
-                                  key: ValueKey(
-                                      cubit.chat!.messages![index].messageId),
-                                  participantNames: names,
-                                  isGroup: cubit.chat is GroupModel,
-                                  message: cubit.chat!.messages![index],
-                                  // the date will not shown if the two consecutive messages has the same day
-                                  dateIsShown:
-                                      index < cubit.chat!.messages!.length - 1
-                                          ? (cubit.chat!.messages![index]
-                                                  .sendingTime!
-                                                  .difference(cubit
-                                                      .chat!
-                                                      .messages![index + 1]
-                                                      .sendingTime!)
-                                                  .inDays >
-                                              0)
-                                          : true,
+                              child: CustomScrollView(slivers: [
+                                SliverList.builder(
+                                  addAutomaticKeepAlives: true,
+                                  itemCount: cubit.chat!.messages!.length,
+                                  itemBuilder: (context, index) => MessageItem(
+                                    key: ValueKey(
+                                        cubit.chat!.messages![index].messageId),
+                                    participantNames: names,
+                                    isGroup: cubit.chat is GroupModel,
+                                    message: cubit.chat!.messages![index],
+                                    // the date will not shown if the two consecutive messages has the same day
+                                    dateIsShown: index == 0 ? true : false,
+                                  ),
                                 ),
-                              ),
+                              ]),
                             )
                           : Container(),
                     ),

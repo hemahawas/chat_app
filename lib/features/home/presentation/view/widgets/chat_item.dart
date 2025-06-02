@@ -50,17 +50,20 @@ class ChatItem extends StatelessWidget {
         padding: const EdgeInsets.all(5),
         child: Row(
           children: [
-            Padding(
-              padding: const EdgeInsets.only(right: 10),
-              child: ImageField(
-                // user image
-                image: chatModel is GroupModel
-                    ? (chatModel as GroupModel).groupImageUrl
-                    : anotherUser!.image,
-                borderColor: Colors.white10,
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(right: 10),
+                child: ImageField(
+                  // user image
+                  image: chatModel is GroupModel
+                      ? (chatModel as GroupModel).groupImageUrl
+                      : anotherUser!.image,
+                  borderColor: Colors.white10,
+                ),
               ),
             ),
             Expanded(
+              flex: 5,
               child: Column(
                 children: [
                   Row(
@@ -70,7 +73,7 @@ class ChatItem extends StatelessWidget {
                         child: ChatTitle(
                           chatName: chatModel is GroupModel
                               ? (chatModel as GroupModel).groupName
-                              : anotherUser!.name!,
+                              : anotherUser!.name,
                         ),
                       ),
                       Padding(

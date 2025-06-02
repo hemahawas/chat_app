@@ -12,17 +12,16 @@ class ChatListView extends StatelessWidget {
   Widget build(BuildContext context) {
     final cubit = BlocProvider.of<HomeViewModel>(context);
     return RepaintBoundary(
-      child: ListView.builder(
-        itemExtent: 65,
-        shrinkWrap: true,
-        physics: AlwaysScrollableScrollPhysics(),
-        itemBuilder: (context, index) => ChatItem(
-          key: ValueKey(cubit.chats[index].chatId),
-          isSearched: false,
-          chatModel: cubit.chats[index],
+      child: CustomScrollView(slivers: [
+        SliverList.builder(
+          itemBuilder: (context, index) => ChatItem(
+            key: ValueKey(cubit.chats[index].chatId),
+            isSearched: false,
+            chatModel: cubit.chats[index],
+          ),
+          itemCount: cubit.chats.length,
         ),
-        itemCount: cubit.chats.length,
-      ),
+      ]),
     );
   }
 }

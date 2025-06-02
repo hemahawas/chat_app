@@ -23,12 +23,12 @@ platform :android do
     #sh "flutter build apk --release  --flavor production --target lib/main_production.dart --no-tree-shake-icons"
     firebase_app_distribution(
       # Should be secured
-    app: "1:947610105866:android:4aaee9abc50bebb2cf47f3", 
+    app: ENV["FIREBASE_APP_ID"], 
     android_artifact_type: "APK",
-    android_artifact_path: "..//build//app//outputs//flutter-apk//app-production-release.apk",
+    android_artifact_path: "../build/app/outputs/flutter-apk/app-production-release.apk",
+    debug: true,
     # Should be secured
     firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"],
-    testers: "ibraheem.rizk3@gmail.com, mouaz.salah05@gmail.com",
     release_notes: "This build was uploaded via fastlane",
     )
   end

@@ -44,7 +44,8 @@ class MessagingViewModel extends Cubit<MessagingStates> {
     chat!.messages = [];
     if (snapShot.data != null) {
       for (var doc in snapShot.data!.docs) {
-        chat!.messages?.insert(0, MessageModel.fromJson(doc.data()));
+        chat!.messages?.insert(
+            chat!.messages?.length ?? 1 - 1, MessageModel.fromJson(doc.data()));
       }
     }
   }

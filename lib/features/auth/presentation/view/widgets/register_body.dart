@@ -59,7 +59,6 @@ class _RegisterBodyState extends State<RegisterBody> {
         child: SingleChildScrollView(
           child: Form(
             key: formKey,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
             child: Column(
               spacing: 15,
               mainAxisAlignment: MainAxisAlignment.center,
