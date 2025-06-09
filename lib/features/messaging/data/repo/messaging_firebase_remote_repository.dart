@@ -111,9 +111,9 @@ class MessagingFirebaseRemoteRepository extends MessagingRemoteRepository {
 
   // O(1)
   @override
-  Future<void> messagesIsSeen(String chatId, String currentUserId) async {
+  Future<void> messagesIsSeen(String chatId) async {
     await firebaseFirestore.collection('chats').doc(chatId).update({
-      'newMessages.$currentUserId': 0,
+      'newMessages.${firebaseAuth.currentUser!.uid}': 0,
     });
   }
 

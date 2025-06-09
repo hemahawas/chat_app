@@ -78,8 +78,8 @@ class AppRoutes {
         }));
       case Routes.messagingRoute:
         return MaterialPageRoute(builder: (context) {
-          return BlocProvider<MessagingViewModel>.value(
-            value: messaging_di.sl<MessagingViewModel>()
+          return BlocProvider<MessagingViewModel>(
+            create: (context) => messaging_di.sl<MessagingViewModel>()
               ..getMessagingArguments(
                   routeSettings.arguments as MessagingArguments),
             child: const MessagingView(),

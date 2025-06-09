@@ -47,35 +47,41 @@ class _MessagesState extends State<Messages> {
                 cubit.setMessages(snapShot);
                 Map<String, String> names = {};
                 if (cubit.chat is GroupModel) {
-                  names.addEntries(cubit.chat!.participants!
+                  names.addEntries(cubit.chat.participants!
                       .map((e) => MapEntry(e.uId!, e.name)));
                 }
 
                 return Expanded(
-                  child: SizedBox(
-                    child: Align(
-                      alignment: Alignment.topCenter,
-                      child: cubit.chat!.messages!.isNotEmpty
-                          ? RepaintBoundary(
-                              child: CustomScrollView(slivers: [
+                  child: cubit.chat.messages!.isNotEmpty
+                      ? RepaintBoundary(
+                          child: CustomScrollView(
+                              keyboardDismissBehavior:
+                                  ScrollViewKeyboardDismissBehavior.onDrag,
+                              slivers: [
                                 SliverList.builder(
-                                  addAutomaticKeepAlives: true,
-                                  itemCount: cubit.chat!.messages!.length,
+                                  itemCount: cubit.chat.messages!.length,
                                   itemBuilder: (context, index) => MessageItem(
                                     key: ValueKey(
-                                        cubit.chat!.messages![index].messageId),
+                                        cubit.chat.messages![index].messageId),
                                     participantNames: names,
                                     isGroup: cubit.chat is GroupModel,
-                                    message: cubit.chat!.messages![index],
+                                    message: cubit.chat.messages![index],
                                     // the date will not shown if the two consecutive messages has the same day
-                                    dateIsShown: index == 0 ? true : false,
+                                    dateIsShown: index == 0
+                                        ? true
+                                        : ((cubit.chat.messages![index]
+                                                .sendingTime!
+                                                .difference(cubit
+                                                    .chat
+                                                    .messages![index - 1]
+                                                    .sendingTime!)
+                                                .inDays >
+                                            0)),
                                   ),
                                 ),
                               ]),
-                            )
-                          : Container(),
-                    ),
-                  ),
+                        )
+                      : Container(),
                 );
               } else {
                 return Container();

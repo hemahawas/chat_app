@@ -14,9 +14,6 @@ class AuthViewModel extends Cubit<AuthStates> {
 
   Future<void> logIn(String email, String password) async {
     emit(LoginLoadingState());
-    if (!networkMonitor.isOnline.value) {
-      emit(ConnectionErrorState());
-    }
     return await authRepository.logIn(email, password).then((_) {
       emit(LoginSuccessState());
     }).catchError((error) {
@@ -26,9 +23,7 @@ class AuthViewModel extends Cubit<AuthStates> {
 
   Future<void> logOut() async {
     emit(LogoutLoadingState());
-    if (!networkMonitor.isOnline.value) {
-      emit(ConnectionErrorState());
-    }
+
     return await authRepository.logOut().then((_) async {
       emit(LogoutSuccessState());
     }).catchError((error) {
@@ -38,9 +33,7 @@ class AuthViewModel extends Cubit<AuthStates> {
 
   Future<void> register(UserModel model, String password) async {
     emit(RegisterLoadingState());
-    if (!networkMonitor.isOnline.value) {
-      emit(ConnectionErrorState());
-    }
+
     return await authRepository.register(model, password).then((_) {
       emit(RegisterSuccessState());
     }).catchError((error) {

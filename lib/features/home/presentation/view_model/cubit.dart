@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:chat_app/core/shared_widgets/shared_functions.dart';
-import 'package:chat_app/core/utils/global_variables.dart';
 import 'package:chat_app/core/utils/network_info.dart';
 import 'package:chat_app/core/utils/user_model.dart';
 import 'package:chat_app/features/group/data/model/group_model.dart';
@@ -81,19 +80,8 @@ class HomeViewModel extends Cubit<HomeStates> {
   List<ChatModel> chats = [];
   Map<String, ChatModel> chatMapping = {};
 
-  @override
-  Future<void> close() async {
-    chatController!.close();
-    chatController = null;
-    await firebaseHomeRepository.getChatsInRealTime().listen(null).cancel();
-    return super.close();
-  }
-
   // Add new chat
   Future<void> addNewChat(UserModel currentUser, UserModel anotherUser) async {
-    if (!networkMonitor.isOnline.value) {
-      emit(ConnectionErrorState());
-    }
     emit(AddUserToChatLoadingState());
     await firebaseHomeRepository
         .addNewChatThenGet(currentUser, anotherUser)
