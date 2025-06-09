@@ -11,6 +11,9 @@ workflows:
       - name: Clean build
         script: |
           flutter clean
+      - name: Install dependencies
+        script: |
+          flutter pub get
       - name: Update CocoaPods repo
         script: |
           pod repo update
