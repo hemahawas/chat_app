@@ -5,8 +5,26 @@ workflows:
       flutter: stable
       xcode: latest
     scripts:
-      - flutter build ios --simulator
-      - mkdir -p build/ios/ipa
-      - zip -r build/ios/ipa/Runner.app.zip build/ios/iphonesimulator/Runner.app
+      - name: Set iOS deployment target
+        script: |
+          sed -i '' "s/^#\? *platform :ios.*/platform :ios, '14.0'/" ios/Podfile
+      - name: Clean build
+        script: |
+          flutter clean
+      - name: Update CocoaPods repo
+        script: |
+          pod repo update
+      - name: Install CocoaPods
+        script: |
+          cd ios
+          pod install
+          cd ..
+      - name: Build iOS for simulator
+        script: |
+          flutter build ios --simulator
+      - name: Package .app into zip
+        script: |
+          mkdir -p build/ios/ipa
+          zip -r build/ios/ipa/Runner.app.zip build/ios/iphonesimulator/Runner.app
     artifacts:
       - build/ios/ipa/Runner.app.zip
