@@ -51,7 +51,6 @@ class _LoginBodyState extends State<LoginBody> {
         child: SingleChildScrollView(
           child: Form(
             key: formKey,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
