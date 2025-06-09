@@ -38,9 +38,7 @@ class _MessagesState extends State<Messages> {
           switch (snapShot.connectionState) {
             case ConnectionState.waiting:
             case ConnectionState.none:
-              return Expanded(
-                child: const SizedBox(),
-              );
+              return const SizedBox();
             case ConnectionState.active:
             case ConnectionState.done:
               if (snapShot.hasData) {
@@ -51,35 +49,33 @@ class _MessagesState extends State<Messages> {
                       .map((e) => MapEntry(e.uId!, e.name)));
                 }
 
-                return Expanded(
+                return Align(
+                  alignment: Alignment.topCenter,
                   child: cubit.chat.messages!.isNotEmpty
                       ? RepaintBoundary(
-                          child: CustomScrollView(
-                              keyboardDismissBehavior:
-                                  ScrollViewKeyboardDismissBehavior.onDrag,
-                              slivers: [
-                                SliverList.builder(
-                                  itemCount: cubit.chat.messages!.length,
-                                  itemBuilder: (context, index) => MessageItem(
-                                    key: ValueKey(
-                                        cubit.chat.messages![index].messageId),
-                                    participantNames: names,
-                                    isGroup: cubit.chat is GroupModel,
-                                    message: cubit.chat.messages![index],
-                                    // the date will not shown if the two consecutive messages has the same day
-                                    dateIsShown: index == 0
-                                        ? true
-                                        : ((cubit.chat.messages![index]
-                                                .sendingTime!
-                                                .difference(cubit
-                                                    .chat
-                                                    .messages![index - 1]
-                                                    .sendingTime!)
-                                                .inDays >
-                                            0)),
-                                  ),
-                                ),
-                              ]),
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            reverse: true,
+                            itemCount: cubit.chat.messages!.length,
+                            itemBuilder: (context, index) => MessageItem(
+                              key: ValueKey(
+                                  cubit.chat.messages![index].messageId),
+                              participantNames: names,
+                              isGroup: cubit.chat is GroupModel,
+                              message: cubit.chat.messages![index],
+                              // the date will not shown if the two consecutive messages has the same day
+                              dateIsShown: index <
+                                      cubit.chat.messages!.length - 1
+                                  ? (cubit.chat.messages![index].sendingTime!
+                                          .difference(cubit
+                                              .chat
+                                              .messages![index + 1]
+                                              .sendingTime!)
+                                          .inDays >
+                                      0)
+                                  : true,
+                            ),
+                          ),
                         )
                       : Container(),
                 );

@@ -32,7 +32,7 @@ class _MessagingBodyState extends State<MessagingBody> {
         SizedBox(
           height: 20,
         ),
-        Messages(),
+        Expanded(child: Messages()),
         Padding(
           padding: const EdgeInsets.all(5.0),
           child: Row(
