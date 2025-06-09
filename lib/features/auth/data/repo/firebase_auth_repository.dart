@@ -1,3 +1,5 @@
+import 'package:chat_app/core/constants/app_strings.dart';
+import 'package:chat_app/core/utils/cache_helper.dart';
 import 'package:chat_app/core/utils/user_model.dart';
 import 'package:chat_app/features/auth/data/repo/auth_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -12,13 +14,19 @@ class FirebaseAuthRepository extends AuthRepository {
 
   @override
   Future<void> logIn(String email, String password) async {
-    await firebaseAuth.signInWithEmailAndPassword(
-        email: email, password: password);
+    await firebaseAuth
+        .signInWithEmailAndPassword(email: email, password: password)
+        .then((userCredential) {
+      CacheHelper.saveData(
+          key: AppStrings.uId, value: userCredential.user!.uid);
+    });
   }
 
   @override
   Future<void> logOut() async {
-    await firebaseAuth.signOut();
+    await firebaseAuth.signOut().then((_) {
+      CacheHelper.removeData(key: AppStrings.uId);
+    });
   }
 
   // Create user with its features
@@ -29,6 +37,8 @@ class FirebaseAuthRepository extends AuthRepository {
         .createUserWithEmailAndPassword(email: model.email, password: password)
         .then((userCredential) async {
       model.uId = userCredential.user!.uid;
+      CacheHelper.saveData(
+          key: AppStrings.uId, value: userCredential.user!.uid);
 
       // Add the new user to firestore
       await firebaseFirestore

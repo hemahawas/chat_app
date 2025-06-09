@@ -12,7 +12,7 @@ final sl = GetIt.asNewInstance();
 
 Future<void> initMessagingSl() async {
   // Blocs
-  sl.registerCachedFactory(() => MessagingViewModel(
+  sl.registerFactory(() => MessagingViewModel(
       messagingFirebaseRemoteRepository: sl(), networkInfo: sl()));
 
   // Repositories

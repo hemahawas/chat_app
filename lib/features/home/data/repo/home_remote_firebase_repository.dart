@@ -1,3 +1,5 @@
+import 'package:chat_app/core/constants/app_strings.dart';
+import 'package:chat_app/core/utils/cache_helper.dart';
 import 'package:chat_app/core/utils/cloudinary_service.dart';
 import 'package:chat_app/core/utils/user_model.dart';
 import 'package:chat_app/features/group/data/model/group_model.dart';
@@ -11,6 +13,7 @@ class HomeRemoteFirebaseRepository {
   final FirebaseAuth firebaseAuth;
   final FirebaseFirestore firebaseFirestore;
   final CloudinaryService cloudinaryService;
+  final String currentUserUid = CacheHelper.getData(key: AppStrings.uId);
 
   HomeRemoteFirebaseRepository(
       {required this.cloudinaryService,
@@ -18,7 +21,7 @@ class HomeRemoteFirebaseRepository {
       required this.firebaseFirestore});
 
   String getCurrentUserUId() {
-    return firebaseAuth.currentUser!.uid;
+    return currentUserUid;
   }
 
   // O(1)
@@ -27,7 +30,7 @@ class HomeRemoteFirebaseRepository {
     UserModel user = UserModel(email: 'email', name: 'name', phone: 'phone');
     await firebaseFirestore
         .collection('users')
-        .doc(firebaseAuth.currentUser!.uid)
+        .doc(currentUserUid)
         .get()
         .then((value) {
       var data = value.data();
@@ -44,7 +47,7 @@ class HomeRemoteFirebaseRepository {
     List<UserModel> users = [];
     await firebaseFirestore
         .collection('users')
-        .where('uId', isNotEqualTo: firebaseAuth.currentUser!.uid)
+        .where('uId', isNotEqualTo: currentUserUid)
         .get()
         .then((value) {
       for (var doc in value.docs) {
@@ -111,7 +114,7 @@ class HomeRemoteFirebaseRepository {
     // get chat snapshots from firebase
     yield* firebaseFirestore
         .collection('chats')
-        .where('participantsUId', arrayContains: firebaseAuth.currentUser!.uid)
+        .where('participantsUId', arrayContains: currentUserUid)
         .snapshots();
   }
 
@@ -122,16 +125,12 @@ class HomeRemoteFirebaseRepository {
     // delete the user from firebase auth
     return firebaseAuth.currentUser!.delete().then((value) async {
       // delete the user from firestore
-      await firebaseFirestore
-          .collection('users')
-          .doc(firebaseAuth.currentUser!.uid)
-          .delete();
+      await firebaseFirestore.collection('users').doc(currentUserUid).delete();
 
       // delete any chats or groups that related to user from firestore
       await firebaseFirestore
           .collection('chats')
-          .where('participantsUId',
-              arrayContains: firebaseAuth.currentUser!.uid)
+          .where('participantsUId', arrayContains: currentUserUid)
           .get()
           .then((value) async {
         for (var chat in value.docs) {

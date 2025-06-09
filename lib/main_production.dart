@@ -3,8 +3,11 @@ import 'dart:ui';
 import 'package:chat_app/core/config/routes.dart';
 import 'package:chat_app/core/themes/color_app.dart';
 import 'package:chat_app/core/utils/app_observer.dart';
+import 'package:chat_app/core/utils/cache_helper.dart';
 import 'package:chat_app/core/utils/global_variables.dart';
+import 'package:chat_app/core/utils/network_monitor.dart';
 import 'package:chat_app/features/splash_screen/splash_screen.dart';
+
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -12,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:provider/provider.dart';
 
 import 'firebase_options.dart';
 import 'injection_container.dart' as di;
@@ -21,6 +25,9 @@ void main() async {
 
   // Dependency injection config
   di.init();
+
+  // Cache init
+  await CacheHelper.init();
 
   // Security Config
   await dotenv.load(fileName: ".env");
@@ -49,8 +56,10 @@ void main() async {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
   // Run App
-  runApp(const MyApp());
-  networkMonitor.stopMonitoring();
+  runApp(Provider(
+      create: (context) => NetworkMonitor()..startMonitoring(),
+      dispose: (context, networkMonitor) => networkMonitor.stopMonitoring(),
+      child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -58,8 +67,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    networkMonitor.startMonitoring();
-
     return MaterialApp(
       //showPerformanceOverlay: true,
       debugShowCheckedModeBanner: false,
