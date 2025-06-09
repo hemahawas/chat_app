@@ -1,3 +1,5 @@
+import 'package:chat_app/core/constants/app_strings.dart';
+import 'package:chat_app/core/utils/cache_helper.dart';
 import 'package:chat_app/core/utils/cloudinary_service.dart';
 import 'package:chat_app/features/group/data/model/group_model.dart';
 import 'package:chat_app/features/home/data/model/chat_model.dart';
@@ -11,10 +13,11 @@ class MessagingFirebaseRemoteRepository extends MessagingRemoteRepository {
   final FirebaseAuth firebaseAuth;
   final CloudinaryService cloudinaryService;
 
-  MessagingFirebaseRemoteRepository(
+  const MessagingFirebaseRemoteRepository(
       {required this.firebaseAuth,
       required this.cloudinaryService,
-      required this.firebaseFirestore});
+      required this.firebaseFirestore})
+      : super();
 
   @override
   Future<List<MessageModel>> getMessages(ChatModel chat) {
@@ -111,14 +114,14 @@ class MessagingFirebaseRemoteRepository extends MessagingRemoteRepository {
 
   // O(1)
   @override
-  Future<void> messagesIsSeen(String chatId, String currentUserId) async {
+  Future<void> messagesIsSeen(String chatId) async {
     await firebaseFirestore.collection('chats').doc(chatId).update({
-      'newMessages.$currentUserId': 0,
+      'newMessages.${getCurrentUserUid()}': 0,
     });
   }
 
   @override
   String getCurrentUserUid() {
-    return firebaseAuth.currentUser!.uid;
+    return CacheHelper.getData(key: AppStrings.uId);
   }
 }

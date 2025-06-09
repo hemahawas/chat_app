@@ -32,15 +32,19 @@ class _MessagingBodyState extends State<MessagingBody> {
         SizedBox(
           height: 20,
         ),
-        Messages(),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Expanded(child: SendField(sendController: sendController)),
-            SendButton(
-              sendController: sendController,
-            )
-          ],
+        Expanded(child: Messages()),
+        Padding(
+          padding: const EdgeInsets.all(5.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Expanded(child: SendField(sendController: sendController)),
+              SizedBox(width: 5),
+              SendButton(
+                sendController: sendController,
+              )
+            ],
+          ),
         ),
       ],
     );

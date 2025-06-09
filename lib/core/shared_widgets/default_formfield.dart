@@ -44,6 +44,7 @@ Widget defaultFormField(
         return validate(value);
       },
       maxLines: maxLines,
+      minLines: 1,
       onTapOutside: onTapOutside,
       decoration: decoration ??
           InputDecoration(

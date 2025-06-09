@@ -1,11 +1,12 @@
 import 'package:chat_app/core/config/routes.dart';
 import 'package:chat_app/core/shared_widgets/default_text_button.dart';
 import 'package:chat_app/core/shared_widgets/shared_functions.dart';
-import 'package:chat_app/core/utils/global_variables.dart';
+import 'package:chat_app/core/utils/network_monitor.dart';
 import 'package:chat_app/features/auth/presentation/view_model/cubit.dart';
 import 'package:chat_app/features/auth/presentation/view_model/states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 
 class LogoutButton extends StatelessWidget {
   const LogoutButton({super.key});
@@ -26,7 +27,7 @@ class LogoutButton extends StatelessWidget {
       },
       builder: (context, state) => Center(
           child: ValueListenableBuilder<bool>(
-        valueListenable: networkMonitor.isOnline,
+        valueListenable: Provider.of<NetworkMonitor>(context).isOnline,
         builder: (context, isConnected, _) => DefaultTextButton(
           isConnected: isConnected,
           onPressed: () async {

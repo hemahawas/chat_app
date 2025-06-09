@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:chat_app/core/constants/app_strings.dart';
 import 'package:chat_app/core/themes/color_app.dart';
 import 'package:chat_app/core/utils/global_variables.dart';
+import 'package:chat_app/core/utils/network_monitor.dart';
 import 'package:chat_app/features/messaging/data/model/message_model.dart';
 import 'package:chat_app/features/messaging/presentation/view_model/cubit.dart';
 import 'package:chat_app/features/messaging/presentation/view_model/messaging_injection_container.dart'
@@ -10,6 +11,7 @@ import 'package:chat_app/features/messaging/presentation/view_model/messaging_in
 import 'package:chat_app/features/messaging/presentation/view_model/states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 
 class GalleryView extends StatelessWidget {
   final String path;
@@ -66,7 +68,8 @@ class GalleryView extends StatelessWidget {
                         fontSize: 17,
                       ),
                       suffixIcon: ValueListenableBuilder<bool>(
-                        valueListenable: networkMonitor.isOnline,
+                        valueListenable:
+                            Provider.of<NetworkMonitor>(context).isOnline,
                         builder: (context, isConnected, _) => CircleAvatar(
                           radius: 27,
                           backgroundColor:

@@ -16,47 +16,40 @@ class _SendFieldState extends State<SendField> {
   final ScrollController scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
-    return ConstrainedBox(
-      constraints: BoxConstraints(
-        maxHeight: 150,
-      ),
-      child: Container(
-        alignment: Alignment.bottomLeft,
-        padding: EdgeInsets.all(5),
-        child: defaultFormField(
-            scrollController: scrollController,
-            maxLines: null,
-            controller: widget.sendController,
-            type: TextInputType.multiline,
-            validate: (value) {},
-            decoration: InputDecoration(
-                suffixIcon: Transform.rotate(
-                  angle: 45,
-                  child: IconButton(
-                    alignment: Alignment.bottomRight,
-                    onPressed: () {
-                      showCupertinoModalPopup(
-                        context: context,
-                        builder: (builder) => AttachmentItems(),
-                      );
-                    },
-                    icon: Icon(Icons.attachment),
-                    iconSize: 30,
-                    color: Colors.grey,
-                  ),
+    return Container(
+      alignment: Alignment.bottomLeft,
+      child: defaultFormField(
+          scrollController: scrollController,
+          maxLines: 5,
+          controller: widget.sendController,
+          type: TextInputType.multiline,
+          validate: (value) {},
+          decoration: InputDecoration(
+              suffixIcon: Transform.rotate(
+                angle: 45,
+                child: IconButton(
+                  alignment: Alignment.bottomRight,
+                  onPressed: () {
+                    showCupertinoModalPopup(
+                      context: context,
+                      builder: (builder) => AttachmentItems(),
+                    );
+                  },
+                  icon: Icon(Icons.attachment),
+                  iconSize: 30,
+                  color: Colors.grey,
                 ),
-                fillColor: ColorApp.appBackgroundColor,
-                filled: true,
-                hintText: 'send your message',
-                floatingLabelStyle:
-                    const TextStyle(color: ColorApp.primaryColor),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30.0),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30.0),
-                ))),
-      ),
+              ),
+              fillColor: ColorApp.appBackgroundColor,
+              filled: true,
+              hintText: 'send your message',
+              floatingLabelStyle: const TextStyle(color: ColorApp.primaryColor),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30.0),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30.0),
+              ))),
     );
   }
 }

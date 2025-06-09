@@ -66,11 +66,12 @@ class MessageItem extends StatelessWidget {
                     )
                   : Container(),
               Container(
+                alignment: AlignmentDirectional.center,
                 child: message.image != '' && message.image != null
                     ? CachedNetworkImage(
-                        memCacheHeight: 250,
-                        memCacheWidth: 250,
-                        fit: BoxFit.cover,
+                        memCacheHeight: 300,
+                        memCacheWidth: 300,
+                        fit: BoxFit.contain,
                         imageUrl: message.image!,
                       )
                     : SizedBox(),
@@ -79,7 +80,8 @@ class MessageItem extends StatelessWidget {
                 message.body == null
                     ? ''
                     : (message.body == 'Photo.' ? '' : message.body!),
-                maxLines: 6,
+                maxLines: null,
+                overflow: TextOverflow.visible,
                 style: TextStyle(fontWeight: FontWeight.w500),
               ),
               Align(

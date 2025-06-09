@@ -20,8 +20,8 @@ class MessagingViewModel extends Cubit<MessagingStates> {
   final MessagingRemoteRepository messagingFirebaseRemoteRepository;
   final NetworkInfo networkInfo;
 
-  late ChatModel? chat;
-  late UserModel? currentUser;
+  late ChatModel chat;
+  late UserModel currentUser;
 
   String get currentUserUid =>
       messagingFirebaseRemoteRepository.getCurrentUserUid();
@@ -30,21 +30,20 @@ class MessagingViewModel extends Cubit<MessagingStates> {
   Future<void> getMessagingArguments(
       MessagingArguments messagingArguments) async {
     chat = messagingArguments.chatModel;
-
     currentUser = messagingArguments.currentUser!;
     emit(GetMessagingArgumentsSuccessState());
   }
 
   Stream<QuerySnapshot<Map<String, dynamic>>> getMessagesInRealTime() {
-    return messagingFirebaseRemoteRepository.getMessagesInRealTime(chat!);
+    return messagingFirebaseRemoteRepository.getMessagesInRealTime(chat);
   }
 
   Future<void> setMessages(
       AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapShot) async {
-    chat!.messages = [];
+    chat.messages = [];
     if (snapShot.data != null) {
       for (var doc in snapShot.data!.docs) {
-        chat!.messages?.insert(0, MessageModel.fromJson(doc.data()));
+        chat.messages?.insert(0, MessageModel.fromJson(doc.data()));
       }
     }
   }
@@ -76,11 +75,10 @@ class MessagingViewModel extends Cubit<MessagingStates> {
   }
 
   // This stream is used to reset the new messages
-  //becuase the user is already inside chat and see the messages
+  //becuase the user is already inside chat and see the messages, or go outside
   Future<void> messagesIsSeen() async {
-    chat!.newMessages[currentUser!.uId!] = 0;
     await messagingFirebaseRemoteRepository
-        .messagesIsSeen(chat!.chatId!, currentUser!.uId!)
+        .messagesIsSeen(chat.chatId!)
         .catchError((error) {
       debugPrint(error.toString());
     });
