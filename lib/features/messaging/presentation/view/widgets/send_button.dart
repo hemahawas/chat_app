@@ -3,8 +3,6 @@ import 'package:chat_app/core/utils/global_variables.dart';
 import 'package:chat_app/core/utils/network_monitor.dart';
 import 'package:chat_app/features/messaging/data/model/message_model.dart';
 import 'package:chat_app/features/messaging/presentation/view_model/cubit.dart';
-import 'package:chat_app/features/messaging/presentation/view_model/messaging_injection_container.dart'
-    as messaging_di;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
