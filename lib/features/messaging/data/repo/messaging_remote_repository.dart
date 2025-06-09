@@ -12,4 +12,6 @@ abstract class MessagingRemoteRepository {
       ChatModel chat);
   Future<void> messagesIsSeen(String chatId);
   String getCurrentUserUid();
+
+  const MessagingRemoteRepository();
 }

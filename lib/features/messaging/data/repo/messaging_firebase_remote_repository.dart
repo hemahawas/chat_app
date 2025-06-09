@@ -12,12 +12,12 @@ class MessagingFirebaseRemoteRepository extends MessagingRemoteRepository {
   final FirebaseFirestore firebaseFirestore;
   final FirebaseAuth firebaseAuth;
   final CloudinaryService cloudinaryService;
-  final String currentUserUid = CacheHelper.getData(key: AppStrings.uId);
 
-  MessagingFirebaseRemoteRepository(
+  const MessagingFirebaseRemoteRepository(
       {required this.firebaseAuth,
       required this.cloudinaryService,
-      required this.firebaseFirestore});
+      required this.firebaseFirestore})
+      : super();
 
   @override
   Future<List<MessageModel>> getMessages(ChatModel chat) {
@@ -116,12 +116,12 @@ class MessagingFirebaseRemoteRepository extends MessagingRemoteRepository {
   @override
   Future<void> messagesIsSeen(String chatId) async {
     await firebaseFirestore.collection('chats').doc(chatId).update({
-      'newMessages.$currentUserUid': 0,
+      'newMessages.${getCurrentUserUid()}': 0,
     });
   }
 
   @override
   String getCurrentUserUid() {
-    return currentUserUid;
+    return CacheHelper.getData(key: AppStrings.uId);
   }
 }
