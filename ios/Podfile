@@ -1,6 +1,8 @@
 platform :ios, '14.0'
 
 target 'Runner' do
+  use_modular_headers!
   #replace these with your pods with name and version
   pod 'Firebase/Core'
+  pod 'AwesomeLibrary'
 end
