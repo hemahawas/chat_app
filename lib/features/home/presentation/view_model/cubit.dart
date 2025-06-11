@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:chat_app/core/shared_widgets/shared_functions.dart';
 import 'package:chat_app/core/utils/network_info.dart';
 import 'package:chat_app/core/utils/user_model.dart';
 import 'package:chat_app/features/group/data/model/group_model.dart';
@@ -20,7 +19,9 @@ class HomeViewModel extends Cubit<HomeStates> {
   late StreamController<QuerySnapshot<Map<String, dynamic>>>? chatController;
   StreamSubscription<QuerySnapshot>? chatSubscription;
   HomeViewModel(
-      {required this.firebaseHomeRepository, required this.networkInfo})
+      {required this.firebaseHomeRepository,
+      required this.networkInfo,
+      required this.homeLocalRepository})
       : super(InitialHomeStates()) {
     chatController = StreamController.broadcast();
     _currentUserUId = firebaseHomeRepository.getCurrentUserUId();
@@ -132,9 +133,19 @@ class HomeViewModel extends Cubit<HomeStates> {
   Future<void> getCurrentUser() async {
     emit(GetUserInfoLoadingState());
 
-    await firebaseHomeRepository.getUserInfo().then((value) {
+    // Get current user from local cache
+    var user = homeLocalRepository.getCurrentUser();
+    if (user != null) {
+      currentUser = user;
+      emit(GetUserInfoSuccessState());
+      return;
+    }
+
+    await firebaseHomeRepository.getUserInfo().then((value) async {
       currentUser = value;
       emit(GetUserInfoSuccessState());
+      // Save current user in local cache
+      await homeLocalRepository.saveCurrentUser(currentUser);
     }).catchError((error) {
       _handleError(error, GetUserInfoErrorState());
     });
@@ -236,7 +247,6 @@ class HomeViewModel extends Cubit<HomeStates> {
 
   _handleError(error, state) {
     debugPrint(error.toString());
-    showToast(msg: error.toString());
     emit(state);
   }
 }

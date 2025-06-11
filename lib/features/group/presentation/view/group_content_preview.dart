@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:chat_app/core/shared_widgets/custom_appbar.dart';
 import 'package:chat_app/core/shared_widgets/custom_circular_progress_indicator.dart';
 import 'package:chat_app/core/themes/color_app.dart';
-import 'package:chat_app/core/utils/global_variables.dart';
 import 'package:chat_app/core/utils/network_monitor.dart';
 import 'package:chat_app/core/utils/user_model.dart';
 import 'package:chat_app/features/group/data/model/group_model.dart';

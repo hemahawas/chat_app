@@ -29,9 +29,9 @@ Future<void> sendNotification(
   final String accessToken = await getAccessToken();
   final String fcmUrl =
       'https://fcm.googleapis.com/v1/projects/${dotenv.env['PROJECT_ID']}/messages:send';
-  String token = '';
+  //String token = '';
   try {
-    token = await TokenService.getToken();
+    //token = await TokenService.getToken();
   } on TokenException catch (e) {
     log(e.toString());
     return;
@@ -78,7 +78,7 @@ Future<void> sendNotification(
 
 void handleNotification(BuildContext context, Map<String, dynamic> data) {
   String route = data['route'];
-  String id = data['id'];
+  //String id = data['id'];
 
   if (route == '/product_detials') {}
 }

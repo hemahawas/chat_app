@@ -17,7 +17,6 @@ class UserModel extends Equatable {
   String? image;
   @JsonKey(defaultValue: false)
   bool? isEmailVerified;
-
   @JsonKey(defaultValue: [])
   List<String>? addedChats;
 
@@ -34,7 +33,7 @@ class UserModel extends Equatable {
   factory UserModel.fromJson(Map<String, dynamic> json) =>
       _$UserModelFromJson(json);
 
-  Map<String, dynamic> toMap() => _$UserModelToJson(this);
+  Map<String, dynamic> toJson() => _$UserModelToJson(this);
 
   @override
   List<Object?> get props =>

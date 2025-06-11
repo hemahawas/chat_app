@@ -1,4 +1,3 @@
-import 'package:chat_app/core/shared_widgets/responsive_sizedbox.dart';
 import 'package:chat_app/core/themes/styles.dart';
 import 'package:chat_app/core/utils/user_model.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/image_field.dart';
@@ -42,7 +41,7 @@ class _UserItemState extends State<UserItem> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  widget.model.name!,
+                  widget.model.name,
                   style: Styles.textStyle15
                       .copyWith(fontSize: 18, color: Colors.black87),
                 ),

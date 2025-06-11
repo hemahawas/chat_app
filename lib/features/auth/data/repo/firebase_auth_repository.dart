@@ -44,7 +44,7 @@ class FirebaseAuthRepository extends AuthRepository {
       await firebaseFirestore
           .collection('users')
           .doc(model.uId!)
-          .set(model.toMap());
+          .set(model.toJson());
     });
   }
 }

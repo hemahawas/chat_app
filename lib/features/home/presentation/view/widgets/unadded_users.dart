@@ -48,7 +48,7 @@ class UnAddedUsers extends StatelessWidget {
               condition: unAddedUsers.isNotEmpty,
               builder: (context) => RepaintBoundary(
                 child: ListView.builder(
-                  itemExtent: 60,
+                  itemExtent: 65,
                   itemBuilder: (context, index) => UserItem(
                     key: ValueKey(unAddedUsers[index].uId),
                     model: unAddedUsers[index],

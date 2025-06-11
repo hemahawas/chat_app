@@ -41,7 +41,7 @@ class GroupModel extends ChatModel {
       'groupName': groupName,
       'chatId': chatId,
       'participantsUId': participantsUId?.toList(),
-      'participants': participants?.map((e) => e.toMap()).toList(),
+      'participants': participants?.map((e) => e.toJson()).toList(),
       'lastMessage': lastMessage?.toMap(),
       'groupImageUrl': groupImageUrl,
       'newMessages': newMessages,

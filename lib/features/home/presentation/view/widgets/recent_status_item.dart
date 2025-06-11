@@ -1,5 +1,4 @@
 import 'package:chat_app/core/constants/asset_images.dart';
-import 'package:chat_app/core/shared_widgets/responsive_sizedbox.dart';
 import 'package:chat_app/core/themes/color_app.dart';
 import 'package:chat_app/core/themes/styles.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/image_field.dart';
