@@ -30,13 +30,11 @@ GEM
       aws-eventstream (~> 1, >= 1.0.2)
     babosa (1.0.4)
     base64 (0.2.0)
-    bigdecimal (3.1.9)
     claide (1.1.0)
     colored (1.2)
     colored2 (3.1.2)
     commander (4.6.0)
       highline (~> 2.0.0)
-    csv (3.3.4)
     declarative (0.0.20)
     digest-crc (0.7.0)
       rake (>= 12.0.0, < 14.0.0)
@@ -228,15 +226,12 @@ GEM
 
 PLATFORMS
   x64-mingw-ucrt
+  x86_64-linux
 
 DEPENDENCIES
   abbrev
-  bigdecimal
-  csv
   fastlane
   fastlane-plugin-firebase_app_distribution
-  logger
-  mutex_m
 
 BUNDLED WITH
    2.6.9

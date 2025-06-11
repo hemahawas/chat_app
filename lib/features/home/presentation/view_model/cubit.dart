@@ -7,6 +7,7 @@ import 'package:chat_app/features/group/data/model/group_model.dart';
 import 'package:chat_app/features/home/data/model/call_Model.dart';
 import 'package:chat_app/features/home/data/model/chat_model.dart';
 import 'package:chat_app/features/home/data/model/status_model.dart';
+import 'package:chat_app/features/home/data/repo/home_local_repository.dart';
 import 'package:chat_app/features/home/data/repo/home_remote_firebase_repository.dart';
 import 'package:chat_app/features/home/presentation/view_model/states.dart';
 import 'package:chat_app/features/messaging/data/model/message_model.dart';
@@ -26,7 +27,7 @@ class HomeViewModel extends Cubit<HomeStates> {
   }
 
   final HomeRemoteFirebaseRepository firebaseHomeRepository;
-
+  final HomeLocalRepository homeLocalRepository;
   final NetworkInfo networkInfo;
 
   // To change the bottom nav bar
@@ -130,6 +131,7 @@ class HomeViewModel extends Cubit<HomeStates> {
   UserModel currentUser = UserModel(email: '', name: '', phone: '');
   Future<void> getCurrentUser() async {
     emit(GetUserInfoLoadingState());
+
     await firebaseHomeRepository.getUserInfo().then((value) {
       currentUser = value;
       emit(GetUserInfoSuccessState());
