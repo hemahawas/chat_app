@@ -1,5 +1,4 @@
 import 'package:chat_app/core/shared_widgets/icon_item_button.dart';
-import 'package:chat_app/core/utils/global_variables.dart';
 import 'package:chat_app/core/utils/network_monitor.dart';
 import 'package:chat_app/features/messaging/data/model/message_model.dart';
 import 'package:chat_app/features/messaging/presentation/view_model/cubit.dart';
@@ -35,9 +34,9 @@ class SendButton extends StatelessWidget {
               MessageModel message = MessageModel(
                   body: body,
                   image: '',
-                  messageSenderId: cubit.currentUser!.uId,
+                  messageSenderId: cubit.currentUser.uId,
                   sendingTime: DateTime.now().toLocal());
-              await cubit.sendTextMessage(cubit.chat!, message);
+              await cubit.sendTextMessage(cubit.chat, message);
             },
           ),
         );

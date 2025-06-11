@@ -37,7 +37,7 @@ class ChatModel {
     return {
       'chatId': chatId,
       'participantsUId': participantsUId?.toList(),
-      'participants': participants?.map((e) => e.toMap()).toList(),
+      'participants': participants?.map((e) => e.toJson()).toList(),
       'lastMessage': lastMessage?.toMap(),
       'newMessages': newMessages,
     };

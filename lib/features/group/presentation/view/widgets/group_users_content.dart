@@ -48,7 +48,7 @@ class GroupUsersContent extends StatelessWidget {
                                 },
                               ),
                             ]),
-                            Text(addedGroupUsers[index].name!),
+                            Text(addedGroupUsers[index].name),
                           ],
                         ),
                       ),

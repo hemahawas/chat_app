@@ -37,7 +37,7 @@ class GroupRepository {
         await firebaseFirestore
             .collection('users')
             .doc(userModel.uId)
-            .set(userModel.toMap());
+            .set(userModel.toJson());
       }
     });
   }

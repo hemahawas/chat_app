@@ -1,4 +1,3 @@
-import 'package:chat_app/core/shared_widgets/platform_arrow_back.dart';
 import 'package:chat_app/core/themes/color_app.dart';
 import 'package:chat_app/core/utils/user_model.dart';
 import 'package:chat_app/features/group/data/model/group_model.dart';
@@ -16,10 +15,10 @@ class MessagingAppbar extends StatelessWidget {
     var cubit = BlocProvider.of<MessagingViewModel>(context);
     UserModel? anotherUser;
     if (cubit.chat is! GroupModel) {
-      if (cubit.chat!.participants?[0].uId == cubit.currentUser!.uId) {
-        anotherUser = cubit.chat!.participants?[1];
+      if (cubit.chat.participants?[0].uId == cubit.currentUser.uId) {
+        anotherUser = cubit.chat.participants?[1];
       } else {
-        anotherUser = cubit.chat!.participants?[0];
+        anotherUser = cubit.chat.participants?[0];
       }
     }
 

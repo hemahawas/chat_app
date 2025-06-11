@@ -93,7 +93,7 @@ class HomeRemoteFirebaseRepository {
     await firebaseFirestore
         .collection('users')
         .doc(currentUser.uId)
-        .set(currentUser.toMap())
+        .set(currentUser.toJson())
         .catchError((error) {
       debugPrint(error.toString());
     });
@@ -101,7 +101,7 @@ class HomeRemoteFirebaseRepository {
     await firebaseFirestore
         .collection('users')
         .doc(anotherUser.uId)
-        .set(anotherUser.toMap())
+        .set(anotherUser.toJson())
         .catchError((error) {
       debugPrint(error.toString());
     });

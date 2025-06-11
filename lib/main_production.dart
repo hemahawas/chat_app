@@ -4,10 +4,8 @@ import 'package:chat_app/core/config/routes.dart';
 import 'package:chat_app/core/themes/color_app.dart';
 import 'package:chat_app/core/utils/app_observer.dart';
 import 'package:chat_app/core/utils/cache_helper.dart';
-import 'package:chat_app/core/utils/global_variables.dart';
 import 'package:chat_app/core/utils/network_monitor.dart';
 import 'package:chat_app/features/splash_screen/splash_screen.dart';
-
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';

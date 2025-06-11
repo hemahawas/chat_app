@@ -35,13 +35,12 @@ class ChatSearchDelegate extends SearchDelegate {
       value: BlocProvider.of<HomeViewModel>(blocContext),
       child: BlocBuilder<HomeViewModel, HomeStates>(
         builder: (context, state) {
+          final cubit = BlocProvider.of<HomeViewModel>(context);
           // Get chats
           searchTerms = List.generate(
-              BlocProvider.of<HomeViewModel>(context).chats.length,
-              (index) => ChatItem(
-                  isSearched: true,
-                  chatModel:
-                      BlocProvider.of<HomeViewModel>(context).chats[index]));
+              cubit.chats.length,
+              (index) =>
+                  ChatItem(isSearched: true, chatModel: cubit.chats[index]));
 
           List<ChatItem> matchQuery = [];
           // get searched chats and add it to matchQuery
@@ -56,10 +55,9 @@ class ChatSearchDelegate extends SearchDelegate {
             } else {
               var anotherUser =
                   chatItem.chatModel.participants!.firstWhere((e) {
-                return e.uId !=
-                    BlocProvider.of<HomeViewModel>(context).currentUser!.uId;
+                return e.uId != cubit.currentUser.uId;
               });
-              if ((anotherUser.name!
+              if ((anotherUser.name
                   .toLowerCase()
                   .contains(query.toLowerCase()))) {
                 matchQuery.add(chatItem);
@@ -79,49 +77,6 @@ class ChatSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return BlocProvider<HomeViewModel>.value(
-      value: BlocProvider.of<HomeViewModel>(blocContext),
-      child: BlocBuilder<HomeViewModel, HomeStates>(
-        builder: (context, state) {
-          // Get chats
-          searchTerms = List.generate(
-              BlocProvider.of<HomeViewModel>(context).chats.length,
-              (index) => ChatItem(
-                  isSearched: true,
-                  chatModel:
-                      BlocProvider.of<HomeViewModel>(context).chats[index]));
-
-          List<ChatItem> matchQuery = [];
-          // get searched chats and add it to matchQuery
-          for (var chatItem in searchTerms) {
-            if (chatItem.chatModel is GroupModel) {
-              if ((chatItem.chatModel as GroupModel)
-                  .chatId!
-                  .toLowerCase()
-                  .contains(query.toLowerCase())) {
-                matchQuery.add(chatItem);
-              }
-            } else {
-              var anotherUser =
-                  chatItem.chatModel.participants!.firstWhere((e) {
-                return e.uId !=
-                    BlocProvider.of<HomeViewModel>(context).currentUser.uId;
-              });
-              if ((anotherUser.name!
-                  .toLowerCase()
-                  .contains(query.toLowerCase()))) {
-                matchQuery.add(chatItem);
-              }
-            }
-          }
-          // View the results
-          return ListView.builder(
-            itemExtent: 65,
-            itemCount: matchQuery.length,
-            itemBuilder: (context, index) => matchQuery[index],
-          );
-        },
-      ),
-    );
+    return buildResults(context);
   }
 }

@@ -1,7 +1,4 @@
-import 'package:chat_app/core/shared_widgets/custom_circular_progress_indicator.dart';
-import 'package:chat_app/features/home/presentation/view/widgets/chat_item.dart';
 import 'package:chat_app/features/home/presentation/view/widgets/chat_stream.dart';
-import 'package:chat_app/features/home/presentation/view/widgets/empty_chat_body.dart';
 import 'package:chat_app/features/home/presentation/view_model/cubit.dart';
 import 'package:chat_app/features/home/presentation/view_model/states.dart';
 import 'package:flutter/material.dart';

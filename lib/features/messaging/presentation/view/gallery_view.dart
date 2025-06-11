@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:chat_app/core/constants/app_strings.dart';
 import 'package:chat_app/core/themes/color_app.dart';
-import 'package:chat_app/core/utils/global_variables.dart';
 import 'package:chat_app/core/utils/network_monitor.dart';
 import 'package:chat_app/features/messaging/data/model/message_model.dart';
 import 'package:chat_app/features/messaging/presentation/view_model/cubit.dart';
@@ -91,12 +90,12 @@ class GalleryView extends StatelessWidget {
                                             body: messageController.text,
                                             image: path,
                                             messageSenderId:
-                                                cubit.currentUser!.uId,
+                                                cubit.currentUser.uId,
                                             sendingTime:
                                                 DateTime.now().toLocal());
                                         // Then send the message
                                         cubit.sendImageMessage(
-                                            cubit.chat!, message);
+                                            cubit.chat, message);
                                         // Then return to messaging view
                                         Navigator.pop(context);
                                       },

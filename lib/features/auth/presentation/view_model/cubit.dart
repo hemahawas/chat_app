@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:chat_app/core/utils/global_variables.dart';
 import 'package:chat_app/core/utils/network_info.dart';
 import 'package:chat_app/core/utils/user_model.dart';
 import 'package:chat_app/features/auth/data/repo/auth_repository.dart';
