@@ -69,9 +69,9 @@ class MessageItem extends StatelessWidget {
                 alignment: AlignmentDirectional.center,
                 child: message.image != '' && message.image != null
                     ? CachedNetworkImage(
-                        memCacheHeight: 300,
-                        memCacheWidth: 300,
-                        fit: BoxFit.contain,
+                        memCacheWidth: 400,
+                        width: 400,
+                        fit: BoxFit.cover,
                         imageUrl: message.image!,
                       )
                     : SizedBox(),

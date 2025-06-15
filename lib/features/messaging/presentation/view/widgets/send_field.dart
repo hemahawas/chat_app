@@ -15,7 +15,7 @@ class SendField extends StatefulWidget {
 class _SendFieldState extends State<SendField> {
   final ScrollController scrollController = ScrollController();
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext blocContext) {
     return Container(
       alignment: Alignment.bottomLeft,
       child: defaultFormField(
@@ -31,8 +31,9 @@ class _SendFieldState extends State<SendField> {
                   alignment: Alignment.bottomRight,
                   onPressed: () {
                     showCupertinoModalPopup(
-                      context: context,
-                      builder: (builder) => AttachmentItems(),
+                      context: blocContext,
+                      builder: (_) => AttachmentItems(),
+                      routeSettings: RouteSettings(arguments: blocContext),
                     );
                   },
                   icon: Icon(Icons.attachment),

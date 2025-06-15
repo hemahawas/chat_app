@@ -1,7 +1,8 @@
 import 'package:chat_app/core/shared_widgets/icon_item_button.dart';
 import 'package:chat_app/features/messaging/presentation/view/gallery_view.dart';
-
+import 'package:chat_app/features/messaging/presentation/view_model/cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
 class GalleryAttachmentItem extends StatefulWidget {
@@ -14,6 +15,8 @@ class GalleryAttachmentItem extends StatefulWidget {
 class _GalleryAttachmentItemState extends State<GalleryAttachmentItem> {
   @override
   Widget build(BuildContext context) {
+    final blocContext =
+        ModalRoute.of(context)?.settings.arguments as BuildContext;
     return Column(
       children: [
         IconItemButton(
@@ -23,7 +26,7 @@ class _GalleryAttachmentItemState extends State<GalleryAttachmentItem> {
           size: 60,
           onPressed: () async {
             // show gallery from phone (demo)
-            await _getImageFromGallery();
+            await _getImageFromGallery(blocContext);
           },
           color: Colors.purple,
         ),
@@ -32,7 +35,7 @@ class _GalleryAttachmentItemState extends State<GalleryAttachmentItem> {
     );
   }
 
-  Future _getImageFromGallery() async {
+  Future _getImageFromGallery(blocContext) async {
     var pickedImage =
         await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedImage != null) {
@@ -41,7 +44,9 @@ class _GalleryAttachmentItemState extends State<GalleryAttachmentItem> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => GalleryView(path: pickedImage.path)));
+                builder: (context) => BlocProvider.value(
+                    value: BlocProvider.of<MessagingViewModel>(blocContext),
+                    child: GalleryView(path: pickedImage.path))));
       });
     }
   }

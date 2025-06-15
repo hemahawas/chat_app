@@ -23,13 +23,11 @@ class ImageField extends StatelessWidget {
           child: image != null
               ? CachedNetworkImage(
                   imageUrl: image!,
-                  memCacheHeight: 180,
-                  memCacheWidth: 180,
+                  memCacheWidth: 350,
                   fit: BoxFit.cover,
                 )
               : Image.asset(
                   AssetImages.userImage,
-                  cacheHeight: 180,
                   cacheWidth: 180,
                   fit: BoxFit.cover,
                 ),
