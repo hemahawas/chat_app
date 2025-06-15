@@ -26,6 +26,7 @@ class FirebaseAuthRepository extends AuthRepository {
   Future<void> logOut() async {
     await firebaseAuth.signOut().then((_) {
       CacheHelper.removeData(key: AppStrings.uId);
+      CacheHelper.removeData(key: AppStrings.currentUser);
     });
   }
 
