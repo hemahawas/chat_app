@@ -53,6 +53,14 @@ class _RegisterBodyState extends State<RegisterBody> {
         if (state is RegisterSuccessState) {
           Navigator.pushReplacementNamed(context, Routes.homeRoute);
         }
+        if (state is RegisterErrorState) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.message),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
       },
       builder: (context, state) => Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.0),

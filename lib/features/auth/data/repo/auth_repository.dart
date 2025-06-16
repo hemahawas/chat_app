@@ -4,4 +4,5 @@ abstract class AuthRepository {
   Future<void> logIn(String email, String password);
   Future<void> logOut();
   Future<void> register(UserModel model, String password);
+  Future<void> checkIfNameOrEmailExists(UserModel model);
 }

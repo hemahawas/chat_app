@@ -3,6 +3,7 @@ import 'package:chat_app/core/utils/network_info.dart';
 import 'package:chat_app/core/utils/user_model.dart';
 import 'package:chat_app/features/auth/data/repo/auth_repository.dart';
 import 'package:chat_app/features/auth/presentation/view_model/states.dart';
+import 'package:flutter/material.dart';
 
 class AuthViewModel extends Cubit<AuthStates> {
   final AuthRepository authRepository;
@@ -16,6 +17,7 @@ class AuthViewModel extends Cubit<AuthStates> {
     return await authRepository.logIn(email, password).then((_) {
       emit(LoginSuccessState());
     }).catchError((error) {
+      debugPrint(error.toString());
       emit(LoginErrorState(message: error.toString()));
     });
   }
@@ -33,10 +35,16 @@ class AuthViewModel extends Cubit<AuthStates> {
   Future<void> register(UserModel model, String password) async {
     emit(RegisterLoadingState());
 
-    return await authRepository.register(model, password).then((_) {
+    return await authRepository.register(model, password).then((_) async {
+      await authRepository.logIn(model.email, password);
       emit(RegisterSuccessState());
     }).catchError((error) {
-      emit(RegisterErrorState(message: error.toString()));
+      debugPrint(error.hashCode.toString());
+      if (error.hashCode == 481776831) {
+        emit(RegisterErrorState(message: 'Email or name already exists'));
+        return;
+      }
+      emit(RegisterErrorState(message: 'An Error Occured'));
     });
   }
 

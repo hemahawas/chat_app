@@ -9,6 +9,20 @@ class GroupRepository {
 
   GroupRepository();
 
+  Future<void> checkIfGroupExists(String chatId) async {
+    // Check if the group already exists
+    // Check if there is a similar chatId
+    await firebaseFirestore
+        .collection('chats')
+        .where('chatId', isEqualTo: chatId)
+        .get()
+        .then((value) {
+      if (value.docs.isNotEmpty) {
+        throw Exception();
+      }
+    });
+  }
+
   Future<void> createGroup(GroupModel group) async {
     // upload the image then assign it
     if (group.groupImageUrl != null) {

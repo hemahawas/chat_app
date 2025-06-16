@@ -1,3 +1,4 @@
+import 'package:chat_app/core/shared_widgets/waiting_dialog.dart';
 import 'package:chat_app/core/themes/color_app.dart';
 import 'package:flutter/material.dart';
 
@@ -20,8 +21,9 @@ class CustomDialog {
               onPressed: () {
                 onConfirm();
                 Navigator.of(context).pop();
+                WaitingDialog.show(context);
               },
-              child: Text('OK'),
+              child: Text('YES'),
             ),
             TextButton(
               onPressed: () {

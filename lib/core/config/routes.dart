@@ -55,14 +55,16 @@ class AppRoutes {
               child: const RegisterView());
         }));
       case Routes.homeRoute:
-        return MaterialPageRoute(builder: ((context) {
-          return BlocProvider<HomeViewModel>(
-            create: (context) => home_di.sl<HomeViewModel>()
-              ..getCurrentUser()
-              ..getUsers(),
-            child: HomeView(),
-          );
-        }));
+        return MaterialPageRoute(
+          builder: ((context) {
+            return BlocProvider<HomeViewModel>(
+              create: (context) => home_di.sl<HomeViewModel>()
+                ..getCurrentUser()
+                ..getUsers(),
+              child: HomeView(),
+            );
+          }),
+        );
       case Routes.profileRoute:
         return MaterialPageRoute(
             builder: ((context) {

@@ -229,7 +229,7 @@ class HomeViewModel extends Cubit<HomeStates> {
     await firebaseHomeRepository.deleteAccount().then((_) {
       emit(DeleteAccountSuccessState());
     }).catchError((error) {
-      emit(DeleteAccountErrorState());
+      _handleError(error, DeleteAccountErrorState());
     });
   }
 
