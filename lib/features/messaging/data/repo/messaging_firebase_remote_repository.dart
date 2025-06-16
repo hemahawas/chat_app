@@ -122,6 +122,6 @@ class MessagingFirebaseRemoteRepository extends MessagingRemoteRepository {
 
   @override
   String getCurrentUserUid() {
-    return CacheHelper.getData(key: AppStrings.uId);
+    return CacheHelper.getData(key: AppStrings.uId)!;
   }
 }

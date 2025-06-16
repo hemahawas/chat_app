@@ -38,7 +38,7 @@ class FirebaseAuthRepository extends AuthRepository {
         .createUserWithEmailAndPassword(email: model.email, password: password)
         .then((userCredential) async {
       model.uId = userCredential.user!.uid;
-      CacheHelper.saveData(
+      await CacheHelper.saveData(
           key: AppStrings.uId, value: userCredential.user!.uid);
 
       // Add the new user to firestore
@@ -46,6 +46,21 @@ class FirebaseAuthRepository extends AuthRepository {
           .collection('users')
           .doc(model.uId!)
           .set(model.toJson());
+    });
+  }
+
+  @override
+  Future<void> checkIfNameOrEmailExists(UserModel model) async {
+    // Check if the email already exists
+    return firebaseFirestore
+        .collection('users')
+        .where('email', isEqualTo: model.email)
+        .where('name', isEqualTo: model.name)
+        .get()
+        .then((value) {
+      if (value.docs.isNotEmpty) {
+        throw Exception('Email already exists');
+      }
     });
   }
 }

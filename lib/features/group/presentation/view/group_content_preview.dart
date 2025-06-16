@@ -65,6 +65,17 @@ class _GroupContentPreviewState extends State<GroupContentPreview> {
         if (state is CreateGroupSuccessState) {
           Navigator.popUntil(context, (route) => route.isFirst);
         }
+        if (state is CreateGroupErrorState) {
+          setState(() {
+            isLoading = false;
+          });
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: Colors.red,
+              content: Text('Name already exists. Please choose another one.'),
+            ),
+          );
+        }
       },
       builder: (context, state) => Scaffold(
         body: SafeArea(
@@ -146,6 +157,7 @@ class _GroupContentPreviewState extends State<GroupContentPreview> {
   }
 
   floatingActionButtonOnPressed() async {
+    final cubit = BlocProvider.of<GroupViewModel>(context);
     switch (currentStep) {
       case 0:
         setState(() {
@@ -168,15 +180,13 @@ class _GroupContentPreviewState extends State<GroupContentPreview> {
             participantsUId:
                 List<String>.from(addedGroupUsers.map((i) => i.uId.toString())),
             participants: addedGroupUsers,
-            chatId: groupNameGontroller.text,
+            chatId: '${groupNameGontroller.text}-${cubit.currentUser.uId}',
             groupName: groupNameGontroller.text,
             groupImageUrl: pickedImage?.path,
             newMessages: newMessages);
 
         // Create group chat
-        await BlocProvider.of<GroupViewModel>(context)
-            .createGroup(group)
-            .then((_) {});
+        await cubit.createGroup(group);
 
         break;
     }

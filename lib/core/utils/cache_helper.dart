@@ -7,11 +7,11 @@ class CacheHelper {
     sharedPreferences = await SharedPreferences.getInstance();
   }
 
-  static dynamic getData({
+  static String? getData({
     required String key,
     context,
   }) {
-    return sharedPreferences.get(key);
+    return sharedPreferences.getString(key);
   }
 
   static Future<bool> saveData({

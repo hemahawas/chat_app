@@ -1,26 +1,29 @@
 import 'package:chat_app/core/themes/color_app.dart';
 import 'package:flutter/material.dart';
 
-Widget defaultFormField(
-        {required TextEditingController controller,
-        required TextInputType type,
-        Function? onSubmit,
-        Function? onChange,
-        GestureTapCallback? onTap,
-        bool isPassword = false,
-        required Function validate,
-        required int? maxLines,
-        Function(PointerDownEvent)? onTapOutside,
-        String? label,
-        String? hint,
-        IconData? prefix,
-        IconData? suffix,
-        VoidCallback? suffixPressed,
-        bool isClickable = true,
-        ScrollController? scrollController,
-        InputDecoration? decoration}) =>
+Widget defaultFormField({
+  required TextEditingController controller,
+  required TextInputType type,
+  Function? onSubmit,
+  Function? onChange,
+  GestureTapCallback? onTap,
+  bool isPassword = false,
+  required Function validate,
+  required int? maxLines,
+  Function(PointerDownEvent)? onTapOutside,
+  String? label,
+  String? hint,
+  IconData? prefix,
+  IconData? suffix,
+  VoidCallback? suffixPressed,
+  bool isClickable = true,
+  ScrollController? scrollController,
+  InputDecoration? decoration,
+  TextDirection? textDirection = TextDirection.ltr,
+}) =>
     TextFormField(
       scrollController: scrollController,
+      textDirection: textDirection,
       controller: controller,
       keyboardType: type,
       obscureText: isPassword,

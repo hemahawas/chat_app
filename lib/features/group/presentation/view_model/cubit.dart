@@ -27,11 +27,18 @@ class GroupViewModel extends Cubit<GroupStates> {
   }
 
   Future<void> createGroup(GroupModel group) async {
+    emit(CreateGroupLoadingState());
+    try {
+      await groupRepository.checkIfGroupExists(group.chatId!);
+    } catch (e) {
+      emit(CreateGroupErrorState());
+      return;
+    }
     // Add current user to group
     group.participants!.add(currentUser);
     group.participantsUId!.add(currentUser.uId!);
     group.newMessages[currentUser.uId!] = 0;
-    emit(CreateGroupLoadingState());
+
     await groupRepository.createGroup(group).then((value) async {
       emit(CreateGroupSuccessState());
       await groupRepository.notifyGroupMembers(group);

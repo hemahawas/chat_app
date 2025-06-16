@@ -20,7 +20,7 @@ class HomeRemoteFirebaseRepository {
       required this.firebaseFirestore});
 
   String getCurrentUserUId() {
-    return CacheHelper.getData(key: AppStrings.uId);
+    return CacheHelper.getData(key: AppStrings.uId)!;
   }
 
   // O(1)
@@ -120,29 +120,48 @@ class HomeRemoteFirebaseRepository {
   // O(n)
   // Create group
 
-  Future<void> deleteAccount() {
+  Future<void> deleteAccount() async {
+    CacheHelper.removeData(key: AppStrings.currentUser);
     // delete the user from firebase auth
-    return firebaseAuth.currentUser!.delete().then((value) async {
-      // delete the user from firestore
-      await firebaseFirestore
-          .collection('users')
-          .doc(getCurrentUserUId())
-          .delete();
 
-      // delete any chats or groups that related to user from firestore
-      await firebaseFirestore
-          .collection('chats')
-          .where('participantsUId', arrayContains: getCurrentUserUId())
-          .get()
-          .then((value) async {
-        for (var chat in value.docs) {
+    // delete the user from firestore
+    await firebaseFirestore
+        .collection('users')
+        .doc(getCurrentUserUId())
+        .delete();
+
+    // delete all chats and groups that related to user from firestore
+    await firebaseFirestore
+        .collection('chats')
+        .where('participantsUId', arrayContains: getCurrentUserUId())
+        .get()
+        .then((value) async {
+      for (var chat in value.docs) {
+        if (chat.data()['groupName'] != null) {
+          // Remove the deleted user from group
+          var group = GroupModel.fromJson(chat.data());
+          group.participantsUId
+              ?.removeWhere((uid) => uid == getCurrentUserUId());
+          group.participants?.removeWhere((p) => p.uId == getCurrentUserUId());
+          group.newMessages
+              .removeWhere((key, value) => key == getCurrentUserUId());
+          // Then update
+          await firebaseFirestore
+              .collection('chats')
+              .doc(group.chatId)
+              .set(group.toMap());
+        } else {
+          // Delete chat
           await firebaseFirestore
               .collection('chats')
               .doc(chat.data()['chatId'])
               .delete();
         }
-      });
+      }
     });
+
+    await CacheHelper.removeData(key: AppStrings.uId);
+    return firebaseAuth.currentUser!.delete();
   }
 
   // O(1)

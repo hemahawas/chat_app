@@ -1,12 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chat_app/core/themes/color_app.dart';
 import 'package:chat_app/core/themes/styles.dart';
+import 'package:chat_app/core/utils/shared_functions.dart';
 import 'package:chat_app/features/messaging/data/model/message_model.dart';
 import 'package:chat_app/features/messaging/presentation/view/widgets/date_title.dart';
 import 'package:chat_app/features/messaging/presentation/view_model/cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
+import 'package:intl/intl.dart' show DateFormat;
 
 class MessageItem extends StatelessWidget {
   final Map<String, String> participantNames;
@@ -22,6 +23,7 @@ class MessageItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isRTL = checkIsRTL(message.body![0]);
     var cubit = BlocProvider.of<MessagingViewModel>(context);
     return Column(
       children: [
@@ -76,13 +78,17 @@ class MessageItem extends StatelessWidget {
                       )
                     : SizedBox(),
               ),
-              Text(
-                message.body == null
-                    ? ''
-                    : (message.body == 'Photo.' ? '' : message.body!),
-                maxLines: null,
-                overflow: TextOverflow.visible,
-                style: TextStyle(fontWeight: FontWeight.w500),
+              Align(
+                alignment: isRTL ? Alignment.topRight : Alignment.topLeft,
+                child: Text(
+                  message.body == null
+                      ? ''
+                      : (message.body == 'Photo.' ? '' : message.body!),
+                  textDirection: isRTL ? TextDirection.rtl : TextDirection.ltr,
+                  maxLines: null,
+                  overflow: TextOverflow.visible,
+                  style: TextStyle(fontWeight: FontWeight.w500),
+                ),
               ),
               Align(
                 alignment: Alignment.bottomRight,
