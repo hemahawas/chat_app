@@ -18,14 +18,14 @@ class GroupImage extends StatelessWidget {
       ),
       child: pickedImage == null
           ? ImageField(
+              isGroup: true,
               image: null,
               borderColor: Colors.transparent,
             )
           : ClipRRect(
               borderRadius: BorderRadius.circular(50),
               child: Image.file(
-                cacheHeight: 180,
-                cacheWidth: 180,
+                cacheHeight: 350,
                 pickedImage!,
                 fit: BoxFit.cover,
               ),

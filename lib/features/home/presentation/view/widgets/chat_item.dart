@@ -54,6 +54,7 @@ class ChatItem extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.only(right: 10),
                 child: ImageField(
+                  isGroup: chatModel is GroupModel,
                   // user image
                   image: chatModel is GroupModel
                       ? (chatModel as GroupModel).groupImageUrl

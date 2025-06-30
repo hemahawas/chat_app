@@ -27,17 +27,6 @@ class SplashBody extends StatelessWidget {
               fontSize: 25,
             ),
           ),
-          SizedBox(
-            height: 10,
-          ),
-          Text(
-            AppStrings.splashTitle,
-            style: TextStyle(
-              fontWeight: FontWeight.w900,
-              color: ColorApp.primaryColor,
-              fontSize: 17,
-            ),
-          ),
         ],
       ),
     );

@@ -23,88 +23,96 @@ class GalleryView extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.black,
       ),
-      body: SizedBox(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        child: Stack(
-          children: [
-            SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height - 150,
-              child: Image.file(
-                cacheWidth: (MediaQuery.of(context).size.width * 0.9).toInt(),
-                File(path),
-                fit: BoxFit.contain,
-              ),
-            ),
-            Positioned(
-              bottom: 0,
-              child: Container(
-                color: Colors.black38,
+      body: SafeArea(
+        top: false,
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          child: Stack(
+            children: [
+              SizedBox(
                 width: MediaQuery.of(context).size.width,
-                padding: EdgeInsets.symmetric(vertical: 5, horizontal: 8),
-                child: TextFormField(
-                  controller: messageController,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 17,
-                  ),
-                  maxLines: 6,
-                  minLines: 1,
-                  decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: AppStrings.addCaption,
-                      prefixIcon: Icon(
-                        Icons.add_photo_alternate,
-                        color: Colors.white,
-                        size: 27,
-                      ),
-                      hintStyle: TextStyle(
-                        color: Colors.white,
-                        fontSize: 17,
-                      ),
-                      suffixIcon: ValueListenableBuilder<bool>(
-                        valueListenable:
-                            Provider.of<NetworkMonitor>(context).isOnline,
-                        builder: (context, isConnected, _) => CircleAvatar(
-                          radius: 27,
-                          backgroundColor:
-                              isConnected ? ColorApp.primaryColor : Colors.grey,
-                          child:
-                              BlocBuilder<MessagingViewModel, MessagingStates>(
-                            builder: (context, state) {
-                              final cubit =
-                                  BlocProvider.of<MessagingViewModel>(context);
-                              return AbsorbPointer(
-                                absorbing: !isConnected,
-                                child: IconButton(
-                                  onPressed: () {
-                                    // Create message
-                                    var message = MessageModel(
-                                        body: messageController.text,
-                                        image: path,
-                                        messageSenderId: cubit.currentUser.uId,
-                                        sendingTime: DateTime.now().toLocal());
-                                    // Then send the message
-                                    cubit.sendImageMessage(cubit.chat, message);
-                                    // Then return to messaging view
-                                    Navigator.pop(context);
-                                  },
-                                  icon: Icon(
-                                    Icons.check,
-                                    color: Colors.white,
-                                    size: 27,
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      )),
+                height: MediaQuery.of(context).size.height - 150,
+                child: Image.file(
+                  cacheWidth: (MediaQuery.of(context).size.width * 0.9).toInt(),
+                  File(path),
+                  fit: BoxFit.contain,
                 ),
               ),
-            ),
-          ],
+              Positioned(
+                bottom: 0,
+                child: Container(
+                  color: Colors.black38,
+                  width: MediaQuery.of(context).size.width,
+                  padding: EdgeInsets.symmetric(vertical: 5, horizontal: 8),
+                  child: TextFormField(
+                    controller: messageController,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 17,
+                    ),
+                    maxLines: 6,
+                    minLines: 1,
+                    decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: AppStrings.addCaption,
+                        prefixIcon: Icon(
+                          Icons.add_photo_alternate,
+                          color: Colors.white,
+                          size: 27,
+                        ),
+                        hintStyle: TextStyle(
+                          color: Colors.white,
+                          fontSize: 17,
+                        ),
+                        suffixIcon: ValueListenableBuilder<bool>(
+                          valueListenable:
+                              Provider.of<NetworkMonitor>(context).isOnline,
+                          builder: (context, isConnected, _) => CircleAvatar(
+                            radius: 27,
+                            backgroundColor: isConnected
+                                ? ColorApp.primaryColor
+                                : Colors.grey,
+                            child: BlocBuilder<MessagingViewModel,
+                                MessagingStates>(
+                              builder: (context, state) {
+                                final cubit =
+                                    BlocProvider.of<MessagingViewModel>(
+                                        context);
+                                return AbsorbPointer(
+                                  absorbing: !isConnected,
+                                  child: IconButton(
+                                    onPressed: () {
+                                      // Create message
+                                      var message = MessageModel(
+                                          body: messageController.text,
+                                          image: path,
+                                          messageSenderId:
+                                              cubit.currentUser.uId,
+                                          sendingTime:
+                                              DateTime.now().toLocal());
+                                      // Then send the message
+                                      cubit.sendImageMessage(
+                                          cubit.chat, message);
+                                      // Then return to messaging view
+                                      Navigator.pop(context);
+                                    },
+                                    icon: Icon(
+                                      Icons.check,
+                                      color: Colors.white,
+                                      size: 27,
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        )),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

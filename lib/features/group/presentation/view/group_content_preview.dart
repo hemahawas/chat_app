@@ -79,21 +79,18 @@ class _GroupContentPreviewState extends State<GroupContentPreview> {
       },
       builder: (context, state) => Scaffold(
         body: SafeArea(
-          child: SizedBox(
-            height: MediaQuery.of(context).size.height,
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: CustomAppbar(
-                    text: 'Add Members',
-                    iconButtons: [],
-                    onBackPressed: onBackPressed,
-                  ),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: CustomAppbar(
+                  text: 'Add Members',
+                  iconButtons: [],
+                  onBackPressed: onBackPressed,
                 ),
-                getContent(currentStep),
-              ],
-            ),
+              ),
+              getContent(currentStep),
+            ],
           ),
         ),
         floatingActionButton: ValueListenableBuilder(

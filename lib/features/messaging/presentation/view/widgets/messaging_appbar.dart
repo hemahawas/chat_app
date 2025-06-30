@@ -61,6 +61,7 @@ class MessagingAppbar extends StatelessWidget {
                 maxWidth: 40,
               ),
               child: ImageField(
+                isGroup: cubit.chat is GroupModel,
                 image: cubit.chat is GroupModel
                     ? (cubit.chat as GroupModel).groupImageUrl
                     : anotherUser!.image,

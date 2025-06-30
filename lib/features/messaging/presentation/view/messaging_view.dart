@@ -1,5 +1,4 @@
 import 'package:chat_app/core/constants/app_sizes.dart';
-import 'package:chat_app/core/constants/asset_images.dart';
 import 'package:chat_app/features/messaging/presentation/view/widgets/messaging_appbar.dart';
 import 'package:chat_app/features/messaging/presentation/view/widgets/messaging_body.dart';
 import 'package:chat_app/features/messaging/presentation/view_model/cubit.dart';
@@ -15,10 +14,7 @@ class MessagingView extends StatelessWidget {
     return BlocBuilder<MessagingViewModel, MessagingStates>(
       builder: (context, state) {
         return Container(
-          decoration: BoxDecoration(
-              image: DecorationImage(
-                  fit: BoxFit.fill,
-                  image: AssetImage(AssetImages.messagingBackground))),
+          decoration: BoxDecoration(color: Color.fromARGB(255, 230, 226, 207)),
           child: PopScope(
             canPop: true,
             onPopInvokedWithResult: (didPop, result) async {

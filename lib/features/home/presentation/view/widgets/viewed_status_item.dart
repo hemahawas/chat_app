@@ -12,7 +12,7 @@ class ViewedStatusItem extends StatelessWidget {
     return Row(
       children: [
         const ImageField(
-          image: AssetImages.userImage,
+          image: AssetImages.groupImage,
           borderColor: Colors.grey,
         ),
         ResponsiveSizedBox(

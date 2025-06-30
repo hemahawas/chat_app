@@ -8,12 +8,12 @@
             "name": "kalemni development",
             "request": "launch",
             "type": "dart",
-            "program": "lib/main_development.dart",
+            "program": "lib/main_production.dart",
             "args": [
                 "--flavor",
-                "development",
+                "production",
                 "--target",
-                "lib/main_development.dart"
+                "lib/main_production.dart"
             ]
         },
         {
@@ -40,12 +40,12 @@
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile",
-            "program": "lib/main_development.dart",
+            "program": "lib/main_production.dart",
             "toolArgs": [
                 "--flavor",
-                "development",
+                "production",
                 "--target",
-                "lib/main_development.dart",
+                "lib/main_production.dart",
                 "--no-enable-impeller"
             ]
         },

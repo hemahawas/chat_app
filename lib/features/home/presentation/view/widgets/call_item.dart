@@ -11,7 +11,7 @@ class CallItem extends StatelessWidget {
     return Row(
       children: [
         const ImageField(
-          image: AssetImages.userImage,
+          image: AssetImages.groupImage,
           borderColor: Colors.white10,
         ),
         SizedBox(

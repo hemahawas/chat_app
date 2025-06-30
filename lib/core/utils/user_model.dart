@@ -11,9 +11,8 @@ class UserModel extends Equatable {
   @JsonKey(defaultValue: '')
   String? uId;
   @JsonKey(
-      includeIfNull: true,
-      defaultValue:
-          'https://firebasestorage.googleapis.com/v0/b/my-project-4120f.appspot.com/o/default_components%2Fuser.png?alt=media&token=346e27d2-eee4-45cd-aa7c-024069ba1ca4')
+    includeIfNull: true,
+  )
   String? image;
   @JsonKey(defaultValue: false)
   bool? isEmailVerified;

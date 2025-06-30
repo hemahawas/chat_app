@@ -12,7 +12,7 @@ class RecentStatusItem extends StatelessWidget {
     return Row(
       children: [
         const ImageField(
-          image: AssetImages.userImage,
+          image: AssetImages.groupImage,
           borderColor: ColorApp.primaryColor,
         ),
         SizedBox(

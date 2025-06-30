@@ -34,6 +34,7 @@ class GroupMembersView extends StatelessWidget {
                         maxWidth: 120,
                       ),
                       child: ImageField(
+                        isGroup: true,
                         borderColor: Colors.transparent,
                         image: groupModel.groupImageUrl,
                       ),

@@ -62,7 +62,8 @@ class MessageItem extends StatelessWidget {
                   ? Align(
                       alignment: Alignment.topLeft,
                       child: Text(
-                        '${participantNames[message.messageSenderId]}',
+                        participantNames[message.messageSenderId] ??
+                            'Deleted User',
                         style: Styles.textStyle15,
                       ),
                     )

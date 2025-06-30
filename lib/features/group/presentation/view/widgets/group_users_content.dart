@@ -18,68 +18,68 @@ class GroupUsersContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(children: [
-      SingleChildScrollView(
-        physics: const NeverScrollableScrollPhysics(),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            addedGroupUsers.isNotEmpty
-                ? SizedBox(
+    return SizedBox(
+      height: MediaQuery.sizeOf(context).height * 0.8,
+      child: Column(
+        children: [
+          addedGroupUsers.isNotEmpty
+              ? Align(
+                  alignment: Alignment.centerLeft,
+                  child: SizedBox(
                     height: 100,
-                    child: RepaintBoundary(
-                      child: ListView.builder(
-                        itemExtent: 50,
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        physics: const BouncingScrollPhysics(),
-                        itemCount: addedGroupUsers.length,
-                        itemBuilder: (context, index) => Column(
-                          children: [
-                            Stack(alignment: Alignment.bottomRight, children: [
-                              ImageField(
-                                  borderColor: Colors.transparent,
-                                  image: addedGroupUsers[index].image),
-                              IconItemButton(
-                                icon: Icon(Icons.close),
-                                size: 20,
-                                onPressed: () {
-                                  onUserRemoved(addedGroupUsers[index]);
-                                },
-                              ),
-                            ]),
-                            Text(addedGroupUsers[index].name),
-                          ],
-                        ),
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemExtent: 50,
+                      scrollDirection: Axis.horizontal,
+                      physics: const BouncingScrollPhysics(),
+                      itemCount: addedGroupUsers.length,
+                      itemBuilder: (context, index) => Column(
+                        children: [
+                          Stack(alignment: Alignment.bottomRight, children: [
+                            ImageField(
+                                borderColor: Colors.transparent,
+                                image: addedGroupUsers[index].image),
+                            IconItemButton(
+                              icon: Icon(Icons.close),
+                              size: 20,
+                              onPressed: () {
+                                onUserRemoved(addedGroupUsers[index]);
+                              },
+                            ),
+                          ]),
+                          Text(
+                            addedGroupUsers[index].name,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
                       ),
                     ),
-                  )
-                : Container(),
-            SizedBox(
-              height: 2,
-              width: double.infinity,
-              child: Container(
-                height: 1,
-                color: Colors.grey,
+                  ),
+                )
+              : SizedBox.shrink(),
+          SizedBox(
+            height: 2,
+            width: double.infinity,
+            child: Container(
+              height: 1,
+              color: Colors.grey,
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              physics: const AlwaysScrollableScrollPhysics(),
+              itemExtent: 65,
+              itemCount: users.length,
+              itemBuilder: (context, index) => GroupUserItem(
+                model: users[index],
+                onTap: () {
+                  onUserAdded(users[index]);
+                },
               ),
             ),
-            RepaintBoundary(
-              child: ListView.builder(
-                itemExtent: 65,
-                physics: AlwaysScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: users.length,
-                itemBuilder: (context, index) => GroupUserItem(
-                  model: users[index],
-                  onTap: () {
-                    onUserAdded(users[index]);
-                  },
-                ),
-              ),
-            ),
-          ],
-        ),
-      )
-    ]);
+          ),
+        ],
+      ),
+    );
   }
 }

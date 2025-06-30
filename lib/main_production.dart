@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:jailbreak_root_detection/jailbreak_root_detection.dart';
 import 'package:provider/provider.dart';
 
 import 'firebase_options.dart';
@@ -29,7 +30,10 @@ void main() async {
 
   // Security Config
   await dotenv.load(fileName: ".env");
-
+  final isNotTrust = await JailbreakRootDetection.instance.isNotTrust;
+  final isJailBroken = await JailbreakRootDetection.instance.isJailBroken;
+  final isRealDevice = await JailbreakRootDetection.instance.isRealDevice;
+  final isSecured = !isNotTrust || !isJailBroken || isRealDevice;
   // Bloc observer config
   Bloc.observer = AppBlocObserver();
 
@@ -57,11 +61,14 @@ void main() async {
   runApp(Provider(
       create: (context) => NetworkMonitor()..startMonitoring(),
       dispose: (context, networkMonitor) => networkMonitor.stopMonitoring(),
-      child: const MyApp()));
+      child: MyApp(
+        isSecured: isSecured,
+      )));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({super.key, required this.isSecured});
+  final bool isSecured;
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +80,16 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: ColorApp.appBackgroundColor,
         useMaterial3: true,
       ),
-      home: const SplashScreen(),
+      home: isSecured
+          ? const SplashScreen()
+          : Scaffold(
+              body: Center(
+                child: Text(
+                  'App is not secure',
+                  style: TextStyle(color: Colors.red, fontSize: 24),
+                ),
+              ),
+            ),
       onGenerateRoute: AppRoutes.onGenerateRoute,
     );
   }

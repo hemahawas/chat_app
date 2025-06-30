@@ -5,10 +5,12 @@ import 'package:flutter/material.dart';
 class ImageField extends StatelessWidget {
   final String? image;
   final Color borderColor;
+  final bool? isGroup;
   const ImageField({
     super.key,
     this.image,
     required this.borderColor,
+    this.isGroup,
   });
 
   @override
@@ -20,14 +22,16 @@ class ImageField extends StatelessWidget {
           border: Border.all(color: borderColor, width: 3),
         ),
         child: ClipOval(
-          child: image != null
+          child: image != null && image! != ''
               ? CachedNetworkImage(
                   imageUrl: image!,
                   memCacheWidth: 350,
                   fit: BoxFit.cover,
                 )
               : Image.asset(
-                  AssetImages.userImage,
+                  isGroup ?? false
+                      ? AssetImages.groupImage
+                      : AssetImages.userImage,
                   cacheWidth: 180,
                   fit: BoxFit.cover,
                 ),
