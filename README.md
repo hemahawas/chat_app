@@ -1,3 +1,6 @@
+
+<img width="928" height="845" alt="Chat_app_image" src="https://github.com/user-attachments/assets/de892915-c57a-4f34-8cdd-ece34b0fb3c2" />
+
 # Flutter Chat App
 
 A modern, feature-rich chat application built with **Flutter**, designed to provide seamless real-time communication. This app leverages **BLoC** for state management, **Firebase** and **APIs** for backend services, and **GetIt** for dependency injection. It offers a smooth and responsive user experience with a clean and intuitive UI.
